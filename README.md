@@ -1,4 +1,4 @@
-# Aisaar
+# Texleath
 #### `Texleath`, your premier destination for high-quality clothing sales, manufacturing, and export. This e-commerce platform offers a sleek and elegant design, reflecting the premium nature of our products. With a focus on user experience, our site provides a seamless and engaging shopping experience, complemented by advanced features and interactive elements.
 
 # Run Locally
@@ -9,7 +9,7 @@
 ```
 Go to the project directory
 ```bash
-cd my-project
+  cd my-project
 ```
 Then **Run** this command in your terminal to install all required dependancies:
 ```bash
@@ -17,10 +17,9 @@ Then **Run** this command in your terminal to install all required dependancies:
 ```
 In the project directory, you can run:
 ```bash
-  npm start
+  npm expo start
 ``` 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Run the app in your mobile using **Expo Client App** or using Android Studio after reading instructions from the commands listed after running the above command.
 
 ## Features
 
@@ -52,26 +51,4 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 # Live Demo
 ## Check out the latest demo of Project [Texleath](https://texleath.netlify.app). 
-
-## In case this doesnt work, follow these steps as an alternative and Install required Dependancies
-At first create a React App using following command:
-
-```bash
-   npx create-react-app myproject
-```
- Clone the project using following command
-```bash
-  git clone  https://github.com/BazilSuhail/Ecommerce-Client.git
-```
-Go to the project directory
-```bash
-cd my-project
-```
-Just for convenience copy all contents in the cloned repository and paste them into the directory where You have 
-created your **React App**.
  
-Afterwards simply run this command to install all required dependancies and packages at once.
-```bash
-npm i react-redux react-icons react-router-dom axios framer-motion jwt-decode
-``` 
-  
