@@ -2,8 +2,8 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, } from '@react-navigation/stack';
 import SignIn from './Signin';
-import AppNavigator from '../../AppNavigator';
-import Profile from './Profile';
+import AppNavigator from '../../AppNavigator'; 
+import Register from './Register';
 
 const Stack = createStackNavigator();
 
@@ -28,10 +28,10 @@ const AuthenticationStack = () => {
             />
 
             <Stack.Screen
-                name="Profile"
-                component={Profile}
+                name="Register"
+                component={Register}
                 options={{
-                    title: 'Profile',
+                    title: 'Register',
                     headerShown: false // Hide the header for this screen
                 }}
             />

@@ -4,9 +4,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { IoLockClosedOutline, IoMail } from 'react-native-vector-icons/Ionicons'; // Import from 'react-native-vector-icons'
+import { Ionicons } from '@expo/vector-icons'; // Correct import from Expo
 
-const SignUp = () => {
+const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -46,7 +46,7 @@ const SignUp = () => {
             <View className="mb-4">
                 <Text className="text-lg font-medium">Email</Text>
                 <View className="flex-row items-center border-b border-gray-300 mb-2">
-                    <IoMail name="mail-outline" size={24} color="red" />
+                    <Ionicons name="mail-outline" size={24} color="red" />
                     <TextInput
                         className="flex-1 p-2 ml-2"
                         placeholder="Enter your Email"
@@ -61,7 +61,7 @@ const SignUp = () => {
             <View className="mb-4">
                 <Text className="text-lg font-medium">Password</Text>
                 <View className="flex-row items-center border-b border-gray-300 mb-2">
-                    <IoLockClosedOutline name="lock-closed-outline" size={24} color="red" />
+                    <Ionicons name="lock-closed-outline" size={24} color="red" />
                     <TextInput
                         className="flex-1 p-2 ml-2"
                         placeholder="Enter your Password"
@@ -75,7 +75,7 @@ const SignUp = () => {
             <View className="mb-4">
                 <Text className="text-lg font-medium">Confirm Password</Text>
                 <View className="flex-row items-center border-b border-gray-300 mb-2">
-                    <IoLockClosedOutline name="lock-closed-outline" size={24} color="red" />
+                    <Ionicons name="lock-closed-outline" size={24} color="red" />
                     <TextInput
                         className="flex-1 p-2 ml-2"
                         placeholder="Confirm your Password"
@@ -90,7 +90,7 @@ const SignUp = () => {
             <View className="mt-4">
                 <Text className="text-center text-lg">
                     Already have an account?{' '}
-                    <Text className="text-red-700 underline" onPress={() => navigation.navigate('Login')}>
+                    <Text className="text-red-700 underline" onPress={() => navigation.goBack()}>
                         Sign In
                     </Text>
                 </Text>
@@ -99,4 +99,4 @@ const SignUp = () => {
     );
 };
 
-export default SignUp;
+export default Register;

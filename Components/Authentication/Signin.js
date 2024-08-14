@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert } from 'react-native';
+import { View, Text, TextInput, Button, Alert, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import { setCart } from '../../redux/cartSlice'; 
+import { useDispatch } from 'react-redux'; 
+import { setCart } from '../../redux/cartSlice';
 import Icon from 'react-native-vector-icons/Ionicons';
+import background from "../../assets/background.jpg";
 
 const SignIn = () => {
     const [email, setEmail] = useState('');
@@ -32,12 +33,12 @@ const SignIn = () => {
         try {
             // Split the token into header, payload, and signature
             const [header, payload, signature] = token.split('.');
-    
+
             // Decode the base64 URL encoded payload
             const base64Url = payload.replace(/-/g, '+').replace(/_/g, '/');
             const base64 = base64Url + (base64Url.length % 4 === 0 ? '' : '='.repeat(4 - (base64Url.length % 4)));
             const decodedPayload = atob(base64);
-    
+
             // Convert to a JSON 
             //console.log(JSON.parse(decodedPayload));
             return JSON.parse(decodedPayload);
@@ -76,46 +77,61 @@ const SignIn = () => {
     };
 
     return (
-        <View className="flex-1 justify-center p-4 bg-white">
-            <View className="mb-4">
-                <Text className="text-3xl text-center font-bold text-red-800">Welcome Back</Text>
-                <Text className="text-lg text-center font-medium text-red-800">Please enter Email and Password</Text>
+        <View className="relative pt-[48px] flex-1">
+            {/* Wavy Background */}
+            <View className="absolute w-screen h-screen">
+            <Image 
+                    source={background} 
+                    className="w-screen h-screen"
+              />
             </View>
-            {error ? <Text className="text-red-500 p-2 border-2 border-red-600 rounded-md mb-4 text-center">{`Error: ${error}`}</Text> : null}
-            <View className="flex-row items-center border-b border-gray-300 mb-4">
-                <Icon name="mail-outline" size={24} color="red" />
-                <TextInput
-                    className="flex-1 p-2 ml-2"
-                    placeholder="Enter your Email"
-                    value={email}
-                    onChangeText={setEmail}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    required
-                />
-            </View>
-            <View className="flex-row items-center border-b border-gray-300 mb-4">
-                <Icon name="lock-closed-outline" size={24} color="red" />
-                <TextInput
-                    className="flex-1 p-2 ml-2"
-                    placeholder="Enter your Password"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                    required
-                />
-            </View>
-            <View className="flex-row items-center mb-4">
-                <Button title="Remember me" onPress={() => { }} color="black" />
-            </View>
-            <Button title="Sign In" onPress={handleSubmit} color="red" />
-            <View className="mt-4">
-                <Text className="text-center text-lg">
-                    Don't have an account?{' '}
-                    <Text className="text-red-700 underline" onPress={() => navigation.navigate('Register')}>
-                        Sign Up
+
+            {/* Content */}
+            <View className="flex m-4 bg-gray-50 rounded-lg justify-center p-4">
+                <View className="mb-4">
+                    <Text className="text-3xl text-center font-bold text-red-800">Welcome Back</Text>
+                    <Text className="text-lg text-center font-medium text-red-800">Please enter Email and Password</Text>
+                </View>
+                {error ? (
+                    <Text className="text-red-500 p-2 border-2 border-red-600 rounded-md mb-4 text-center">
+                        {`Error: ${error}`}
                     </Text>
-                </Text>
+                ) : null}
+                <View className="flex-row items-center border-b border-gray-300 mb-4">
+                    <Icon name="mail-outline" size={24} color="red" />
+                    <TextInput
+                        className="flex-1 p-2 ml-2"
+                        placeholder="Enter your Email"
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        required
+                    />
+                </View>
+                <View className="flex-row items-center border-b border-gray-300 mb-4">
+                    <Icon name="lock-closed-outline" size={24} color="red" />
+                    <TextInput
+                        className="flex-1 p-2 ml-2"
+                        placeholder="Enter your Password"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry
+                        required
+                    />
+                </View>
+                <View className="flex-row items-center mb-4">
+                    <Button title="Remember me" onPress={() => { }} color="black" />
+                </View>
+                <Button title="Sign In" onPress={handleSubmit} color="red" />
+                <View className="mt-4">
+                    <Text className="text-center text-lg">
+                        Don't have an account?{' '}
+                        <Text className="text-red-700 underline" onPress={() => navigation.navigate('Register')}>
+                            Sign Up
+                        </Text>
+                    </Text>
+                </View>
             </View>
         </View>
     );
