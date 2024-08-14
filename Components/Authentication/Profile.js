@@ -90,7 +90,7 @@ const Profile = () => {
     };
 
     const handleSeeOrders = () => {
-        navigation.navigate('OrdersTracking');
+        navigation.navigate('ShowOrders');
     };
 
     useEffect(() => {

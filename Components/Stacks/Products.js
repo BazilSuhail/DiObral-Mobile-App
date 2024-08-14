@@ -14,6 +14,7 @@ const Products = () => {
           headerShown: false // Hide the header for this screen
         }}
         component={ProductList} />
+      
       <Stack.Screen name="ProductDetails" component={ProductDetails} />
     </Stack.Navigator>
   );

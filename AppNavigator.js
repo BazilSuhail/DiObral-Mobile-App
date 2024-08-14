@@ -8,6 +8,7 @@ import Home from './Components/Home';
 import Profile from './Components/Authentication/Profile';  
 import Products from './Components/Stacks/Products';
 import PlaceOrder from './Components/Stacks/PlaceOrder';
+import ProfileStack from './Components/Stacks/ProfileStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -80,7 +81,7 @@ function AppNavigator() {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Products" component={Products} />
       <Tab.Screen name="Cart" component={PlaceOrder} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );
 }

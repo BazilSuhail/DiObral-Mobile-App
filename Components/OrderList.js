@@ -145,10 +145,12 @@ const OrderList = () => {
             dispatch(clearCart());
 
             await axios.post(`${REACT_APP_API_BASE_URL}/cartState/cart/save`, { userId, items: [] });
-            navigation.navigate('Cart');
+            //navigation.navigate('Cart');
+            navigation.goBack();
+           
         } catch (error) {
-            console.error('Error confirming order:', error);
-            Alert.alert('Failed to confirm order.');
+            //console.error('Error confirming order:', error);
+            //Alert.alert('Failed to confirm order.');
         }
     };
 
