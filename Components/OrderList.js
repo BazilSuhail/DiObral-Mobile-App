@@ -59,7 +59,7 @@ const OrderList = () => {
     const parseJwt = (token) => {
         console.log(token);
         try {
-            
+
             if (!token || typeof token !== 'string') return null;
 
             // Split the token into header, payload, and signature
@@ -72,7 +72,7 @@ const OrderList = () => {
             const decodedPayload = atob(base64);
 
             // Convert to a JSON object
-        console.log(decodedPayload);
+            //console.log(decodedPayload);
 
             return JSON.parse(decodedPayload);
         } catch (error) {
@@ -86,8 +86,8 @@ const OrderList = () => {
             try {
                 const token = await AsyncStorage.getItem('token');
                 if (token) {
-                    const id = parseJwt(token);
-                    setUserId(id);
+                    const user = parseJwt(token);
+                    setUserId(user.id);
                 } else {
                     console.log('No token found');
                 }
@@ -137,7 +137,7 @@ const OrderList = () => {
             orderDate: new Date().toISOString(),
             total: calculateTotalBill()
         };
-        //console.log(order);
+        console.log(userId);
 
         try {
             await axios.post(`${REACT_APP_API_BASE_URL}/place-order/orders/${userId}`, order);
@@ -147,10 +147,9 @@ const OrderList = () => {
             await axios.post(`${REACT_APP_API_BASE_URL}/cartState/cart/save`, { userId, items: [] });
             //navigation.navigate('Cart');
             navigation.goBack();
-           
         } catch (error) {
-            //console.error('Error confirming order:', error);
-            //Alert.alert('Failed to confirm order.');
+            console.error('Error confirming order:', error);
+            Alert.alert('Failed to confirm order.');
         }
     };
 
@@ -171,7 +170,7 @@ const OrderList = () => {
     const closeModal = () => setIsModalOpen(false);
 
     if (!cart.length) return <Text>Your cart is empty</Text>;
- 
+
     return (
         <ScrollView className='xsx:w-[70%] flex flex-col xl:w-[60%] mx-auto'>
             <Text className="text-4xl flex items-center mx-auto text-red-900 underline underline-offset-4 mt-[15px] text-center font-bold">

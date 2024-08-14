@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
@@ -8,60 +8,50 @@ const ShowOrders = () => {
     const [orders, setOrders] = useState([]);
     const [userId, setUserId] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [fetchingOrders, setFetchingOrders] = useState(false);
+    const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
 
     // Function to decode JWT token
     const parseJwt = (token) => {
-        console.log(token);
         try {
-            
             if (!token || typeof token !== 'string') return null;
-
-            // Split the token into header, payload, and signature
-            const [header, payload, signature] = token.split('.');
+            const [header, payload] = token.split('.');
             if (!payload) return null;
-
-            // Decode the base64 URL encoded payload
             const base64Url = payload.replace(/-/g, '+').replace(/_/g, '/');
             const base64 = base64Url + (base64Url.length % 4 === 0 ? '' : '='.repeat(4 - (base64Url.length % 4)));
             const decodedPayload = atob(base64);
-
-            // Convert to a JSON object
-        console.log(decodedPayload);
-
             return JSON.parse(decodedPayload);
         } catch (error) {
             console.error('Error parsing JWT:', error);
             return null;
         }
     };
-    /*const decodeToken = useCallback((token) => {
-        if (!token) return null;
-        const payload = token.split('.')[1];
-        const decoded = JSON.parse(atob(payload));
-        return decoded.id; // Adjust according to your JWT structure
-    }, []);*/
 
     // Get user ID from token when component mounts
     useEffect(() => {
         const fetchTokenAndUserId = async () => {
             try {
                 const token = await AsyncStorage.getItem('token');
-                const id = parseJwt(token);
-                setUserId(id);
+                const decodedToken = parseJwt(token);
+                if (decodedToken) {
+                    setUserId(decodedToken.id); // Adjust according to your JWT structure
+                }
             } catch (error) {
                 console.error('Error fetching token:', error);
             }
         };
 
         fetchTokenAndUserId();
-    }, [parseJwt]);
+    }, []);
 
+    // Fetch orders once userId is set
     useEffect(() => {
         const fetchOrders = async () => {
-            if (!userId) return;
+            if (!userId || fetchingOrders) return;
+            setFetchingOrders(true);
 
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/place-order/orders/${userId}`);
+                const response = await axios.get(`${REACT_APP_API_BASE_URL}/place-order/orders/${userId}`);
                 setOrders(response.data);
             } catch (error) {
                 console.error('Error fetching orders:', error);
@@ -71,7 +61,7 @@ const ShowOrders = () => {
         };
 
         fetchOrders();
-    }, [userId]);
+    }, [userId, fetchingOrders]);
 
     if (loading) {
         return (
@@ -93,7 +83,7 @@ const ShowOrders = () => {
                     <View key={singleOrder._id} className="border border-gray-400 rounded-lg p-4 mb-4 bg-white shadow-md">
                         <View className="flex-row justify-between mb-2">
                             <Text className="text-md font-bold text-yellow-800 bg-yellow-100 border border-yellow-400 px-3 py-1 rounded-lg">
-                                <FontAwesome name="calendar" size={16} color="#FFD700" /> 
+                                <FontAwesome name="calendar" size={16} color="#FFD700" />
                                 Days Passed: {Math.floor((new Date() - new Date(singleOrder.orderDate)) / (1000 * 60 * 60 * 24))} days
                             </Text>
                             <Text className="text-lg font-bold text-white bg-red-700 px-3 py-1 rounded-lg">
