@@ -1,11 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, TextInput, Button, ScrollView, Alert } from 'react-native';
+import { View, Text, TextInput, Button, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { clearCart } from '../../redux/cartSlice';
 import { Ionicons, FontAwesome } from '@expo/vector-icons'; // For icons
+
+const ProfileDetail = ({ label, value }) => (
+    <View className="bg-white rounded-lg shadow-md p-4 mb-4">
+        <Text className="text-gray-600 text-sm">{label}</Text>
+        <Text className="text-gray-800 text-lg font-semibold">{value}</Text>
+    </View>
+);
 
 const Profile = () => {
     const [user, setUser] = useState(null);
@@ -89,6 +96,11 @@ const Profile = () => {
         //navigation.navigate('Signin');
     };
 
+    const handleNavigatetoSignIn = async () => {
+        navigation.navigate('Authentication');
+    };
+
+
     const handleSeeOrders = () => {
         navigation.navigate('ShowOrders');
     };
@@ -97,12 +109,22 @@ const Profile = () => {
         fetchProfile();
     }, [fetchProfile]);
 
-    if (error) return <Text className="text-red-500 pt-[50px]">{error}</Text>;
+    //    if (error) return <Text className="text-red-500 pt-[50px]">{error}</Text>;
 
+    if (error) return <View className="pt-[48px] px-4">
+        <TouchableOpacity className="mt-[45px] bg-green-800 rounded-lg py-2" onPress={handleNavigatetoSignIn}>
+            <Text className="text-lg text-center text-white font-semibold">Sign In</Text>
+        </TouchableOpacity>
+        <View className="flex mt-[30px] justify-center items-center">
+            <Text className="px-4 py-1 bg-red-100 border-2 border-red-700 rounded-lg text-lg font-medium text-red-700">
+                {error}
+            </Text>
+        </View>
+    </View>;
     if (!user) return <Text>Loading...</Text>;
 
     return (
-        <View className="flex-1 pt-[50px] px-4">
+        <View className="flex-1 bg-gray-200 pt-[50px] px-4">
             <View className="mb-4">
                 {user.fullName === "" ?
                     <Text className="text-lg text-red-500 mb-4">
@@ -115,6 +137,7 @@ const Profile = () => {
                 }
                 {isEditing ? (
                     <ScrollView className="space-y-4">
+
                         <View>
                             <Text className="text-sm font-medium text-gray-700">Email</Text>
                             <TextInput
@@ -184,33 +207,22 @@ const Profile = () => {
                     </ScrollView>
                 ) : (
                     <ScrollView className="space-y-4">
+
+                        <ProfileDetail label="Name" value={user.fullName} />
+
+                        <ProfileDetail label="Email" value={user.email} />
+                        <ProfileDetail label="Contact" value={user.contact} />
+                        <ProfileDetail label="Country" value={user.address?.country} />
+                        <ProfileDetail label="City" value={user.address?.city} />
                         <View>
-                            <Text className="font-medium">Name:</Text>
-                            <Text>{user.fullName}</Text>
-                        </View>
-                        <View>
-                            <Text className="font-medium">Email:</Text>
-                            <Text>{user.email}</Text>
-                        </View>
-                        <View>
-                            <Text className="font-medium">Contact / Phone:</Text>
-                            <Text>{user.contact}</Text>
-                        </View>
-                        <View>
-                            <Text className="font-medium">Country:</Text>
-                            <Text>{user.address?.country}</Text>
-                        </View>
-                        <View>
-                            <Text className="font-medium">City:</Text>
-                            <Text>{user.address?.city}</Text>
-                        </View>
-                        <View>
-                            <Text className="font-medium">Address:</Text>
+                            <Text className="font-medium mb-2 mt-[-15px]">Address:</Text>
                             <View className="bg-red-200 p-2 rounded-lg">
-                                <Text>{user.address?.street}</Text>
+                                <Text className="text-lg font-semibold">{user.address?.street}</Text>
                             </View>
                             <Text className="text-sm text-red-500">* Kindly fill the details carefully as this info will be used automatically by the system for shipping</Text>
                         </View>
+
+                        <View className="h-[55px]"></View>
                     </ScrollView>
                 )}
                 <View className="flex-row space-x-4 mt-4">
@@ -223,6 +235,7 @@ const Profile = () => {
                 {/* Replace <ShowOrders /> with appropriate component for orders tracking */}
                 <Text className="mt-4">Order History Component Placeholder</Text>
             </View>
+            <View className="h-[55px]"></View>
         </View>
     );
 };
