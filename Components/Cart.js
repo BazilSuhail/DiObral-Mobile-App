@@ -136,7 +136,7 @@ const Cart = () => {
   };
 
   const navigateToOrderList = () => {
-    //navigation.navigate('OrderList');
+    navigation.navigate('OrderList');
   };
 
   const calculateTotalBill = () => {

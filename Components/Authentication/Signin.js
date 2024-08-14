@@ -20,7 +20,7 @@ const SignIn = () => {
     const fetchUserCart = async (userId) => {
         try {
             const response = await axios.get(`${REACT_APP_API_BASE_URL}/cartState/cart/${userId}`);
-            console.log('Fetch cart response:', response);
+            //console.log('Fetch cart response:', response);
             if (response.status === 200) {
                 dispatch(setCart(response.data.items));
             }
@@ -40,7 +40,7 @@ const SignIn = () => {
             const decodedPayload = atob(base64);
     
             // Convert to a JSON 
-            console.log(JSON.parse(decodedPayload));
+            //console.log(JSON.parse(decodedPayload));
             return JSON.parse(decodedPayload);
         } catch (error) {
             console.error('Error parsing JWT:', error);

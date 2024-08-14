@@ -7,7 +7,7 @@ import { useTheme } from '@react-navigation/native';
 import Home from './Components/Home'; 
 import Profile from './Components/Authentication/Profile'; 
 import Cart from './Components/Cart';
-import Products from './Components/Products';
+import Products from './Components/Stacks/Products';
 
 const Tab = createBottomTabNavigator();
 

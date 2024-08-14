@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, ScrollView, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const ProductList = () => {
@@ -11,6 +11,8 @@ const ProductList = () => {
     const [subcategories, setSubcategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [selectedSubcategory, setSelectedSubcategory] = useState('All');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
 
     useEffect(() => {
@@ -19,7 +21,9 @@ const ProductList = () => {
                 const response = await axios.get(`${REACT_APP_API_BASE_URL}/fetchproducts/products`);
                 setProducts(response.data);
             } catch (error) {
-                console.error('Error fetching products:', error);
+                setError(error.message);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -58,6 +62,9 @@ const ProductList = () => {
         fetchSubcategories();
     }, [selectedCategory]);
 
+    if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
+    if (error) return <Text>Error: {error}</Text>;
+
     const filteredProducts = products.filter(product => {
         const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
         const matchesSubcategory = selectedSubcategory === 'All' || product.subcategory === selectedSubcategory;
@@ -76,82 +83,89 @@ const ProductList = () => {
         navigation.navigate('ProductDetails', { id: productId });
     };
 
-    const excludedCategories = ['Fitness Wear', 'Sports Wear', 'Gym Wear'];
+    const renderProductItem = ({ item }) => {
+        const discountedPrice = item.sale
+            ? (item.price - (item.price * item.sale) / 100).toFixed(2)
+            : item.price.toFixed(2);
+
+        return (
+            <TouchableOpacity
+                onPress={() => handleProductClick(item._id)}
+                className="p-2 w-[180px] h-[340px] bg-white rounded-lg m-2 shadow-md"
+            >
+                <Image
+                    source={{ uri: `${REACT_APP_API_BASE_URL}/uploads/${item.image}` }}
+                    className="w-[160px] mx-auto h-[210px] object-cover rounded-lg mb-2"
+                />
+                <View className="p-2">
+                    <Text className="text-md font-medium text-red-900">
+                        {item.name.length > 22 ? `${item.name.substring(0, 32)}...` : item.name}
+                    </Text>
+                    <View className="flex-row justify-between">
+                        {item.sale && (
+                            <Text className="text-red-500 line-through text-[12px] my-2">
+                                Rs.{parseInt(item.price)}
+                            </Text>
+                        )}
+                        <Text className="text-xl font-medium">
+                            <Text className="text-lg font-normal">Rs.</Text>{parseInt(discountedPrice)}
+                        </Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        );
+    };
 
     return (
-        <ScrollView className="bg-white">
+        <View className="flex-1 pt-[48px] bg-gray-200">
             {/* Category filter */}
-            <View className="my-2 mx-3">
+            <View>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="my-2 mx-3">
                 <View className="flex flex-row flex-wrap gap-2">
-                    <TouchableOpacity onPress={() => handleCategoryClick('All')} className={`px-3 py-1 rounded ${selectedCategory === 'All' ? 'bg-red-900 text-white' : 'bg-red-100'}`}>
-                        <Text>All Categories</Text>
+                    <TouchableOpacity onPress={() => handleCategoryClick('All')}>
+                        <Text className={`px-3 py-1 rounded ${selectedCategory === 'All' ? 'bg-red-900 text-white' : 'bg-red-100'}`}>All Categories</Text>
                     </TouchableOpacity>
                     {categories
-                        .filter(category => !excludedCategories.includes(category.name))
                         .map(category => (
                             <TouchableOpacity
                                 key={category._id}
                                 onPress={() => handleCategoryClick(category.name)}
-                                className={`px-3 py-1 rounded ${selectedCategory === category.name ? 'bg-red-900 text-white' : 'bg-red-100'}`}
                             >
-                                <Text>{category.name}</Text>
+                                <Text className={`px-3 py-1 rounded ${selectedCategory === category.name ? 'bg-red-900 text-white' : 'bg-red-100'}`}>{category.name}</Text>
                             </TouchableOpacity>
                         ))}
                 </View>
-            </View>
+            </ScrollView>
 
             {selectedCategory !== 'All' && (
-                <View className="my-2 mx-3">
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} className=" mx-3">
                     <View className="flex flex-row flex-wrap gap-2">
-                        <TouchableOpacity onPress={() => handleSubcategoryClick('All')} style={tailwind(`px-3 py-1 rounded ${selectedSubcategory === 'All' ? 'bg-red-900 text-white' : 'bg-red-100'}`)}>
+                        <TouchableOpacity onPress={() => handleSubcategoryClick('All')} className={`px-3 py-1 rounded ${selectedSubcategory === 'All' ? 'bg-red-900 text-white' : 'bg-red-100'}`}>
                             <Text>All Subcategories</Text>
                         </TouchableOpacity>
                         {subcategories.map(subcategory => (
                             <TouchableOpacity
                                 key={subcategory._id}
                                 onPress={() => handleSubcategoryClick(subcategory.name)}
-                                style={tailwind(`px-3 py-1 rounded ${selectedSubcategory === subcategory.name ? 'bg-red-900 text-white' : 'bg-red-100'}`)}
+                                className={`px-3 py-1 rounded ${selectedSubcategory === subcategory.name ? 'bg-red-900 text-white' : 'bg-red-100'}`}
                             >
                                 <Text>{subcategory.name}</Text>
                             </TouchableOpacity>
                         ))}
                     </View>
-                </View>
+                </ScrollView>
             )}
 
+           </View>
             {/* Product list */}
-            <View className="mx-2 my-4">
-                <View className="flex flex-row flex-wrap">
-                    {filteredProducts.map((product) => {
-                        const discountedPrice = product.sale
-                            ? (product.price - (product.price * product.sale) / 100).toFixed(2)
-                            : product.price.toFixed(2);
-
-                        return (
-                            <TouchableOpacity
-                                key={product._id}
-                                onPress={() => handleProductClick(product._id)}
-                                className="p-2 bg-white border border-gray-300 rounded mb-4 mr-2 w-1/2"
-                            >
-                                <Image
-                                    source={{ uri: `${REACT_APP_API_BASE_URL}/uploads/${product.image}` }}
-                                    className="h-48 w-full object-cover mb-2"
-                                />
-                                <Text className="text-lg font-medium text-red-900">
-                                    {product.name.length > 22 ? `${product.name.substring(0, 22)}...` : product.name}
-                                </Text>
-                                <View className="flex flex-row justify-between items-center mt-2">
-                                    {product.sale && (
-                                        <Text className="text-red-500 line-through text-sm">Rs.{product.price.toFixed(2)}</Text>
-                                    )}
-                                    <Text className="text-lg font-medium">"Rs.{parseInt(discountedPrice)}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        );
-                    })}
-                </View>
-            </View>
-        </ScrollView>
+            <FlatList
+                data={filteredProducts}
+                renderItem={renderProductItem}
+                keyExtractor={(item) => item._id}
+                numColumns={2}
+                contentContainerStyle="px-2 py-5"
+            />
+        </View>
     );
 };
 
