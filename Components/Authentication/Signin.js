@@ -4,8 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { setCart } from '../../redux/cartSlice';
-import jwtDecode from 'jwt-decode';
+import { setCart } from '../../redux/cartSlice'; 
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const SignIn = () => {

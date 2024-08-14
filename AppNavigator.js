@@ -2,12 +2,12 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome } from '@expo/vector-icons';
 import Animated from 'react-native-reanimated';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import Home from './Components/Home'; 
-import Profile from './Components/Authentication/Profile'; 
-import Cart from './Components/Cart';
+import Profile from './Components/Authentication/Profile';  
 import Products from './Components/Stacks/Products';
+import PlaceOrder from './Components/Stacks/PlaceOrder';
 
 const Tab = createBottomTabNavigator();
 
@@ -79,7 +79,7 @@ function AppNavigator() {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Products" component={Products} />
-      <Tab.Screen name="Cart" component={Cart} />
+      <Tab.Screen name="Cart" component={PlaceOrder} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );

@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { clearCart } from '../redux/cartSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, ScrollView, TouchableOpacity, Alert, Modal } from 'react-native';
 import { FontAwesome, Feather } from '@expo/vector-icons'; // Importing the necessary vector icons from Expo
 
@@ -53,25 +54,56 @@ const OrderList = () => {
     const [products, setProducts] = useState([]);
     const [userId, setUserId] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
 
-    const decodeToken = useCallback((token) => {
-        if (!token) return null;
-        const payload = token.split('.')[1];
-        const decoded = JSON.parse(atob(payload));
-        return decoded.id;
-    }, []);
+    const parseJwt = (token) => {
+        console.log(token);
+        try {
+            
+            if (!token || typeof token !== 'string') return null;
+
+            // Split the token into header, payload, and signature
+            const [header, payload, signature] = token.split('.');
+            if (!payload) return null;
+
+            // Decode the base64 URL encoded payload
+            const base64Url = payload.replace(/-/g, '+').replace(/_/g, '/');
+            const base64 = base64Url + (base64Url.length % 4 === 0 ? '' : '='.repeat(4 - (base64Url.length % 4)));
+            const decodedPayload = atob(base64);
+
+            // Convert to a JSON object
+        console.log(decodedPayload);
+
+            return JSON.parse(decodedPayload);
+        } catch (error) {
+            console.error('Error parsing JWT:', error);
+            return null;
+        }
+    };
 
     useEffect(() => {
-        const token = AsyncStorage.getItem('token');
-        const id = decodeToken(token);
-        setUserId(id);
-    }, [decodeToken]);
+        const fetchTokenAndUserId = async () => {
+            try {
+                const token = await AsyncStorage.getItem('token');
+                if (token) {
+                    const id = parseJwt(token);
+                    setUserId(id);
+                } else {
+                    console.log('No token found');
+                }
+            } catch (error) {
+                console.error('Error fetching token:', error);
+            }
+        };
+
+        fetchTokenAndUserId();
+    }, []);
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const productResponses = await Promise.all(
-                    cart.map(item => axios.get(`${process.env.REACT_APP_API_BASE_URL}/fetchproducts/products/${item.id}`))
+                    cart.map(item => axios.get(`${REACT_APP_API_BASE_URL}/fetchproducts/products/${item.id}`))
                 );
                 setProducts(productResponses.map(response => response.data));
             } catch (error) {
@@ -105,15 +137,15 @@ const OrderList = () => {
             orderDate: new Date().toISOString(),
             total: calculateTotalBill()
         };
-        console.log(order);
+        //console.log(order);
 
         try {
-            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/place-order/orders/${userId}`, order);
+            await axios.post(`${REACT_APP_API_BASE_URL}/place-order/orders/${userId}`, order);
             Alert.alert('Order confirmed!');
             dispatch(clearCart());
 
-            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/cartState/cart/save`, { userId, items: [] });
-            navigation.navigate('Profile');
+            await axios.post(`${REACT_APP_API_BASE_URL}/cartState/cart/save`, { userId, items: [] });
+            navigation.navigate('Cart');
         } catch (error) {
             console.error('Error confirming order:', error);
             Alert.alert('Failed to confirm order.');
@@ -137,7 +169,7 @@ const OrderList = () => {
     const closeModal = () => setIsModalOpen(false);
 
     if (!cart.length) return <Text>Your cart is empty</Text>;
-
+ 
     return (
         <ScrollView className='xsx:w-[70%] flex flex-col xl:w-[60%] mx-auto'>
             <Text className="text-4xl flex items-center mx-auto text-red-900 underline underline-offset-4 mt-[15px] text-center font-bold">
