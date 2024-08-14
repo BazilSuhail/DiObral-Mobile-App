@@ -153,6 +153,16 @@ const OrderList = () => {
         }
     };
 
+    const calculateActualTotalBill = () => {
+        return cart.reduce((total, item) => {
+            const product = products.find(p => p._id === item.id);
+            if (product) {
+                return total + (product.price * item.quantity);
+            }
+            return total;
+        }, 0).toFixed(2);
+    };
+    
     const calculateTotalBill = () => {
         return cart.reduce((total, item) => {
             const product = products.find(p => p._id === item.id);
@@ -191,7 +201,7 @@ const OrderList = () => {
                         <Text className='flex items-center'>
                             <FontAwesome name="gift" size={24} className='text-blue-600 mr-2' />Discount Through Applied Sales:
                         </Text>
-                        <Text className='px-[8px] text-xl rounded-xl'><Text className='text-lg'>Rs.</Text>{calculateTotalBill()}</Text>
+                        <Text className='px-[8px] text-xl rounded-xl'><Text className='text-lg'>Rs.</Text>{calculateActualTotalBill()}</Text>
                     </View>
                     <View className='flex my-[8px] justify-between'>
                         <Text className='flex items-center'>

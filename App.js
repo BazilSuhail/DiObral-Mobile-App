@@ -76,7 +76,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        {isAuthenticated ? <AppNavigator /> : <AuthenticationStack />}
+        {isAuthenticated ? <AppNavigator /> : <AppNavigator />}
       </NavigationContainer>
     </Provider>
   );

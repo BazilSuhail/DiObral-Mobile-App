@@ -4,7 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { removeFromCart, clearCart, updateQuantity } from '../redux/cartSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { View, Text, Image, Button, FlatList, Alert } from 'react-native';
+import Entypo from '@expo/vector-icons/Entypo';
+import { View, Text, Image, FlatList, Alert, TouchableOpacity } from 'react-native';
 
 const CartItem = ({ id, size, quantity, onIncrease, onDecrease, onRemove }) => {
   const [product, setProduct] = useState(null);
@@ -30,35 +31,47 @@ const CartItem = ({ id, size, quantity, onIncrease, onDecrease, onRemove }) => {
     : product.price.toFixed(2);
 
   return (
-    <View className="flex-row items-center justify-between bg-red-50 border border-red-700 rounded-xl p-4 mb-4">
+    <View className="flex-row  items-center h-[150px] justify-between rounded-xl p-4 mb-4">
       <Image
         source={{ uri: `${REACT_APP_API_BASE_URL}/uploads/${product.image}` }}
-        style={{ width: 100, height: 120, borderRadius: 8 }}
+        style={{ width: 85, height: 110, borderRadius: 8 }}
       />
       <View className="flex-1 ml-4">
-        <View className="flex-row justify-between items-center mb-2">
-          <Text className="text-lg font-bold underline">{product.name}</Text>
-          <Button title="Remove" onPress={onRemove} color="#F87171" />
+        <View className="flex-row h-[55px] justify-between items-center mb-2">
+          <View className="w-[20px] h-full">
+          <Text className="text-[16px] font-bold underline">{product.name}</Text>
+          </View>
+          <TouchableOpacity onPress={onRemove} className="w-[25px] border border-red-500 flex justify-center items-center h-[25px] rounded-md ml-auto">
+          <Entypo name="cross" size={24} color="#de4940" />
+          </TouchableOpacity>
         </View>
+        {/*
         <View className="flex-row items-center mb-2">
-          <Text className="font-medium text-red-950 mr-2">Item Price:</Text>
-          {product.sale && <Text className="text-red-600 line-through">${product.price}</Text>}
+          <Button title="Remove" onPress={onRemove} color="#F87171" />
+          <Text className="font-medium text-red-950 mr-2">Price:</Text> 
           <Text className="font-bold">${discountedPrice}</Text>
         </View>
+      */}
         <View className="flex-row items-center mb-2">
-          <Text className="font-medium text-red-950 mr-2">Size:</Text>
-          <Text className="font-bold">{size}</Text>
+          <Text className="font-semibold underline text-red-950 mr-2">Selected Size:</Text>
+          <Text className="font-bold px-2 bg-gray-500 text-white rounded-md">{size}</Text>
         </View>
         <View className="flex-row items-center justify-between">
+          <Text className="py-1 rounded font-bold">$ {(discountedPrice * quantity).toFixed(2)}</Text>
           <View className="flex-row items-center">
-            <Button title="-" onPress={onDecrease} color="#F87171" />
+            <TouchableOpacity onPress={onDecrease} className="bg-red-700 w-[25px] flex justify-center items-center h-[25px] rounded-full">
+              <Text className="text-[28px] mt-[-8px] text-white">-</Text>
+            </TouchableOpacity>
             <Text className="mx-2 text-lg font-bold">{quantity}</Text>
-            <Button title="+" onPress={onIncrease} color="#F87171" />
+            <TouchableOpacity onPress={onIncrease} className="bg-red-700 w-[25px] flex justify-center items-center h-[25px] rounded-full">
+              <Text className="text-[20px] mt-[-2px] text-white">+</Text>
+            </TouchableOpacity>
+            {/*<Button title="-" onPress={onDecrease} color="#F87171" />
+            <Button title="+" onPress={onIncrease} color="#F87171" /> */}
           </View>
-          <Text className="text-lg font-bold">
-            Item Checkout: <Text className="bg-green-200 px-2 py-1 rounded border border-green-800">${(discountedPrice * quantity).toFixed(2)}</Text>
-          </Text>
         </View>
+
+        <View className="h-[3px] w-full mt-[8px] bg-gray-200 "></View>
       </View>
     </View>
   );
@@ -174,7 +187,7 @@ const Cart = () => {
 
 
   return (
-    <View className="flex-1 pt-[45px] bg-gray-50">
+    <View className="flex-1 pt-[45px] bg-white">
       {cart.length === 0 ? (
         <View className="flex-1 justify-center items-center">
           <Text className="p-4 bg-red-100 border-2 border-red-700 rounded-xl text-xl text-red-600">
@@ -183,13 +196,21 @@ const Cart = () => {
         </View>
       ) : (
         <View className="p-4">
-          <View className="flex-row justify-between">
-            <Text className="text-2xl font-bold">Shopping Cart</Text>
-            <View className="flex-row">
-              <Button title="Clear Cart" onPress={handleClearCart} color="#F87171" />
+          <View className="flex">
+            <Text className="text-2xl mb-3 font-bold">Shopping Cart</Text>
+              <View className="flex-row justify-between"> 
+                
+              <TouchableOpacity onPress={handleClearCart} className="bg-red-700 flex justify-center items-center rounded-lg  py-1 px-3">
+                <Text className="text-[16px] font-medium text-white">Clear Cart</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={handleSaveCart} className="bg-blue-700 ml-[6px] flex justify-center items-center rounded-lg py-1 px-3">
+                <Text className="text-[16px] font-medium text-white">Buy Later</Text>
+              </TouchableOpacity>
+             {/*<Button title="Clear Cart" onPress={handleClearCart} color="#F87171" />
               <View className="mx-2">
                 <Button title="Save for Later" onPress={handleSaveCart} color="#3B82F6" />
-              </View>
+              </View> */}
             </View>
           </View>
 
@@ -198,22 +219,14 @@ const Cart = () => {
             <View className="border-t border-b border-gray-400 text-sm mt-4">
               <View className="flex-row justify-between py-2">
                 <Text>Your Cart Subtotal:</Text>
-                <Text className="text-xl font-bold">Rs.{calculateTotalBill()}</Text>
-              </View>
-              <View className="flex-row justify-between py-2">
-                <Text>Discount Through Applied Sales:</Text>
                 <Text className="text-xl font-bold">Rs.{calculateActualTotalBill()}</Text>
               </View>
-              <View className="flex-row justify-between py-2">
-                <Text>Delivery Charges (*On Delivery):</Text>
-                <Text className="text-xl font-bold">Rs.200</Text>
-              </View>
+
             </View>
 
-            <View className="flex-row justify-between mt-4">
-              <Text className="text-2xl font-bold">Rs.200</Text>
-              <Button title="Checkout" onPress={navigateToOrderList} color="#16A34A" />
-            </View>
+
+
+            {/*<Button title="Checkout" onPress={navigateToOrderList} color="#16A34A" /> */}
           </View>
 
           <FlatList
