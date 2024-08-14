@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { setCart } from '../../redux/cartSlice';
+import jwtDecode from 'jwt-decode';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const Signin = () => {
+const SignIn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    console.log("helpppppppppp");
+    const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
+
     const fetchUserCart = async (userId) => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/cartState/cart/${userId}`);
+            const response = await axios.get(`${REACT_APP_API_BASE_URL}/cartState/cart/${userId}`);
             console.log('Fetch cart response:', response);
             if (response.status === 200) {
                 dispatch(setCart(response.data.items));
@@ -29,15 +31,17 @@ const Signin = () => {
 
     const parseJwt = (token) => {
         try {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(
-                atob(base64)
-                    .split('')
-                    .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-                    .join('')
-            );
-            return JSON.parse(jsonPayload);
+            // Split the token into header, payload, and signature
+            const [header, payload, signature] = token.split('.');
+    
+            // Decode the base64 URL encoded payload
+            const base64Url = payload.replace(/-/g, '+').replace(/_/g, '/');
+            const base64 = base64Url + (base64Url.length % 4 === 0 ? '' : '='.repeat(4 - (base64Url.length % 4)));
+            const decodedPayload = atob(base64);
+    
+            // Convert to a JSON 
+            console.log(JSON.parse(decodedPayload));
+            return JSON.parse(decodedPayload);
         } catch (error) {
             console.error('Error parsing JWT:', error);
             return null;
@@ -46,10 +50,10 @@ const Signin = () => {
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, { email, password });
-            console.log('Login response:', response);
+            const response = await axios.post(`${REACT_APP_API_BASE_URL}/auth/login`, { email, password });
             if (response.data.token) {
                 await AsyncStorage.setItem('token', response.data.token);
+                //console.log(response.data.token);
 
                 // Decode token to get user ID
                 const decodedToken = parseJwt(response.data.token);
@@ -57,10 +61,13 @@ const Signin = () => {
 
                 console.log('User ID:', userId);
 
-                // Fetch and set the cart state
-                await fetchUserCart(userId);
-
-                navigation.navigate('Profile');
+                if (userId) {
+                    // Fetch and set the cart state
+                    await fetchUserCart(userId);
+                    navigation.navigate('AppNavigator');
+                } else {
+                    setError('Error: Unable to get user ID from token');
+                }
             } else {
                 setError('Login failed: No token received');
             }
@@ -75,7 +82,7 @@ const Signin = () => {
                 <Text className="text-3xl text-center font-bold text-red-800">Welcome Back</Text>
                 <Text className="text-lg text-center font-medium text-red-800">Please enter Email and Password</Text>
             </View>
-            {/*error ? <View><Text className="text-red-500 p-2 border-2 border-red-600 rounded-md mb-4 text-center">{`Errhbububuybor: ${error}`}</Text></View> : null*/}
+            {error ? <Text className="text-red-500 p-2 border-2 border-red-600 rounded-md mb-4 text-center">{`Error: ${error}`}</Text> : null}
             <View className="flex-row items-center border-b border-gray-300 mb-4">
                 <Icon name="mail-outline" size={24} color="red" />
                 <TextInput
@@ -115,4 +122,4 @@ const Signin = () => {
     );
 };
 
-export default Signin;
+export default SignIn;

@@ -4,8 +4,8 @@ import { ActivityIndicator, View } from 'react-native'; // Import Text component
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Provider } from 'react-redux'; // Import Provider from react-redux
 import store from './redux/store'; // Import your Redux store
-import AppNavigator from './AppNavigator';
-import Signin from './Components/Authentication/Signin'; // Import your SignIn screen
+import AppNavigator from './AppNavigator';  
+import AuthenticationStack from './Components/Authentication/AuthenticationStack';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -15,13 +15,13 @@ const App = () => {
       try {
         const token = await AsyncStorage.getItem('token');
         if (token) {
-          console.log('Token found:', token); // Debug log
+          //console.log('Token found:', token); // Debug log
         } else {
-          console.log('No token found'); // Debug log
+          //console.log('No token found'); // Debug log
           setIsAuthenticated(false);
 
         }
-        console.log(isAuthenticated); // Debug log
+        //console.log(isAuthenticated); // Debug log
         setIsAuthenticated(!!token); // Check if token exists
       } catch (error) {
         console.error('Error checking authentication:', error.message); // Enhanced error logging
@@ -42,9 +42,9 @@ const App = () => {
   }
 
   return (
-    <Provider store={store}> {/* Wrap the application with Provider */}
+    <Provider store={store}>
       <NavigationContainer>
-        {isAuthenticated ? <AppNavigator /> : <Signin />}
+        {isAuthenticated ? < AppNavigator/> : <AuthenticationStack/>}
       </NavigationContainer>
     </Provider>
   );

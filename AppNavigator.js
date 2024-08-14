@@ -5,6 +5,9 @@ import Animated from 'react-native-reanimated';
 import { Text, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import Home from './Components/Home'; 
+import Profile from './Components/Authentication/Profile'; 
+import Cart from './Components/Cart';
+import Products from './Components/Products';
 
 const Tab = createBottomTabNavigator();
 
@@ -75,9 +78,9 @@ function AppNavigator() {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Products" component={Home} />
-      <Tab.Screen name="Cart" component={Home} />
-      <Tab.Screen name="Profile" component={Home} />
+      <Tab.Screen name="Products" component={Products} />
+      <Tab.Screen name="Cart" component={Cart} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 }
