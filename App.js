@@ -58,7 +58,7 @@ const App = () => {
         console.error('Error checking authentication:', error.message);
         setIsAuthenticated(false);
       }
-      console.log(isAuthenticated);
+      //console.log(isAuthenticated);
     };
 
     checkAuthentication();

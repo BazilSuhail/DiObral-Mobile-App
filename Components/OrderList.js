@@ -61,19 +61,12 @@ const OrderList = () => {
         try {
 
             if (!token || typeof token !== 'string') return null;
-
-            // Split the token into header, payload, and signature
             const [header, payload, signature] = token.split('.');
             if (!payload) return null;
-
             // Decode the base64 URL encoded payload
             const base64Url = payload.replace(/-/g, '+').replace(/_/g, '/');
             const base64 = base64Url + (base64Url.length % 4 === 0 ? '' : '='.repeat(4 - (base64Url.length % 4)));
             const decodedPayload = atob(base64);
-
-            // Convert to a JSON object
-            //console.log(decodedPayload);
-
             return JSON.parse(decodedPayload);
         } catch (error) {
             console.error('Error parsing JWT:', error);
@@ -162,7 +155,7 @@ const OrderList = () => {
             return total;
         }, 0).toFixed(2);
     };
-    
+
     const calculateTotalBill = () => {
         return cart.reduce((total, item) => {
             const product = products.find(p => p._id === item.id);
@@ -182,49 +175,50 @@ const OrderList = () => {
     if (!cart.length) return <Text>Your cart is empty</Text>;
 
     return (
-        <ScrollView className='xsx:w-[70%] flex flex-col xl:w-[60%] mx-auto'>
-            <Text className="text-4xl flex items-center mx-auto text-red-900 underline underline-offset-4 mt-[15px] text-center font-bold">
-                <Feather name="file-text" size={24} className='mt-[8px] mr-[5px]' />
-                Final Invoice
-            </Text>
+        <ScrollView className='pt-[48px] bg-gray-200 px-3'>
 
-            <View className='flex border shadow-custom-card mt-[25px] p-[15px] rounded-xl flex-col'>
+            <Text className="text-2xl mb-1 font-bold"> <Feather name="file-text" size={24} className='mt-[8px] mr-[15px]' />Final Invoice</Text>
+            <View className="bg-gray-300 mb-3 w-full h-[3px]"></View>
+
+            <View className='flex p-[15px] bg-gray-50 border border-gray-400 mb-[15px] rounded-xl flex-col'>
+
                 <Text className='text-2xl font-bold'>Checkout</Text>
                 <View className='border-b border-t border-gray-400 text-[17px] font-semibold'>
-                    <View className='flex mt-[15px] justify-between'>
-                        <Text className='flex items-center'>
-                            <FontAwesome name="dollar" size={24} className='text-green-600' />Your Cart Subtotal:
+                    <View className='flex-row  items-center mt-[15px] justify-between'>
+                        <Text className='flex text-[14px] items-center'>
+                            <FontAwesome name="dollar" size={18} color="green" /><Text className="ml-[15px]">Your Cart Subtotal:</Text>
                         </Text>
-                        <Text className='px-[8px] text-xl rounded-xl'><Text className='text-lg'>Rs.</Text>{calculateTotalBill()}</Text>
+                        <Text className='px-[8px] text-lg rounded-xl'><Text className='text-lg'>Rs.</Text>{calculateTotalBill()}</Text>
                     </View>
-                    <View className='flex mt-[8px] justify-between'>
-                        <Text className='flex items-center'>
-                            <FontAwesome name="gift" size={24} className='text-blue-600 mr-2' />Discount Through Applied Sales:
+
+                    <View className='flex-row items-center mt-[8px] justify-between'>
+                        <Text className='text-[14px]'>
+                            <FontAwesome name="gift" size={20} color="blue" />Discount Through Applied Sales:
                         </Text>
-                        <Text className='px-[8px] text-xl rounded-xl'><Text className='text-lg'>Rs.</Text>{calculateActualTotalBill()}</Text>
+                        <Text className='px-[8px] text-lg rounded-xl'><Text className='text-lg'>Rs.</Text>{calculateActualTotalBill()}</Text>
                     </View>
-                    <View className='flex my-[8px] justify-between'>
-                        <Text className='flex items-center'>
-                            <FontAwesome name="truck" size={24} className='text-red-600 mr-2' />Delivery Charges (*On Delivery):
+
+                    <View className='flex-row my-[8px] justify-between'>
+                        <Text className='text-[14px]'>
+                            <FontAwesome name="truck" size={20} color="red" />Delivery Charges (*On Delivery):
                         </Text>
-                        <Text className='px-[8px] text-xl rounded-xl'><Text className='text-lg'>Rs.</Text>200</Text>
+                        <Text className='px-[8px] text-lg rounded-xl'><Text className='text-lg'>Rs.</Text>200</Text>
                     </View>
                 </View>
 
-                <View className='flex justify-between'>
-                    <Text className='px-[8px] text-4xl mt-[10px] font-bold rounded-xl'>
-                        <Text className='text-xl font-medium mr-[3px]'>Rs.</Text>{calculateTotalBill()}
-                    </Text>
-                    <TouchableOpacity
-                        onPress={openModal}
-                        className="border-2 text-[20px] font-bold mt-[15px] py-[5px] hover:bg-white hover:bg-gradient-to-tl hover:scale-95 transition duration-300 bg-gradient-to-tr from-red-500 via-red-950 to-red-500  border-red-700 rounded-2xl px-[25px] text-red-50"
+                <View className='flex-row items-center mt-[15px] py-2 justify-between'>
+                    <View className="flex-row items-end">
+                        <Text className='text-lg text-gray-500 font-semibold '>Rs.</Text><Text className='text-[28px] font-bold '>{calculateTotalBill()}</Text>
+                    </View>
+                    <TouchableOpacity onPress={openModal}
+                        className="text-[20px] font-bold py-[5px] rounded-2xl px-[25px] bg-green-700"
                     >
-                        <Text>Place Order</Text>
+                        <Text className="text-white text-lg font-bold">Place Order</Text>
                     </TouchableOpacity>
                 </View>
             </View>
 
-            <View className="mt-4 md:px-0 px-[8px]">
+            <View className="flex-1">
                 {cart.map(item => {
                     const product = products.find(p => p._id === item.id);
                     if (!product) return null;
@@ -234,33 +228,33 @@ const OrderList = () => {
                         : product.price;
 
                     return (
-                        <View key={item.id} className="border flex flex-col bg-custom-light-red border-gray-400 rounded-lg p-4 mb-4">
-                            <View className="ml-4 flex-1">
-                                <View className='flex items-center mt-[8px]'>
-                                    <View className='w-[12px] ml-[4px] h-[12px] rounded-full mr-[6px] bg-red-800 '></View>
-                                    <Text className="text-xl xsx:text-2xl mb-[2px] underline font-bold">{product.name || 'Unknown Product'}</Text>
-                                </View>
+                        <View key={item.id} className="bg-white py-3 px-5 mb-[15px] rounded-lg ">
+                            <View className='flex-row items-center my-[8px]'>
+                                <View className='w-[12px] ml-[4px] h-[12px] rounded-full mr-[6px] bg-red-800 '></View>
+                                <Text className="text-xl xsx:text-2xl mb-[2px] underline font-bold">{product.name || 'Unknown Product'}</Text>
+                            </View>
 
-                                <Text className="text-md ml-[20px] font-bold text-black">
-                                    <Text className='font-semibold text-red-900 mr-[5px]'>Quantity:</Text>  {item.quantity}
-                                </Text>
+                            <Text className="text-md font-bold text-black">
+                                <Text className='font-semibold text-red-900 mr-[5px]'>Quantity:</Text>  {item.quantity}
+                            </Text>
 
-                                <Text className="text-md ml-[20px] font-bold text-black">
-                                    <Text className='font-semibold text-red-900 mr-[5px]'>Selected Size:</Text>  {item.size}
-                                </Text>
+                            <Text className="text-md font-bold text-black">
+                                <Text className='font-semibold text-red-900 mr-[5px]'>Selected Size:</Text>  {item.size}
+                            </Text>
 
-                                <Text className="text-md ml-[20px] font-bold text-black">
-                                    <Text className='font-semibold text-red-900 mr-[5px]'>Actual Price:</Text>${product.price.toFixed(2)}
-                                </Text>
+                            <Text className="text-md font-bold text-black">
+                                <Text className='font-semibold text-red-900 mr-[5px]'>Actual Price:</Text>${product.price.toFixed(2)}
+                            </Text>
 
-                                <Text className="text-md ml-[20px] font-bold text-black">
-                                    <Text className='font-semibold text-red-900 mr-[5px]'>Discounted Price through Sales:</Text>${discountedPrice.toFixed(2)}
-                                </Text>
+                            <Text className="text-md font-bold text-black">
+                                <Text className='font-semibold text-red-900 mr-[5px]'>Discounted Price through Sales:</Text>${discountedPrice.toFixed(2)}
+                            </Text>
 
-                                <View className='flex justify-between'>
-                                    <Text className="text-xl ml-[12px] text-red-400 underline font-bold rounded-md p-[5px]">Total Price:</Text>
-                                    <Text className="text-2xl text-red-800 font-bold rounded-md p-[5px]"><Text className='text-lg mr-[4px]'>Rs.</Text>{(discountedPrice * item.quantity).toFixed(2)}</Text>
-                                </View>
+                            <View className="w-full h-[3px] mt-[10px] bg-gray-300"></View>
+
+                            <View className='flex-row mt-[10px] justify-between'>
+                                <Text className="text-[16px] h-[23px] my-auto text-center text-red-50 bg-red-800 font-bold rounded-md px-[15px]">Total Price:</Text>
+                                <Text className="text-[17px] text-red-800 bg-red-100 h-[26px] font-bold rounded-md border border-red-400 px-[15px]"><Text className='mr-[4px]'>Rs.</Text>{(discountedPrice * item.quantity).toFixed(2)}</Text>
                             </View>
                         </View>
                     );
@@ -275,6 +269,7 @@ const OrderList = () => {
                     handleConfirmOrder();
                 }}
             />
+            <View className="h-[55px]"></View>
         </ScrollView>
     );
 };

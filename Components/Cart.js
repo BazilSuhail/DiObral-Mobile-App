@@ -31,18 +31,18 @@ const CartItem = ({ id, size, quantity, onIncrease, onDecrease, onRemove }) => {
     : product.price.toFixed(2);
 
   return (
-    <View className="flex-row  items-center h-[150px] justify-between rounded-xl p-4 mb-4">
+    <View className="flex-row  items-center h-[160px] justify-between rounded-xl px-2">
       <Image
         source={{ uri: `${REACT_APP_API_BASE_URL}/uploads/${product.image}` }}
         style={{ width: 85, height: 110, borderRadius: 8 }}
       />
-      <View className="flex-1 ml-4">
-        <View className="flex-row h-[55px] justify-between items-center mb-2">
-          <View className="w-[20px] h-full">
-          <Text className="text-[16px] font-bold underline">{product.name}</Text>
+      <View className="flex-1 mt-[10px] ml-4">
+        <View className="flex-row h-[55px] justify-between">
+          <View className="w-[200px] h-full">
+            <Text className="text-[16px] font-bold underline">{product.name}</Text>
           </View>
-          <TouchableOpacity onPress={onRemove} className="w-[25px] border border-red-500 flex justify-center items-center h-[25px] rounded-md ml-auto">
-          <Entypo name="cross" size={24} color="#de4940" />
+          <TouchableOpacity onPress={onRemove} className="w-[22px] bg-red-800 flex justify-center items-center h-[22px] rounded-md">
+            <Entypo name="cross" size={22} color="white" />
           </TouchableOpacity>
         </View>
         {/*
@@ -188,63 +188,56 @@ const Cart = () => {
 
   return (
     <View className="flex-1 pt-[45px] bg-white">
-      {cart.length === 0 ? (
-        <View className="flex-1 justify-center items-center">
-          <Text className="p-4 bg-red-100 border-2 border-red-700 rounded-xl text-xl text-red-600">
-            Your cart is empty
-          </Text>
-        </View>
-      ) : (
-        <View className="p-4">
+
+      <View className="p-4">
+        <Text className="text-2xl mb-1 font-bold">Shopping Cart</Text>
+        <View className="bg-gray-300 mb-3 w-full h-[3px]"></View>
+
+        {cart.length === 0 ? (
+          <View className="flex mt-[30px] justify-center items-center">
+            <Text className="px-4 py-2 bg-red-100 border-2 border-red-700 rounded-lg text-lg font-medium text-red-700">
+              Your cart is empty
+            </Text>
+          </View>
+        ) : (
           <View className="flex">
-            <Text className="text-2xl mb-3 font-bold">Shopping Cart</Text>
-              <View className="flex-row justify-between"> 
-                
+            <View className="flex-row justify-between">
               <TouchableOpacity onPress={handleClearCart} className="bg-red-700 flex justify-center items-center rounded-lg  py-1 px-3">
                 <Text className="text-[16px] font-medium text-white">Clear Cart</Text>
               </TouchableOpacity>
-
-              <TouchableOpacity onPress={handleSaveCart} className="bg-blue-700 ml-[6px] flex justify-center items-center rounded-lg py-1 px-3">
+              <TouchableOpacity onPress={handleSaveCart} className="bg-blue-700  flex justify-center items-center rounded-lg py-1 px-3">
                 <Text className="text-[16px] font-medium text-white">Buy Later</Text>
               </TouchableOpacity>
-             {/*<Button title="Clear Cart" onPress={handleClearCart} color="#F87171" />
-              <View className="mx-2">
-                <Button title="Save for Later" onPress={handleSaveCart} color="#3B82F6" />
-              </View> */}
-            </View>
-          </View>
-
-          <View className="border p-4 rounded-xl mt-4">
-            <Text className="text-xl font-bold">Checkout</Text>
-            <View className="border-t border-b border-gray-400 text-sm mt-4">
-              <View className="flex-row justify-between py-2">
-                <Text>Your Cart Subtotal:</Text>
-                <Text className="text-xl font-bold">Rs.{calculateActualTotalBill()}</Text>
-              </View>
-
+              <TouchableOpacity onPress={navigateToOrderList} className="bg-green-700  flex justify-center items-center rounded-lg py-1 px-3">
+                <Text className="text-[16px] font-medium text-white">Checkout Cart</Text>
+              </TouchableOpacity>
             </View>
 
+            <View className="border border-gray-400 rounded-lg flex-row justify-between items-center px-3 mt-[10px] py-2">
+              <Text>Your Cart Subtotal:</Text>
+              <Text className="text-xl font-bold">Rs.{calculateTotalBill()}</Text>
+            </View>
+            <View className="h-[15px]"></View>
+            <FlatList
+              data={cart}
+              renderItem={({ item }) => (
+                <CartItem
+                  id={item.id}
+                  size={item.size}
+                  quantity={item.quantity}
+                  onIncrease={() => handleIncreaseQuantity(item.id, item.size)}
+                  onDecrease={() => handleDecreaseQuantity(item.id, item.size)}
+                  onRemove={() => handleRemoveFromCart(item.id, item.size)}
+                />
+              )}
+              keyExtractor={(item) => `${item.id}-${item.size}`}
+              style={{ maxHeight: 550 }} // Custom max height in pixels
+              className="w-full" // Optional: ensure full width
+            />
 
-
-            {/*<Button title="Checkout" onPress={navigateToOrderList} color="#16A34A" /> */}
           </View>
-
-          <FlatList
-            data={cart}
-            renderItem={({ item }) => (
-              <CartItem
-                id={item.id}
-                size={item.size}
-                quantity={item.quantity}
-                onIncrease={() => handleIncreaseQuantity(item.id, item.size)}
-                onDecrease={() => handleDecreaseQuantity(item.id, item.size)}
-                onRemove={() => handleRemoveFromCart(item.id, item.size)}
-              />
-            )}
-            keyExtractor={(item) => `${item.id}-${item.size}`}
-          />
-        </View>
-      )}
+        )}
+      </View>
     </View>
   );
 };
