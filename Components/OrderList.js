@@ -178,9 +178,9 @@ const OrderList = () => {
         <ScrollView className='pt-[50px] bg-gray-200 px-3'>
 
             <View className="flex-row mb-1 items-center ">
-            <Feather name="file-text" size={24} className='mt-[8px] ' />
-            <Text className="text-2xl ml-[2px] font-bold"> Final Invoice</Text>
-          </View>
+                <Feather name="file-text" size={24} color="#706700" />
+                <Text className="text-2xl ml-[2px] font-bold"> Final Invoice</Text>
+            </View>
             <View className="bg-gray-300 mb-3 w-full h-[3px]"></View>
 
             <View className='flex p-[15px] bg-gray-50 border border-gray-400 mb-[15px] rounded-xl flex-col'>

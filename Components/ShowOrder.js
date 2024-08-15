@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { View, Text, ScrollView, ActivityIndicator ,TouchableOpacity} from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
+import { useNavigation } from '@react-navigation/native';
 
 const ShowOrders = () => {
+    const navigation = useNavigation();
     const [orders, setOrders] = useState([]);
     const [userId, setUserId] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -76,29 +80,41 @@ const ShowOrders = () => {
     }
 
     return (
-        <ScrollView className="p-4">
-            <Text className="text-2xl font-bold text-red-900 mb-4">Orders Placed</Text>
+        <ScrollView className="pt-[48px] px-4">
+            <View className="flex-row mb-1 items-center ">
+                <TouchableOpacity
+                    onPress={() => navigation.goBack()}
+                    className="w-[32px] flex justify-center items-center rounded-lg"
+                >
+                    <Ionicons name="arrow-back" size={24} color="black" />
+                </TouchableOpacity> 
+                <Text className="text-2xl ml-[2px] font-bold"> Placed Orders</Text>
+            </View>
+
+            <View className="bg-gray-300 mb-3 w-full h-[3px]"></View>
+
             {orders.map(order => (
                 order.orders.map(singleOrder => (
-                    <View key={singleOrder._id} className="border border-gray-400 rounded-lg p-4 mb-4 bg-white shadow-md">
-                        <View className="flex-row justify-between mb-2">
+                    <View key={singleOrder._id} className="border border-gray-300 rounded-lg p-4 mb-4 bg-white shadow-md">
+                        <View className="flex-row items-center justify-between mb-2">
                             <Text className="text-md font-bold text-yellow-800 bg-yellow-100 border border-yellow-400 px-3 py-1 rounded-lg">
-                                <FontAwesome name="calendar" size={16} color="#FFD700" />
-                                Days Passed: {Math.floor((new Date() - new Date(singleOrder.orderDate)) / (1000 * 60 * 60 * 24))} days
+                                Placed: {Math.floor((new Date() - new Date(singleOrder.orderDate)) / (1000 * 60 * 60 * 24))} days ago
                             </Text>
-                            <Text className="text-lg font-bold text-white bg-red-700 px-3 py-1 rounded-lg">
-                                <FontAwesome name="clock-o" size={16} color="#fff" />
-                                Order Date: {new Date(singleOrder.orderDate).toLocaleDateString()}
+                            <Text className="text-[16px] font-bold text-red-600 underline">
+                                {new Date(singleOrder.orderDate).toLocaleDateString()}
                             </Text>
                         </View>
 
-                        <Text className="text-md font-bold text-green-800 bg-green-200 border border-green-800 px-3 py-1 rounded-lg mb-2">
-                            Bill Checkout: <Text className="text-xl">${singleOrder.total ? singleOrder.total.toFixed(2) : 'N/A'}</Text>
-                        </Text>
+                        <View className="flex-row items-center justify-between mb-[15px]">
+                            <Text className="text-[14px] font-bold text-blue-500">Bill Checkout:</Text>
+                            <Text className="text-[15px] px-2 rounded-md py-[1px] font-bold text-blue-100 bg-blue-800">
+                                Rs. {singleOrder.total ? singleOrder.total.toFixed(2) : 'N/A'}
+                            </Text>
+                        </View>
 
                         <View className="border-t border-gray-500 pt-2">
                             {singleOrder.items.map(item => (
-                                <View key={item._id} className="flex-row justify-between mb-2">
+                                <View key={item._id} className="flex justify-between mb-2">
                                     <View>
                                         <View className="flex-row items-center mb-2">
                                             <View className="w-3 h-3 rounded-full bg-red-800 mr-2" />
@@ -117,11 +133,14 @@ const ShowOrders = () => {
                                             <Text className="font-semibold text-red-900">Discounted Price through Sale/Coupons:</Text> ${item.discountedPrice ? item.discountedPrice.toFixed(2) : 'N/A'}
                                         </Text>
                                     </View>
-                                    <Text className="text-lg font-bold text-red-800 bg-red-100 border border-red-700 px-3 py-1 rounded-xl">
-                                        ${item.discountedPrice && item.quantity
-                                            ? (item.discountedPrice * item.quantity).toFixed(2)
-                                            : 'N/A'}
-                                    </Text>
+                                    <View className="flex-row items-center justify-between mt-[8px] bg-gray-200 border-t border-b border-gray-400 px-2 py-[8px]">
+                                        <Text className="text-[17px] font-bold text-red-800">Total:</Text>
+                                        <Text className="text-[17px] font-bold text-red-800">
+                                            Rs. {item.discountedPrice && item.quantity
+                                                ? (item.discountedPrice * item.quantity).toFixed(2)
+                                                : 'N/A'}
+                                        </Text>
+                                    </View>
                                 </View>
                             ))}
                         </View>
