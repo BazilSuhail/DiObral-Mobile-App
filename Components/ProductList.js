@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { View, Text, Image, TouchableOpacity, FlatList, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const ProductList = () => {
@@ -91,7 +91,7 @@ const ProductList = () => {
         return (
             <TouchableOpacity
                 onPress={() => handleProductClick(item._id)}
-                className="p-2 w-[180px] h-[340px] bg-white rounded-lg m-2 shadow-md"
+                className="p-2 pt-3 w-[180px] h-[310px] bg-white rounded-lg m-2 shadow-md"
             >
                 <Image
                     source={{ uri: `${REACT_APP_API_BASE_URL}/uploads/${item.image}` }}
@@ -117,55 +117,70 @@ const ProductList = () => {
     };
 
     return (
-        <View className="flex-1 pt-[48px] bg-gray-200">
-            {/* Category filter */}
-            <View>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="my-2 mx-3">
-                <View className="flex flex-row flex-wrap gap-2">
-                    <TouchableOpacity onPress={() => handleCategoryClick('All')}>
-                        <Text className={`px-3 py-1 rounded ${selectedCategory === 'All' ? 'bg-red-900 text-white' : 'bg-red-100'}`}>All Categories</Text>
-                    </TouchableOpacity>
-                    {categories
-                        .map(category => (
-                            <TouchableOpacity
-                                key={category._id}
-                                onPress={() => handleCategoryClick(category.name)}
-                            >
-                                <Text className={`px-3 py-1 rounded ${selectedCategory === category.name ? 'bg-red-900 text-white' : 'bg-red-100'}`}>{category.name}</Text>
+        <SafeAreaView className="flex-1 bg-gray-200">
+            <View className="flex pt-[48px]">
+            <Text className="text-2xl ml-2 text-red-700 font-bold ">Catalog</Text>
+            <View className="bg-gray-400 mx-auto w-[95%] mt-2 h-[3px]"></View>
+                {/* Category filter */}
+                <View className="px-1 mx-2 py-[15px] mt-[15px] bg-white">
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                        <View className="flex flex-row flex-wrap gap-2">
+                            <TouchableOpacity onPress={() => handleCategoryClick('All')}>
+                                <Text className={`px-3 py-1 rounded border border-gray-200 ${selectedCategory === 'All' ? 'bg-red-900 text-white' : 'bg-gray-200'}`}>
+                                    All Categories
+                                </Text>
                             </TouchableOpacity>
-                        ))}
-                </View>
-            </ScrollView>
+                            {categories.map(category => (
+                                <TouchableOpacity
+                                    key={category._id}
+                                    onPress={() => handleCategoryClick(category.name)}
+                                >
+                                    <Text className={`px-3 py-1 rounded border border-gray-200 ${selectedCategory === category.name ? 'bg-red-900 text-white' : 'bg-gray-200'}`}>
+                                        {category.name}
+                                    </Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+                    </ScrollView>
 
-            {selectedCategory !== 'All' && (
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} className=" mx-3">
-                    <View className="flex flex-row flex-wrap gap-2">
-                        <TouchableOpacity onPress={() => handleSubcategoryClick('All')} className={`px-3 py-1 rounded ${selectedSubcategory === 'All' ? 'bg-red-900 text-white' : 'bg-red-100'}`}>
-                            <Text>All Subcategories</Text>
-                        </TouchableOpacity>
-                        {subcategories.map(subcategory => (
-                            <TouchableOpacity
-                                key={subcategory._id}
-                                onPress={() => handleSubcategoryClick(subcategory.name)}
-                                className={`px-3 py-1 rounded ${selectedSubcategory === subcategory.name ? 'bg-red-900 text-white' : 'bg-red-100'}`}
-                            >
-                                <Text>{subcategory.name}</Text>
-                            </TouchableOpacity>
-                        ))}
+                    {selectedCategory !== 'All' && (
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-[8px]">
+                            <View className="flex flex-row flex-wrap gap-x-2">
+                                <TouchableOpacity onPress={() => handleSubcategoryClick('All')}>
+                                    <Text className={`px-3 py-1 rounded border border-gray-200 ${selectedSubcategory === 'All' ? 'bg-red-900 text-white' : 'bg-gray-200'}`}>
+                                        All Sub-Categories
+                                    </Text>
+                                </TouchableOpacity>
+                                {subcategories.map(subcategory => (
+                                    <TouchableOpacity
+                                        key={subcategory._id}
+                                        onPress={() => handleSubcategoryClick(subcategory.name)}
+                                    >
+                                        <Text className={`px-3 py-1 rounded border border-gray-200 ${selectedSubcategory === subcategory.name ? 'bg-red-900 text-white' : 'bg-gray-200'}`}>
+                                            {subcategory.name}
+                                        </Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
+                        </ScrollView>
+                    )}
+                </View> 
+                {selectedCategory !== 'All' &&
+                    <View className="mt-[12px] py-[3px] ml-auto mr-2 pl-auto w-[130px] rounded-xl border border-red-400 bg-red-50">
+                        <Text className="text-[13px] font-medium text-center text-red-800">Filterd Results: <Text className="font-extrabold">{filteredProducts.length}</Text></Text>
                     </View>
-                </ScrollView>
-            )}
+                }
 
-           </View>
-            {/* Product list */}
-            <FlatList
-                data={filteredProducts}
-                renderItem={renderProductItem}
-                keyExtractor={(item) => item._id}
-                numColumns={2}
-                contentContainerStyle="px-2 py-5"
-            />
-        </View>
+                {/* Product list */}
+                <FlatList
+                    data={filteredProducts}
+                    renderItem={renderProductItem}
+                    keyExtractor={(item) => item._id}
+                    numColumns={2}
+                    contentContainerStyle={{ paddingHorizontal: 8, paddingVertical: 10 }} // px-2 py-5
+                />
+            </View>
+        </SafeAreaView>
     );
 };
 

@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { clearCart } from '../../redux/cartSlice';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 const ProfileDetail = ({ label, value }) => (
     <View className="bg-white rounded-lg shadow-md p-4 mb-4">
@@ -223,42 +224,53 @@ const Profile = () => {
                     </ScrollView>
                 ) : (
                     <ScrollView className="space-y-4">
+                        <View className="flex-row justify-around">
+                            <TouchableOpacity onPress={handleSeeOrders} className="w-[48%] flex py-4 bg-white rounded-md justify-center items-center">
+                                <FontAwesome5 name="truck" size={45} color="#807b3b" />
+                                <Text className="text-[14px] text-center font-bold bg-yellow-50 text-yellow-700 px-2 rounded-xl py-[3px] border border-yellow-400 mt-[15px]">Orders Pending</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleSeeOrders} className="w-[48%] flex py-4 bg-white rounded-md justify-center items-center">
+                                <FontAwesome5 name="truck-loading" size={45} color="#00b316" />
+                                <Text className="text-[14px] text-center font-bold bg-green-50 text-green-700 px-2 rounded-xl py-[3px] border border-green-400 mt-[15px]">Order History</Text>
+                            </TouchableOpacity>
+                        </View>
 
-                        <ProfileDetail label="Name" value={user.fullName} />
+                        <View className="bg-gray-50 rounded-lg py-4 px-4">
+                            <View className="w-[100%] mb-[15px] flex flex-row justify-center space-x-2">
+                                <View className="w-[50%]">
+                                    <Text className="text-sm text-gray-400  font-bold">Name:</Text>
+                                    <Text className="text-gray-600 font-semibold text-xl">{user.fullName}</Text>
+                                </View>
+                                <View className="w-[50%]">
+                                    <Text className="text-sm text-gray-400 font-bold">Email:</Text>
+                                    <Text className="text-gray-600 font-semibold text-lg">{user.email}</Text>
+                                </View>
+                            </View>
 
-                        <ProfileDetail label="Email" value={user.email} />
-                        <ProfileDetail label="Contact" value={user.contact} />
-                        <ProfileDetail label="Country" value={user.address?.country} />
-                        <ProfileDetail label="City" value={user.address?.city} />
+                            <View className="w-[100%] mb-[15px] flex flex-row justify-center space-x-2">
+                                <View className="w-[50%]">
+                                    <Text className="text-sm text-gray-400 font-bold">Contact:</Text>
+                                    <Text className="text-gray-600 font-semibold text-xl">{user.contact}</Text>
+                                </View>
+                                <View className="w-[50%]">
+                                    <Text className="text-sm text-gray-400 font-bold">Country / City:</Text>
+                                    <Text className="text-gray-600 font-semibold text-lg">{user.address?.country} / {user.address?.city}</Text>
+                                </View>
+                            </View>
+                        </View>
+
+                        <TouchableOpacity className="flex-row items-center ml-auto w-[130px] bg-blue-500 rounded-lg px-3 py-1" onPress={() => setIsEditing(!isEditing)}>
+                            <FontAwesome5 name="edit" size={15} color="white" />
+                            <Text className="text-[16px]  ml-[5px] text-center text-white font-semibold">{isEditing ? "Cancel" : "Edit Profile"} </Text>
+                        </TouchableOpacity>
+
                         <View>
-                            <Text className="font-medium mb-2 mt-[-15px]">Address:</Text>
+                            <Text className="font-medium mb-2 mt-[-25px]">Address:</Text>
                             <View className="bg-red-200 p-2 rounded-lg">
                                 <Text className="text-lg font-semibold">{user.address?.street}</Text>
                             </View>
-                            <Text className="text-sm text-red-500">* Kindly fill the details carefully as this info will be used automatically by the system for shipping</Text>
+                            <Text className="text-sm mt-[8px] text-red-500">* Kindly fill the details carefully as this info will be used automatically by the system for shipping</Text>
                         </View>
-
-                        <View className="flex-row mt-3">
-
-                            <TouchableOpacity className="bg-white border border-gray-400 rounded-lg px-3 py-1" onPress={() => setIsEditing(!isEditing)}>
-                                <Text className="text-[16px] text-center text-blue-700 font-semibold">{isEditing ? "Cancel" : "Edit Profile"} </Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity className="bg-white border border-gray-400 ml-[4px] rounded-lg px-3 py-1" onPress={handleSeeOrders}>
-                                <Text className="text-[16px] text-center text-green-800 font-semibold">Order History</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity className="bg-white border border-gray-400 ml-[4px] rounded-lg px-3 py-1" onPress={handleSeeOrders}>
-                                <Text className="text-[16px] text-center text-yellow-800 font-semibold">Order History</Text>
-                            </TouchableOpacity>
-
-                            {/*
-                            <Button title="Update Profile" onPress={handleSubmit} color="#1E40AF" />
-                            <Button title={isEditing ? "Cancel" : "Edit Profile"} onPress={() => setIsEditing(!isEditing)} color="#3B82F6" />
-                            <Button title="Order History" onPress={handleSeeOrders} color="#047857" />
-                            */}
-                        </View>
-
                         <View className="h-[55px]"></View>
                     </ScrollView>
                 )}

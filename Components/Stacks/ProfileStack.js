@@ -19,6 +19,10 @@ const ProfileStack = () => {
         component={Profile}
       />
       <Stack.Screen name="ShowOrders"
+         options={{
+          title: 'Profile',
+          headerShown: false // Hide the header for this screen
+        }}
         component={ShowOrders} />
       
       <Stack.Screen

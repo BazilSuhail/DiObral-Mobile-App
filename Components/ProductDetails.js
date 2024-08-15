@@ -5,8 +5,9 @@ import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/cartSlice';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-const MediaCarousel = ({ mainImage, otherImages, onImageChange }) => {
+const MediaCarousel = ({ mainImage, otherImages, onImageChange, navigation }) => {
   const [activeMedia, setActiveMedia] = useState(mainImage);
 
   const handleMediaClick = (mediaUrl) => {
@@ -17,15 +18,21 @@ const MediaCarousel = ({ mainImage, otherImages, onImageChange }) => {
   return (
     <View>
       <View className="h-[460px] w-full mx-auto mb-[15px] rounded-lg">
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          className="bg-white w-[32px] flex justify-center items-center h-[32px] rounded-lg absolute z-10 top-[8px] left-[8px]"
+        >
+          <Ionicons name="arrow-back" size={22} color="red" />
+        </TouchableOpacity>
         <Image source={{ uri: activeMedia }} className="w-full h-full rounded-lg" />
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <TouchableOpacity onPress={() => handleMediaClick(mainImage)}>
-          <Image source={{ uri: mainImage }} className={`w-[70px] h-[80px] mx-1 rounded-lg border-2 ${activeMedia === mainImage ? 'border-blue-500' : 'border-gray-300'}`} />
+          <Image source={{ uri: mainImage }} className={`w-[70px] h-[80px] mx-1 border-2 ${activeMedia === mainImage ? 'border-blue-500' : 'border-gray-300'}`} />
         </TouchableOpacity>
         {otherImages.map((image, index) => (
           <TouchableOpacity key={index} onPress={() => handleMediaClick(image)}>
-            <Image source={{ uri: image }} className={`w-[70px] h-[80px] mx-1 rounded-lg border-2 ${activeMedia === image ? 'border-blue-500' : 'border-gray-300'}`} />
+            <Image source={{ uri: image }} className={`w-[70px] h-[80px] bg-white mx-1 rounded-lg border-2 ${activeMedia === image ? 'border-blue-500' : 'border-gray-300'}`} />
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -87,74 +94,72 @@ const ProductDetails = () => {
 
   return (
     <SafeAreaView className="bg-gray-200">
-      <ScrollView contentContainerStyle={{ paddingBottom: 80 }}  style={{ paddingVertical: 18,paddingHorizontal:10 }}>
-      
-          <View className="flex-1">
-            <MediaCarousel
-              mainImage={`${REACT_APP_API_BASE_URL}/uploads/${product.image}`}
-              otherImages={product.otherImages.map(image => `${REACT_APP_API_BASE_URL}/uploads/${image}`)}
-              onImageChange={setActiveImage}
-            />
-          </View>
-          <View className="bg-gray-400 w-full h-[3px] mt-[12px] mb-[15px]"></View>
+      <ScrollView contentContainerStyle={{ paddingBottom: 80 }} style={{ paddingVertical: 48, paddingHorizontal: 10 }}>
 
-          <View className="px-3 rounded-xl py-3 bg-white">
-            <Text className="text-2xl font-bold mb-3">{product.name}</Text>
-            <View className="flex-row items-end justify-between">
-              <View className="flex-row items-end">
-                {product.sale && <Text className="line-through text-[13px] font-medium text-red-600">${product.price.toFixed(2)}</Text>}
-                <Text className="text-[22px] font-extrabold text-red-800 ml-[10px] ">${discountedPrice}</Text>
-              </View>
-              <View className="bg-red-600 px-[8px] rounded-xl h-[23px]">
-                <Text className="text-center text-red-100 mt-[3px] text-[12px] font-bold"><Text className="font-extrabold text-white">{product.sale}%</Text> OFF</Text>
-              </View>
+        <View className="flex-1">
+          <MediaCarousel
+            mainImage={`${REACT_APP_API_BASE_URL}/uploads/${product.image}`}
+            otherImages={product.otherImages.map(image => `${REACT_APP_API_BASE_URL}/uploads/${image}`)}
+            onImageChange={setActiveImage}
+            navigation={navigation}
+          />
+        </View>
+        <View className="bg-gray-300 w-full h-[3px] mt-[12px] mb-[10px]"></View>
+
+        <View className="px-3 rounded-xl py-3 bg-white">
+          <Text className="text-2xl font-bold mb-3">{product.name}</Text>
+          <View className="flex-row items-end justify-between">
+            <View className="flex-row items-end">
+              {product.sale && <Text className="line-through text-[13px] font-medium text-red-600">${product.price.toFixed(2)}</Text>}
+              <Text className="text-[22px] font-extrabold text-red-800 ml-[10px] ">${discountedPrice}</Text>
+            </View>
+            <View className="bg-red-600 px-[8px] rounded-xl h-[23px]">
+              <Text className="text-center text-red-100 mt-[3px] text-[12px] font-bold"><Text className="font-extrabold text-white">{product.sale}%</Text> OFF</Text>
             </View>
           </View>
+        </View>
 
-          <View className="p-3 bg-white rounded-xl mt-[15px]">
-            <View className="mb-2">
-              <Text className="text-lg font-medium mb-2">Sizes:</Text>
-              <View className="flex-row flex-wrap">
-                {product.size.map((size, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    className={`py-1 px-4 mx-1 rounded-lg ${selectedSize === size ? 'bg-red-700' : 'bg-gray-200'}`}
-                    onPress={() => handleSizeClick(size)}
-                  >
-                    <Text className={`text-lg font-bold ${selectedSize === size ? 'text-white' : 'text-black'}`}>
-                      {size}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
+        <View className="p-3 bg-white rounded-xl mt-[15px]">
+          <View className="mb-2">
+            <Text className="text-lg font-medium mb-2">Sizes:</Text>
+            <View className="flex-row flex-wrap">
+              {product.size.map((size, index) => (
+                <TouchableOpacity
+                  key={index}
+                  className={`py-1 px-4 mx-1 rounded-lg ${selectedSize === size ? 'bg-red-700' : 'bg-gray-200'}`}
+                  onPress={() => handleSizeClick(size)}
+                >
+                  <Text className={`text-lg font-bold ${selectedSize === size ? 'text-white' : 'text-black'}`}>
+                    {size}
+                  </Text>
+                </TouchableOpacity>
+              ))}
             </View>
           </View>
+        </View>
 
-          <View className="p-3 bg-white rounded-xl mt-[15px]">
-            <View className="flex-row justify-around items-center">
-              <Text className="font-semibold w-[110px] text-center text-gray-400">Stock</Text>
-              <Text className="font-semibold w-[110px] text-center text-gray-400">Category</Text>
-              <Text className="font-semibold w-[110px] text-center text-gray-400">Sub-Category</Text>
-            </View>
-            <View className="flex-row justify-around items-center">
-              <View className="w-[110px] "><Text className=" mx-auto text-center mt-[4px] py-[3px] text-[24px] font-extrabold w-[50px] text-red-800 rounded-lg text-white]">{product.stock}</Text></View>
-              <View className="w-[110px] "><Text className=" mx-auto text-center mt-[4px] py-[2px] text-md font-medium px-[12px] bg-red-100 border border-red-300 text-red-800 rounded-lg text-white]">{product.category}</Text></View>
-              <View className="w-[110px] "><Text className=" mx-auto text-center mt-[4px] py-[3px] text-[18px] font-bold underline  text-red-800 rounded-lg text-white]">{product.subcategory}</Text></View>
-            </View>
+        <View className="p-3 bg-white rounded-xl mt-[15px]">
+          <View className="flex-row justify-around items-center">
+            <Text className="font-semibold w-[110px] text-center text-gray-400">Stock</Text>
+            <Text className="font-semibold w-[110px] text-center text-gray-400">Category</Text>
+            <Text className="font-semibold w-[110px] text-center text-gray-400">Sub-Category</Text>
           </View>
-
-          <View className="p-3 bg-white rounded-xl mt-[15px]">
-            <Text className="text-lg text-gray-700 font-bold mb-2">Product Description:</Text>
-            <Text>{product.description}</Text>
+          <View className="flex-row justify-around items-center">
+            <View className="w-[110px] "><Text className=" mx-auto text-center mt-[4px] py-[3px] text-[24px] font-extrabold w-[50px] text-red-800 rounded-lg text-white]">{product.stock}</Text></View>
+            <View className="w-[110px] "><Text className=" mx-auto text-center mt-[4px] py-[2px] text-md font-medium px-[12px] bg-red-100 border border-red-300 text-red-800 rounded-lg text-white]">{product.category}</Text></View>
+            <View className="w-[110px] "><Text className=" mx-auto text-center mt-[4px] py-[3px] text-[18px] font-bold underline  text-red-800 rounded-lg text-white]">{product.subcategory}</Text></View>
           </View>
+        </View>
 
-          
-        
- 
+        <View className="p-3 bg-white rounded-xl mt-[15px]">
+          <Text className="text-lg text-gray-700 font-bold mb-2">Product Description:</Text>
+          <Text>{product.description}</Text>
+        </View>
+
       </ScrollView>
 
       {/* Fixed View at the bottom */}
-      <View className="h-[60px] bottom-0 right-0 left-0 absolute rounded-xl bg-white mx-[8px]">
+      <View className="h-[60px] bottom-0 right-0 left-0 absolute rounded-md bg-white mx-[10px]">
         <View className="flex-row items-center h-full justify-between px-4">
 
           <View className="flex-row items-center">

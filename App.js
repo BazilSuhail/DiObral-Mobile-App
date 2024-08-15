@@ -5,8 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Provider } from 'react-redux';
 import store from './redux/store';
-import AppNavigator from './AppNavigator';  
-import AuthenticationStack from './Components/Authentication/AuthenticationStack';
+import AppNavigator from './AppNavigator';   
 
 const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
 
@@ -76,7 +75,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        {isAuthenticated ? <AppNavigator /> : <AppNavigator />}
+      <AppNavigator /> 
       </NavigationContainer>
     </Provider>
   );

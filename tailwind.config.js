@@ -4,9 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'custom-back-grey':'#6d5700e7', 
-        'custom-blue': '#001433',
-        'custom-card-blue': '#012459',
+        'custom-gray':'#FFF7FF', 
+        'truck-completed':'#706902', 
       },
 
     },
