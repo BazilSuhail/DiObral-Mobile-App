@@ -175,9 +175,12 @@ const OrderList = () => {
     if (!cart.length) return <Text>Your cart is empty</Text>;
 
     return (
-        <ScrollView className='pt-[48px] bg-gray-200 px-3'>
+        <ScrollView className='pt-[50px] bg-gray-200 px-3'>
 
-            <Text className="text-2xl mb-1 font-bold"> <Feather name="file-text" size={24} className='mt-[8px] mr-[15px]' />Final Invoice</Text>
+            <View className="flex-row mb-1 items-center ">
+            <Feather name="file-text" size={24} className='mt-[8px] ' />
+            <Text className="text-2xl ml-[2px] font-bold"> Final Invoice</Text>
+          </View>
             <View className="bg-gray-300 mb-3 w-full h-[3px]"></View>
 
             <View className='flex p-[15px] bg-gray-50 border border-gray-400 mb-[15px] rounded-xl flex-col'>
@@ -185,24 +188,24 @@ const OrderList = () => {
                 <Text className='text-2xl font-bold'>Checkout</Text>
                 <View className='border-b border-t border-gray-400 text-[17px] font-semibold'>
                     <View className='flex-row  items-center mt-[15px] justify-between'>
-                        <Text className='flex text-[14px] items-center'>
-                            <FontAwesome name="dollar" size={18} color="green" /><Text className="ml-[15px]">Your Cart Subtotal:</Text>
-                        </Text>
-                        <Text className='px-[8px] text-lg rounded-xl'><Text className='text-lg'>Rs.</Text>{calculateTotalBill()}</Text>
+                        <View className='flex-row items-center'>
+                            <FontAwesome name="dollar" size={18} color="green" /><Text className="ml-[8px] text-[12px]">Your Cart Subtotal:</Text>
+                        </View>
+                        <Text className='pr-[8px] text-[19px] font-bold'><Text className='text-gray-600 text-[15px]'>Rs.</Text>{calculateActualTotalBill()}</Text>
                     </View>
 
                     <View className='flex-row items-center mt-[8px] justify-between'>
-                        <Text className='text-[14px]'>
-                            <FontAwesome name="gift" size={20} color="blue" />Discount Through Applied Sales:
-                        </Text>
-                        <Text className='px-[8px] text-lg rounded-xl'><Text className='text-lg'>Rs.</Text>{calculateActualTotalBill()}</Text>
+                        <View className='flex-row items-center'>
+                            <FontAwesome name="gift" size={20} color="blue" /><Text className="ml-[8px] text-[12px]">Discount Through Applied Sales:</Text>
+                        </View>
+                        <Text className='pr-[8px] text-[19px] font-bold'><Text className='text-gray-600 text-[15px]'>Rs.</Text>{calculateTotalBill()}</Text>
                     </View>
 
                     <View className='flex-row my-[8px] justify-between'>
-                        <Text className='text-[14px]'>
-                            <FontAwesome name="truck" size={20} color="red" />Delivery Charges (*On Delivery):
-                        </Text>
-                        <Text className='px-[8px] text-lg rounded-xl'><Text className='text-lg'>Rs.</Text>200</Text>
+                        <View className='flex-row items-center'>
+                            <FontAwesome name="truck" size={20} color="red" /><Text className="ml-[8px] text-[12px]">Delivery Charges (*On Delivery):</Text>
+                        </View>
+                        <Text className='pr-[8px] text-[19px] font-bold'><Text className='text-gray-600 text-[15px]'>Rs.</Text>200</Text>
                     </View>
                 </View>
 

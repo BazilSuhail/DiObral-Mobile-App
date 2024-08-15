@@ -132,7 +132,7 @@ const Profile = () => {
                             Welcome, <Text className="text-black text-2xl">{user.fullName}</Text>
                         </Text>
                         <TouchableOpacity onPress={handleLogout} className="bg-red-800 rounded-md p-[6px]">
-                        <MaterialIcons name="logout" size={22} color="white" />
+                            <MaterialIcons name="logout" size={22} color="white" />
                         </TouchableOpacity>
                     </View>
                 }
@@ -144,63 +144,69 @@ const Profile = () => {
                                 * Kindly Before Placing Any Orders. Remember to Fill out Details for Faster Checkout. Only Entered info will be used for Shipping.
                             </Text>
                         }
-                        <View>
+                        <View className="bg-white px-3 py-2 rounded-l border border-gray-300">
                             <Text className="text-sm font-medium text-gray-700">Email</Text>
                             <TextInput
                                 value={formData.email}
                                 onChangeText={(value) => handleChange('email', value)}
-                                className="p-2 border border-gray-300 rounded-md"
+                                className="p-2 border text-[17px] border-gray-400 rounded-[18px] bg-gray-100 my-1"
                                 keyboardType="email-address"
                                 placeholder="Enter your Email"
                             />
                         </View>
-                        <View>
+                        <View className="bg-white px-3 py-2 rounded-l border border-gray-300">
                             <Text className="text-sm font-medium text-gray-700">Full Name</Text>
                             <TextInput
                                 value={formData.fullName}
                                 onChangeText={(value) => handleChange('fullName', value)}
-                                className="p-2 border border-gray-300 rounded-md"
+
+                                className="p-2 border text-[17px] border-gray-400 rounded-[18px] bg-gray-100 my-1"
                                 placeholder="Enter your Full Name"
                             />
                         </View>
-                        <View>
+                        <View className="bg-white px-3 py-2 rounded-l border border-gray-300">
                             <Text className="text-sm font-medium text-gray-700">Bio</Text>
                             <TextInput
                                 value={formData.bio}
                                 onChangeText={(value) => handleChange('bio', value)}
-                                className="p-2 border border-gray-300 rounded-md"
+
+                                className="p-2 border text-[17px] border-gray-400 rounded-[18px] bg-gray-100 my-1"
                                 placeholder="Enter your Bio"
                                 multiline
                             />
                         </View>
-                        <View>
+                        <View className="bg-white px-3 py-2 rounded-l border border-gray-300">
                             <Text className="text-sm font-medium text-gray-700">City</Text>
                             <TextInput
                                 value={formData.address.city}
                                 onChangeText={(value) => handleAddressChange('city', value)}
-                                className="p-2 border border-gray-300 rounded-md"
+
+                                className="p-2 border text-[17px] border-gray-400 rounded-[18px] bg-gray-100 my-1"
                                 placeholder="Enter your City"
                             />
                         </View>
-                        <View>
+                        <View className="bg-white px-3 py-2 rounded-l border border-gray-300">
                             <Text className="text-sm font-medium text-gray-700">Street</Text>
                             <TextInput
                                 value={formData.address.street}
                                 onChangeText={(value) => handleAddressChange('street', value)}
-                                className="p-2 border border-gray-300 rounded-md"
+
+                                className="p-2 border text-[17px] border-gray-400 rounded-[18px] bg-gray-100 my-1"
                                 placeholder="Enter your Street"
                             />
                         </View>
-                        <View>
+                        <View className="bg-white px-3 py-2 rounded-l border border-gray-300">
                             <Text className="text-sm font-medium text-gray-700">Country</Text>
                             <TextInput
                                 value={formData.address.country}
                                 onChangeText={(value) => handleAddressChange('country', value)}
-                                className="p-2 border border-gray-300 rounded-md"
+
+                                className="p-2 border text-[17px] border-gray-400 rounded-[18px] bg-gray-100 my-1"
                                 placeholder="Enter your Country"
                             />
                         </View>
-                        <View>
+
+                        <View className="bg-white px-3 py-2 rounded-l border border-gray-300">
                             <Text className="text-sm font-medium text-gray-700">Contact</Text>
                             <TextInput
                                 value={formData.contact}
@@ -209,7 +215,11 @@ const Profile = () => {
                                 placeholder="Enter your Contact"
                             />
                         </View>
-                        <Button title="Update Profile" onPress={handleSubmit} color="#1E40AF" />
+                        <TouchableOpacity className="bg-blue-700 border border-gray-400 ml-[4px] rounded-lg px-3 py-3" onPress={handleSubmit}>
+                            <Text className="text-[18px] text-center text-white font-semibold">Update Profile</Text>
+                        </TouchableOpacity>
+                        <View className="h-[65px]"></View>
+
                     </ScrollView>
                 ) : (
                     <ScrollView className="space-y-4">
@@ -228,20 +238,32 @@ const Profile = () => {
                             <Text className="text-sm text-red-500">* Kindly fill the details carefully as this info will be used automatically by the system for shipping</Text>
                         </View>
 
+                        <View className="flex-row mt-3">
+
+                            <TouchableOpacity className="bg-white border border-gray-400 rounded-lg px-3 py-1" onPress={() => setIsEditing(!isEditing)}>
+                                <Text className="text-[16px] text-center text-blue-700 font-semibold">{isEditing ? "Cancel" : "Edit Profile"} </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity className="bg-white border border-gray-400 ml-[4px] rounded-lg px-3 py-1" onPress={handleSeeOrders}>
+                                <Text className="text-[16px] text-center text-green-800 font-semibold">Order History</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity className="bg-white border border-gray-400 ml-[4px] rounded-lg px-3 py-1" onPress={handleSeeOrders}>
+                                <Text className="text-[16px] text-center text-yellow-800 font-semibold">Order History</Text>
+                            </TouchableOpacity>
+
+                            {/*
+                            <Button title="Update Profile" onPress={handleSubmit} color="#1E40AF" />
+                            <Button title={isEditing ? "Cancel" : "Edit Profile"} onPress={() => setIsEditing(!isEditing)} color="#3B82F6" />
+                            <Button title="Order History" onPress={handleSeeOrders} color="#047857" />
+                            */}
+                        </View>
+
                         <View className="h-[55px]"></View>
                     </ScrollView>
                 )}
-                <View className="flex-row space-x-4 mt-4">
-                    <Button title={isEditing ? "Cancel" : "Edit Profile"} onPress={() => setIsEditing(!isEditing)} color="#3B82F6" />
-                    <Button title="Order History" onPress={handleSeeOrders} color="#047857" />
-                </View>
+
             </View>
-            <View className="flex-1">
-                <Button title="Logout" onPress={handleLogout} color="#EF4444" />
-                {/* Replace <ShowOrders /> with appropriate component for orders tracking */}
-                <Text className="mt-4">Order History Component Placeholder</Text>
-            </View>
-            <View className="h-[55px]"></View>
         </View>
     );
 };

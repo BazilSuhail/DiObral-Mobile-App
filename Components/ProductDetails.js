@@ -101,9 +101,18 @@ const ProductDetails = () => {
           </View>
 
           <View className="flex-1 px-4">
-            <Text className="bg-red-500 text-white py-1 px-2 rounded text-center text-lg font-bold">
+           {/* <Text className="bg-red-500 text-white py-1 px-2 rounded text-center text-lg font-bold">
               Sale: <Text className="font-extrabold text-xl">{product.sale}%</Text> OFF
-            </Text>
+            </Text> */}
+
+            <View className="flex-row h-[55px] justify-between">
+              <View className="w-[270px] h-full">
+                <Text className="text-[22px] font-bold underline">{product.name}</Text>
+              </View>
+              <View className="bg-red-400 px-[8px] rounded-xl h-[30px]">
+                <Text className="text-center text-red-100 mt-[3px] text-[16px] font-bold"><Text className="font-extrabold text-white">{product.sale}%</Text> OFF</Text>
+              </View>
+            </View>
 
             <Text className="text-2xl font-bold my-3">{product.name}</Text>
 
@@ -137,7 +146,16 @@ const ProductDetails = () => {
             </Text>
 
             <Text className="text-lg mb-2">Quantity</Text>
+
             <View className="flex-row items-center">
+              <TouchableOpacity onPress={handleDecreaseQuantity} className="bg-red-700 w-[25px] flex justify-center items-center h-[25px] rounded-full">
+                <Text className="text-[28px] mt-[-8px] text-white">-</Text>
+              </TouchableOpacity>
+              <Text className="mx-2 text-lg font-bold">{quantity}</Text>
+              <TouchableOpacity onPress={handleIncreaseQuantity} className="bg-red-700 w-[25px] flex justify-center items-center h-[25px] rounded-full">
+                <Text className="text-[20px] mt-[-2px] text-white">+</Text>
+              </TouchableOpacity>
+              {/*<View className="flex-row items-center">
               <TouchableOpacity onPress={handleDecreaseQuantity} className="bg-gray-300 p-2 rounded">
                 <Text className="text-xl font-bold">-</Text>
               </TouchableOpacity>
@@ -145,6 +163,8 @@ const ProductDetails = () => {
               <TouchableOpacity onPress={handleIncreaseQuantity} className="bg-gray-300 p-2 rounded">
                 <Text className="text-xl font-bold">+</Text>
               </TouchableOpacity>
+            </View>*/}
+
             </View>
 
             <TouchableOpacity onPress={handleAddToCart} className="bg-red-500 py-3 rounded mt-4">
