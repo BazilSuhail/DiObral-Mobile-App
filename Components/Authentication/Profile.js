@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { clearCart } from '../../redux/cartSlice';
-import { Ionicons, FontAwesome } from '@expo/vector-icons'; // For icons
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const ProfileDetail = ({ label, value }) => (
     <View className="bg-white rounded-lg shadow-md p-4 mb-4">
@@ -38,7 +38,7 @@ const Profile = () => {
     const fetchProfile = useCallback(async () => {
         try {
             const token = await AsyncStorage.getItem('token');
-            console.log(token);
+
             if (token) {
                 const response = await axios.get(`${REACT_APP_API_BASE_URL}/auth/profile`, {
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -93,11 +93,11 @@ const Profile = () => {
     const handleLogout = async () => {
         await AsyncStorage.removeItem('token');
         dispatch(clearCart()); // Clear cart on logout
-        //navigation.navigate('Signin');
+        navigation.navigate('SignInUser');
     };
 
     const handleNavigatetoSignIn = async () => {
-        navigation.navigate('Authentication');
+        navigation.navigate('SignInUser');
     };
 
 
@@ -126,18 +126,24 @@ const Profile = () => {
     return (
         <View className="flex-1 bg-gray-200 pt-[50px] px-4">
             <View className="mb-4">
-                {user.fullName === "" ?
-                    <Text className="text-lg text-red-500 mb-4">
-                        * Kindly Before Placing Any Orders. Remember to Fill out Details for Faster Checkout. Only Entered info will be used for Shipping.
-                    </Text>
-                    :
-                    <Text className="text-2xl text-red-700 font-bold mb-4">
-                        Welcome, <Text className="text-black">{user.fullName}</Text>
-                    </Text>
+                {user.fullName !== "" &&
+                    <View className="flex-row items-center justify-between mb-3">
+                        <Text className="text-lg text-red-700 font-bold ">
+                            Welcome, <Text className="text-black text-2xl">{user.fullName}</Text>
+                        </Text>
+                        <TouchableOpacity onPress={handleLogout} className="bg-red-800 rounded-md p-[6px]">
+                        <MaterialIcons name="logout" size={22} color="white" />
+                        </TouchableOpacity>
+                    </View>
                 }
+                <View className="bg-gray-300 w-full mb-4 h-[3px]"></View>
                 {isEditing ? (
                     <ScrollView className="space-y-4">
-
+                        {user.fullName === "" &&
+                            <Text className="text-lg text-red-500 mb-4">
+                                * Kindly Before Placing Any Orders. Remember to Fill out Details for Faster Checkout. Only Entered info will be used for Shipping.
+                            </Text>
+                        }
                         <View>
                             <Text className="text-sm font-medium text-gray-700">Email</Text>
                             <TextInput

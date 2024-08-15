@@ -7,10 +7,10 @@ const Stack = createStackNavigator();
 
 const PlaceOrder = () => {
   return (
-    <Stack.Navigator initialRouteName="Cart">
-      <Stack.Screen name="Cart"
+    <Stack.Navigator initialRouteName="CartofUser">
+      <Stack.Screen name="CartofUser"
         options={{
-          title: 'Cart',
+          title: 'CartofUser',
           headerShown: false // Hide the header for this screen
         }}
         component={Cart} /> 

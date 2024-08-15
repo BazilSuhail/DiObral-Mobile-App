@@ -1,27 +1,32 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';  
+import { createStackNavigator } from '@react-navigation/stack';
 import Profile from '../Authentication/Profile';
-import ShowOrders from '../ShowOrder';
-import AuthenticationStack from '../Authentication/AuthenticationStack';
+import Register from '../Authentication/Register';
+import ShowOrders from '../ShowOrder'; 
+import AuthenticationStack from '../Authentication/AuthenticationStack'; // Import your SignIn component
 
 const Stack = createStackNavigator();
 
 const ProfileStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Profile">
-      <Stack.Screen name="Profile"
+    <Stack.Navigator initialRouteName="ProfileofUser">
+      <Stack.Screen
+        name="ProfileofUser"
         options={{
-          title: 'ProductList',
+          title: 'Profile',
           headerShown: false // Hide the header for this screen
         }}
-        component={Profile} />
+        component={Profile}
+      />
       <Stack.Screen name="ShowOrders" component={ShowOrders} />
-      <Stack.Screen name="Authentication"
-         options={{
-          title: 'ProductList',
-          headerShown: false // Hide the header for this screen
+      <Stack.Screen
+        name="SignInUser"
+        options={{
+          title: 'Sign In',
+          headerShown: false // Hide the header for the SignIn screen
         }}
-        component={AuthenticationStack} />
+        component={AuthenticationStack} // Add the SignIn component to the stack
+      />
     </Stack.Navigator>
   );
 };

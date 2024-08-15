@@ -2,8 +2,8 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome } from '@expo/vector-icons';
 import Animated from 'react-native-reanimated';
-import { Text } from 'react-native';
-import { useTheme } from '@react-navigation/native';
+import { Text, View } from 'react-native';
+import { useTheme, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import Home from './Components/Home';  
 import Products from './Components/Stacks/Products';
 import PlaceOrder from './Components/Stacks/PlaceOrder';
@@ -39,7 +39,6 @@ function AppNavigator() {
               iconName = 'circle'; // Default icon if none matches
           }
 
-          // Animated size and opacity for active tab
           const animatedSize = focused ? 28 : 24;
           const animatedOpacity = focused ? 1 : 0.7;
 
@@ -73,14 +72,37 @@ function AppNavigator() {
         tabBarStyle: {
           backgroundColor: colors.background, // Use theme colors
           height: 60,
+          // Avoid height adjustment or transformations affecting icon sizing
         },
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Products" component={Products} />
-      <Tab.Screen name="Cart" component={PlaceOrder} />
-      <Tab.Screen name="Profile" component={ProfileStack} />
+      <Tab.Screen 
+        name="Home" 
+        component={Home} 
+      />
+      <Tab.Screen 
+        name="Products" 
+        component={Products} 
+      />
+      <Tab.Screen 
+        name="Cart" 
+        component={PlaceOrder} 
+      />
+      <Tab.Screen 
+        name="Profile" 
+        component={ProfileStack} 
+        options={({ route }) => {
+          const routeName = getFocusedRouteNameFromRoute(route) ?? 'ProfileofUser';
+          return {
+            tabBarStyle: {
+              // Set height to a default value or adjust as needed
+              height: routeName === 'SignInUser' ? 0 : 60, 
+              // Keep other style properties consistent to prevent shrinking
+            },
+          };
+        }} 
+      />
     </Tab.Navigator>
   );
 }
