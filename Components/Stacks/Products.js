@@ -15,7 +15,11 @@ const Products = () => {
         }}
         component={ProductList} />
       
-      <Stack.Screen name="ProductDetails" component={ProductDetails} />
+      <Stack.Screen name="ProductDetails"
+       options={{
+        title: 'ProductDetails',
+        headerShown: false // Hide the header for this screen
+      }}  component={ProductDetails} />
     </Stack.Navigator>
   );
 };
