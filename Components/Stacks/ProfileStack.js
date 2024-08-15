@@ -18,7 +18,9 @@ const ProfileStack = () => {
         }}
         component={Profile}
       />
-      <Stack.Screen name="ShowOrders" component={ShowOrders} />
+      <Stack.Screen name="ShowOrders"
+        component={ShowOrders} />
+      
       <Stack.Screen
         name="SignInUser"
         options={{

@@ -84,6 +84,16 @@ function AppNavigator() {
       <Tab.Screen 
         name="Products" 
         component={Products} 
+        options={({ route }) => {
+          const routeName = getFocusedRouteNameFromRoute(route) ?? 'ProductList';
+          return {
+            tabBarStyle: {
+              // Set height to a default value or adjust as needed
+              height: routeName === 'ProductDetails' ? 0 : 60, 
+              // Keep other style properties consistent to prevent shrinking
+            },
+          };
+        }} 
       />
       <Tab.Screen 
         name="Cart" 
