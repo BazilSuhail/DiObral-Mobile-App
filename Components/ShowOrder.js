@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { View, Text, ScrollView, ActivityIndicator ,TouchableOpacity} from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { View, Text, ScrollView, ActivityIndicator ,TouchableOpacity} from 'react-native'; 
 import Ionicons from '@expo/vector-icons/Ionicons';
-
+import REACT_APP_API_BASE_URL from '../Config/Config';
 import { useNavigation } from '@react-navigation/native';
 
 const ShowOrders = () => {
@@ -12,8 +11,7 @@ const ShowOrders = () => {
     const [orders, setOrders] = useState([]);
     const [userId, setUserId] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [fetchingOrders, setFetchingOrders] = useState(false);
-    const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
+    const [fetchingOrders, setFetchingOrders] = useState(false); 
 
     // Function to decode JWT token
     const parseJwt = (token) => {

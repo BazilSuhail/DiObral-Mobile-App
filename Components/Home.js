@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { View, Text, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import REACT_APP_API_BASE_URL from '../Config/Config';
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const navigation = useNavigation();
-  const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
+  const navigation = useNavigation(); 
 
   useEffect(() => {
     const fetchProducts = async () => {

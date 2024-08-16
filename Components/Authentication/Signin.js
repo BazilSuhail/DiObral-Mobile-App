@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons'; // For general icons
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; // For Facebook, Twitter, LinkedIn, Google icons
 
 import { TouchableOpacity } from 'react-native';
+import REACT_APP_API_BASE_URL from '../../Config/Config';
 
 const SignIn = () => {
     const [email, setEmail] = useState('');
@@ -16,8 +17,7 @@ const SignIn = () => {
     const [error, setError] = useState('');
 
     const navigation = useNavigation();
-    const dispatch = useDispatch();
-    const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
+    const dispatch = useDispatch(); 
 
     const fetchUserCart = async (userId) => {
         try {

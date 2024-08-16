@@ -7,13 +7,7 @@ import { useDispatch } from 'react-redux';
 import { clearCart } from '../../redux/cartSlice';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-
-const ProfileDetail = ({ label, value }) => (
-    <View className="bg-white rounded-lg shadow-md p-4 mb-4">
-        <Text className="text-gray-600 text-sm">{label}</Text>
-        <Text className="text-gray-800 text-lg font-semibold">{value}</Text>
-    </View>
-);
+import REACT_APP_API_BASE_URL from '../../Config/Config';
 
 const Profile = () => {
     const [user, setUser] = useState(null);
@@ -30,8 +24,7 @@ const Profile = () => {
         contact: ''
     });
     const [isEditing, setIsEditing] = useState(false);
-
-    const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
+ 
     const navigation = useNavigation();
     const dispatch = useDispatch(); // Use useDispatch to dispatch actions
 

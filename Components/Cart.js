@@ -6,8 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Entypo from '@expo/vector-icons/Entypo';
 import { View, Text, Image, FlatList, Alert, TouchableOpacity } from 'react-native';
-
 import REACT_APP_API_BASE_URL from '../Config/Config';
+
 const CartItem = ({ id, size, quantity, onIncrease, onDecrease, onRemove }) => {
   const [product, setProduct] = useState(null); 
 

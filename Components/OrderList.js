@@ -6,6 +6,7 @@ import { clearCart } from '../redux/cartSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, ScrollView, TouchableOpacity, Alert, Modal } from 'react-native';
 import { FontAwesome, Feather } from '@expo/vector-icons'; // Importing the necessary vector icons from Expo
+import REACT_APP_API_BASE_URL from '../Config/Config';
 
 const CustomModal = ({ isOpen, onClose, onConfirm }) => {
     if (!isOpen) return null;
@@ -53,8 +54,7 @@ const OrderList = () => {
     const navigation = useNavigation();
     const [products, setProducts] = useState([]);
     const [userId, setUserId] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
+    const [isModalOpen, setIsModalOpen] = useState(false); 
 
     const parseJwt = (token) => {
         console.log(token);

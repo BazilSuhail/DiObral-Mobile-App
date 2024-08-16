@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 
 import Icon from 'react-native-vector-icons/Ionicons'; // For general icons
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; // For Facebook, Twitter, LinkedIn, Google icons
-
+import REACT_APP_API_BASE_URL from '../../Config/Config'; 
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -16,8 +16,7 @@ const Register = () => {
     const [success, setSuccess] = useState('');
 
     const navigation = useNavigation();
-    const dispatch = useDispatch();
-    const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
+    const dispatch = useDispatch(); 
 
     const handleSubmit = async () => {
         if (password !== confirmPassword) {
