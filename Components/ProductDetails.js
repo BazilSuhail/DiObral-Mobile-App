@@ -9,6 +9,8 @@ import { SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import ReviewsList from './ReviewList';
 import ProductReview from './ProductReview';
+import REACT_APP_API_BASE_URL from '../Config/Config';
+import { FontAwesome } from '@expo/vector-icons';
 
 const MediaCarousel = ({ mainImage, otherImages, onImageChange, navigation }) => {
   const [activeMedia, setActiveMedia] = useState(mainImage);
@@ -50,23 +52,26 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
   const [activeImage, setActiveImage] = useState(null);
+  const [averageRating, setAverageRating] = useState(null);
+  const [isReviewsOpen, setIsReviewsOpen] = useState(false); // State to track if the reviews list is open
   const dispatch = useDispatch();
+
   const navigation = useNavigation();
 
-  const bottomSheetRef = useRef(null);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-  const handleOpenSheet = () => {
-    setIsSheetOpen(true);
-    bottomSheetRef.current?.expand();
-  };
+  useEffect(() => {
+    const fetchAverageRating = async () => {
+      try {
+        const response = await axios.get(`${REACT_APP_API_BASE_URL}/product-reviews/reviews/average/${id}`);
+        setAverageRating(response.data.averageRating);
+      } catch (error) {
+        console.error('Error fetching Product Reviews:', error);
+      }
+    };
 
-  const handleCloseSheet = () => {
-    setIsSheetOpen(false);
-    bottomSheetRef.current?.close();
-  };
+    fetchAverageRating();
+  }, [id]);
 
-  const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -171,50 +176,84 @@ const ProductDetails = () => {
         <View className="p-3 bg-white rounded-xl mt-[15px]">
           <Text className="text-lg text-gray-700 font-bold mb-2">Product Description:</Text>
           <Text>{product.description}</Text>
-        </View> 
-        <TouchableOpacity
-            onPress={handleOpenSheet}
-            className="px-4 py-4 bg-blue-500 rounded-lg"
-          >
-            <Text className="text-white text-lg">Open Reviews</Text>
-          </TouchableOpacity>
-          <ProductReview productId={id} />
+        </View>
 
-          {/* Bottom Sheet */}
-          <BottomSheet ref={bottomSheetRef}
-            index={-1} // Start in a closed state
-            snapPoints={['25%', '50%', '75%']}
-            onClose={handleCloseSheet}
-          >
-            {isSheetOpen && ( 
-                <ReviewsList onClose={handleCloseSheet} productId={id} /> 
-            )}
-          </BottomSheet>
+        <View className="bg-white flex-row justify-between items-center rounded-lg mt-[15px] py-3 px-2">
+          <View className="flex-row items-end">
+            <Text className="text-red-800 text-[17px] font-medium mr-[8px]">{parseFloat(averageRating)}</Text>
+            {Array.from({ length: 5 }, (_, index) => {
+              const fullStarThreshold = index + 1;
+              const starFillPercentage = Math.min(1, Math.max(0, averageRating - index));
+
+              return (
+                <View key={index} style={{ position: 'relative', width: 22, height: 22 }}>
+                  {/* Background star (gray) */}
+                  <FontAwesome
+                    name="star"
+                    size={22}
+                    color="#D3D3D3"
+                    style={{ position: 'absolute', top: 0, left: 0 }}
+                  />
+                  {/* Foreground star (gold) with clipping for partial filling */}
+                  <FontAwesome
+                    name="star"
+                    size={22}
+                    color="#FFD700"
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: `${starFillPercentage * 100}%`,
+                      overflow: 'hidden',
+                    }}
+                  />
+                </View>
+              );
+            })} 
+          </View>
+
+          <View>
+            <TouchableOpacity
+              onPress={() => setIsReviewsOpen(true)}
+              className="px-3 py-1 bg-red-800 rounded-lg"
+            >
+              <Text className="text-white text-[16px]"><FontAwesome name="comments" size={18} color="white" /> Reviews</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+
+
+        <ProductReview productId={id} />
+
+        {isReviewsOpen && (
+          <ReviewsList productId={id} onClose={() => setIsReviewsOpen(false)} />
+        )}
 
         <View className="h-[28px]"></View>
       </ScrollView>
 
       {/* Fixed View at the bottom */}
-      <View className="h-[60px] bottom-0 right-0 left-0 absolute rounded-md bg-white mx-[10px]">
-        <View className="flex-row items-center h-full justify-between px-4">
+      {!isReviewsOpen && (
 
-          <View className="flex-row items-center">
-            <TouchableOpacity onPress={handleDecreaseQuantity} className="bg-red-700 w-[32px] flex justify-center items-center h-[32px] rounded-full">
-              <Text className="text-[28px] mt-[-8px] text-white">-</Text>
+        <View className="h-[60px] bottom-0 right-0 left-0 absolute rounded-md bg-white mx-[10px]">
+          <View className="flex-row items-center h-full justify-between px-4">
+            <View className="flex-row items-center">
+              <TouchableOpacity onPress={handleDecreaseQuantity} className="bg-red-700 w-[32px] flex justify-center items-center h-[32px] rounded-full">
+                <Text className="text-[28px] mt-[-8px] text-white">-</Text>
+              </TouchableOpacity>
+              <Text className="mx-[8px] px-[15px] bg-gray-200 py-[6px] rounded-lg text-lg font-bold">{quantity}</Text>
+              <TouchableOpacity onPress={handleIncreaseQuantity} className="bg-red-700 w-[32px] flex justify-center items-center h-[32px] rounded-full">
+                <Text className="text-[20px] mt-[-2px] text-white">+</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity onPress={handleAddToCart} className="bg-red-500 px-[20px] py-[6px] rounded-lg">
+              <Text className="text-center text-white text-lg font-bold">Add to Cart</Text>
             </TouchableOpacity>
-            <Text className="mx-[8px] px-[15px] bg-gray-200 py-[6px] rounded-lg text-lg font-bold">{quantity}</Text>
-            <TouchableOpacity onPress={handleIncreaseQuantity} className="bg-red-700 w-[32px] flex justify-center items-center h-[32px] rounded-full">
-              <Text className="text-[20px] mt-[-2px] text-white">+</Text>
-            </TouchableOpacity>
+
           </View>
-
-          <TouchableOpacity onPress={handleAddToCart} className="bg-red-500 px-[20px] py-[6px] rounded-lg">
-            <Text className="text-center text-white text-lg font-bold">Add to Cart</Text>
-          </TouchableOpacity>
-
         </View>
-
-      </View>
+      )}
     </SafeAreaView>
   );
 };

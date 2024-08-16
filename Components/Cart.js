@@ -7,9 +7,9 @@ import axios from 'axios';
 import Entypo from '@expo/vector-icons/Entypo';
 import { View, Text, Image, FlatList, Alert, TouchableOpacity } from 'react-native';
 
+import REACT_APP_API_BASE_URL from '../Config/Config';
 const CartItem = ({ id, size, quantity, onIncrease, onDecrease, onRemove }) => {
-  const [product, setProduct] = useState(null);
-  const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
+  const [product, setProduct] = useState(null); 
 
   useEffect(() => {
     const fetchProduct = async () => {

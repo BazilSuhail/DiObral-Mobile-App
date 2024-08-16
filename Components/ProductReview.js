@@ -71,9 +71,7 @@ const ProductReview = ({ productId }) => {
     return (
         <View className="bg-white rounded-lg mt-[15px] p-4">
             <Text className="text-[20px] text-red-800 font-bold mb-2">Submit Your Review</Text>
-            {error ? <Text className="text-red-500 mb-4">{error}</Text> : null}
-            {success ? <Text className="text-green-500 mb-4">{success}</Text> : null}
-
+         
             <View className="flex-row items-center mb-4">
                 <Text className="text-[15px] mb-[2px] text-red-400 mr-[8px] font-medium underline">Rating:</Text>
                 <View className="flex-row">
@@ -97,8 +95,8 @@ const ProductReview = ({ productId }) => {
                 className="px-3 border-2 border-gray-300 w-full py-[35px] pt-[8px] text-[16px] mb-[15px] font-medium rounded-md"
             />
 
-            <TouchableOpacity onPress={handleSubmit} className="px-4 py-2 bg-blue-500 rounded-md">
-                <Text className="text-white text-center text-lg">Submit Review</Text>
+            <TouchableOpacity onPress={handleSubmit} className="w-[130px] py-1 bg-red-900 rounded-md">
+                <Text className="text-white text-center text-[16px]">Submit Review</Text>
             </TouchableOpacity>
         </View>
     );
