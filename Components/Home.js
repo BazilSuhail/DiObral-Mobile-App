@@ -10,6 +10,14 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const categories = [
+    { name: "Sports Wear", icon: "soccer-ball-o" },
+    { name: "Active Wear", icon: "heartbeat" },
+    { name: "Street Wear", icon: "street-view" },
+    { name: "Fitness Wear", icon: "bicycle" },
+    { name: "Gym Wear", icon: "futbol-o" },
+  ];
+
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -34,8 +42,8 @@ const Home = () => {
     navigation.navigate('ProductDetail', { productId });
   };
 
-  const renderProductRow = (rowProducts) => (
-    <View className="flex-row justify-between">
+  const renderProductRow = (rowProducts, index) => (
+    <View key={`row-${index}`} className="flex-row justify-between">
       {rowProducts.map((item) => {
         const discountedPrice = item.sale
           ? (item.price - (item.price * item.sale) / 100).toFixed(2)
@@ -45,24 +53,26 @@ const Home = () => {
           <TouchableOpacity
             key={item._id}
             onPress={() => handlePress(item._id)}
-            className="p-2 w-[48%] bg-white rounded-lg m-1 shadow-md"
+            className="p-2 w-[48%] bg-gray-100 rounded-lg m-1 shadow-md"
           >
             <Image
               source={{ uri: `${REACT_APP_API_BASE_URL}/uploads/${item.image}` }}
               className="w-full h-[210px] object-cover rounded-lg mb-2"
             />
-            <View className="p-2">
+            <View className="px-2">
               <Text className="text-md font-medium text-red-900">
                 {item.name.length > 22 ? `${item.name.substring(0, 15)}...` : item.name}
               </Text>
-              {item.sale && (
-                <Text className="text-red-500 line-through text-sm my-2">
-                  Rs.{item.price.toFixed(2)}
+              <View className="flex-row justify-between">
+                {item.sale && (
+                  <Text className="text-red-500 line-through text-[12px] my-2">
+                    Rs.{parseInt(item.price)}
+                  </Text>
+                )}
+                <Text className="text-xl font-medium">
+                  <Text className="text-lg font-normal">Rs.</Text>{parseInt(discountedPrice)}
                 </Text>
-              )}
-              <Text className="text-xl font-medium">
-                <Text className="text-lg font-normal">Rs.</Text>{parseInt(discountedPrice)}
-              </Text>
+              </View>
             </View>
           </TouchableOpacity>
         );
@@ -72,12 +82,13 @@ const Home = () => {
 
   const rows = [];
   for (let i = 0; i < products.length; i += 2) {
-    rows.push(renderProductRow(products.slice(i, i + 2)));
+    rows.push(renderProductRow(products.slice(i, i + 2), i));
   }
 
+
   return (
-    <SafeAreaView className="flex-1 pt-[48px] px-3">
-      <ScrollView>
+    <SafeAreaView className="flex-1 pt-[48px] px-3" >
+      <ScrollView showsVerticalScrollIndicator={false}>
 
         <View className="flex-row justify-between items-center  shadow-md">
           {/* Settings Icon */}
@@ -101,14 +112,47 @@ const Home = () => {
           <Text className="font-medium text-search-color ml-[8px] text-[16px]">Search the Entire Catalog</Text>
         </View>
 
-        <View className="bg-gray-900 mt-[15px] flex-row  items-center py-3 rounded-lg ">
-          <FontAwesome name="search" size={19} color="#474747" />
-          <Text className="font-medium text-gray-100 ml-[8px] text-[16px]">Delivery is</Text>
-          <Text className="text-gray-700 bg-white rounded-[5px] px-1 font-bold ml-[8px] text-[16px]">50%</Text>
-          <Text className="font-medium text-gray-100 ml-[8px] text-[16px]">Cheaper</Text>
+        <View className="bg-gray-500 mt-[15px] flex-row  items-center py-3 rounded-lg ">
+          <Text className="font-medium text-gray-100 ml-[15px] text-[15px]">Delivery is</Text>
+          <Text className="text-gray-700 bg-white rounded-[5px] px-1 font-bold ml-[8px] text-[14px]">50%</Text>
+          <Text className="font-medium text-gray-100 ml-[8px] text-[15px]">Cheaper</Text>
         </View>
 
-        <View className="flex-1 pt-[45px] ">
+
+        <View className="bg-white mt-[15px] py-3">
+          <View className=" flex-row  px-4 justify-between items-center rounded-lg ">
+            <Text className="font-bold text-gray-700  text-[20px]">Trending Categories</Text>
+            <Text className="font-medium text-search-color  text-[16px]">See All</Text>
+          </View>
+
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View className="flex flex-row mt-[15px]  px-2 flex-wrap gap-x-4">
+              {categories.map((category) => (
+                <TouchableOpacity
+                  key={category.name}
+                  onPress={() => handleCategoryClick(category.name)}
+                >
+                  <View className="mt-[10px] items-center">
+                    <View className="w-[65px] h-[65px] rounded-full bg-gray-300 flex justify-center items-center">
+                      <FontAwesome
+                        name={category.icon}
+                        size={32}
+                        color="black"
+                      />
+                    </View>
+                    <Text className="font-bold text-gray-600 mt-[7px]">{category.name}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
+        </View>
+
+        <View className="bg-white mt-[15px] py-3">
+          <View className=" flex-row  px-4 justify-between items-center rounded-lg ">
+            <Text className="font-extrabold first-line:text-gray-700  text-[20px]">FLASH SALE</Text>
+            <Text className="font-medium text-search-color  text-[16px]">See All</Text>
+          </View>
           <ScrollView
             contentContainerStyle={{ paddingHorizontal: 8, paddingVertical: 20 }}
             showsVerticalScrollIndicator={false}
@@ -116,6 +160,10 @@ const Home = () => {
             {rows}
           </ScrollView>
         </View>
+
+
+
+
       </ScrollView>
     </SafeAreaView>
   );
