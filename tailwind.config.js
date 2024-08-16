@@ -6,6 +6,7 @@ module.exports = {
       colors: {
         'custom-gray':'#FFF7FF', 
         'truck-completed':'#706902', 
+        'search-color':'#474747', 
       },
 
     },
