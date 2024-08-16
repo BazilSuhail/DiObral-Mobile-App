@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect,useRef, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import BottomSheet from '@gorhom/bottom-sheet';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/cartSlice';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
@@ -49,6 +50,20 @@ const ProductDetails = () => {
   const [activeImage, setActiveImage] = useState(null);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  const bottomSheetRef = useRef(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const handleOpenSheet = () => {
+    setIsSheetOpen(true);
+    bottomSheetRef.current?.expand();
+  };
+
+  const handleCloseSheet = () => {
+    setIsSheetOpen(false);
+    bottomSheetRef.current?.close();
+  };
+
   const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
 
   useEffect(() => {
@@ -155,7 +170,30 @@ const ProductDetails = () => {
           <Text className="text-lg text-gray-700 font-bold mb-2">Product Description:</Text>
           <Text>{product.description}</Text>
         </View>
+        <View className="flex-1 justify-center items-center">
+      {/* Button to Open Bottom Sheet */}
+      <TouchableOpacity
+        onPress={handleOpenSheet}
+        className="px-4 py-4 bg-blue-500 rounded-lg"
+      >
+        <Text className="text-white text-lg">Open Reviews</Text>
+      </TouchableOpacity>
 
+      {/* Bottom Sheet */}
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1} // Start in a closed state
+        snapPoints={['25%', '50%', '90%']}
+        onClose={handleCloseSheet}
+      >
+        {isSheetOpen && (
+          <ScrollView className="p-4">
+            <ReviewsList productId={productId} />
+          </ScrollView>
+        )}
+      </BottomSheet>
+        </View>
+        <View className="h-[65px]"></View>
       </ScrollView>
 
       {/* Fixed View at the bottom */}
