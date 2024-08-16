@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
+import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import REACT_APP_API_BASE_URL from '../Config/Config';
-const ReviewsList = ({ productId }) => {
+
+const ReviewsList = ({ productId, onClose }) => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -39,7 +41,12 @@ const ReviewsList = ({ productId }) => {
   const displayedReviews = reviews.slice(0, visibleCount);
 
   return (
-    <ScrollView className="p-4">
+    <BottomSheetScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
+      {/* Close Button */}
+      <TouchableOpacity onPress={onClose} className="bg-red-800 py-2 px-4 rounded-md mb-4">
+        <Text className="text-white text-center text-lg font-semibold">Close</Text>
+      </TouchableOpacity>
+
       {reviews.length === 0 ? (
         <Text className="text-center">No reviews made till now. Make a review NOW!!!</Text>
       ) : (
@@ -77,7 +84,7 @@ const ReviewsList = ({ productId }) => {
           <Text className="text-white text-center text-lg font-semibold">Show More</Text>
         </TouchableOpacity>
       )}
-    </ScrollView>
+    </BottomSheetScrollView>
   );
 };
 
