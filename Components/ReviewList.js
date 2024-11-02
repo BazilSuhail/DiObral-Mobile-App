@@ -47,12 +47,11 @@ const ReviewsList = ({ productId, onClose }) => {
       ref={bottomSheetRef}
       snapPoints={['25%', '40%', '70%']}
       onClose={handleCloseSheet}
-      index={0} // Start in an open state
+      index={0} 
     >
-      <BottomSheetScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
-        {/* Close Button and Review Count */}
+      <BottomSheetScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}> 
         <View className="flex-row px-3 justify-between items-center">
-        <Text className="text-[22px] text-red-600 font-bold">{reviewCount} <Text className="text-[15px] text-red-400">{reviewCount === 1 ? 'Review' : 'Reviews'}</Text></Text>
+          <Text className="text-[22px] text-red-600 font-bold">{reviewCount} <Text className="text-[15px] text-red-400">{reviewCount === 1 ? 'Review' : 'Reviews'}</Text></Text>
           <TouchableOpacity onPress={handleCloseSheet}>
             <Entypo name="cross" size={24} color="red" />
           </TouchableOpacity>

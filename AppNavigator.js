@@ -71,8 +71,7 @@ function AppNavigator() {
         },
         tabBarStyle: {
           backgroundColor: colors.background, // Use theme colors
-          height: 60,
-          // Avoid height adjustment or transformations affecting icon sizing
+          height: 60, 
         },
         headerShown: false,
       })}
@@ -87,10 +86,8 @@ function AppNavigator() {
         options={({ route }) => {
           const routeName = getFocusedRouteNameFromRoute(route) ?? 'ProductList';
           return {
-            tabBarStyle: {
-              // Set height to a default value or adjust as needed
-              height: routeName === 'ProductDetails' ? 0 : 60, 
-              // Keep other style properties consistent to prevent shrinking
+            tabBarStyle: { 
+              height: routeName === 'ProductDetails' ? 0 : 60,  
             },
           };
         }} 
@@ -105,10 +102,8 @@ function AppNavigator() {
         options={({ route }) => {
           const routeName = getFocusedRouteNameFromRoute(route) ?? 'ProfileofUser';
           return {
-            tabBarStyle: {
-              // Set height to a default value or adjust as needed
-              height: routeName === 'SignInUser' ? 0 : 60, 
-              // Keep other style properties consistent to prevent shrinking
+            tabBarStyle: { 
+              height: routeName === 'SignInUser' ? 0 : 60,  
             },
           };
         }} 

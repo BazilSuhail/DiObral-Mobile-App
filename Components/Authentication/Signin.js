@@ -79,10 +79,8 @@ const SignIn = () => {
     };
 
     return (
-        <View className="relative flex items-center bg-red-100 justify-center pt-[48px] flex-1">
-            {/* Wavy Background */}
-            <View className="absolute h-screen w-screen">
-                {/* Top Right Circles */}
+        <View className="relative flex items-center bg-red-100 justify-center pt-[48px] flex-1"> 
+            <View className="absolute h-screen w-screen"> 
                 <View className="h-[850px] mt-[-580px] mr-[-65px] w-[850px] rounded-full bg-red-700  absolute top-0 right-0"></View>
                 <View className="h-[700px] mt-[-610px] mr-[-110px] w-[700px] rounded-full bg-red-900 absolute top-0 right-0"></View>
 

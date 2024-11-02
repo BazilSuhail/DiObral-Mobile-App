@@ -80,7 +80,7 @@ const ProductReview = ({ productId }) => {
                             <FontAwesome
                                 name="star"
                                 size={23}
-                                color={index < rating ? '#FFD700' : '#D3D3D3'} // Dynamically assign color
+                                color={index < rating ? '#FFD700' : '#D3D3D3'}
                             />
                         </TouchableOpacity>
                     ))}

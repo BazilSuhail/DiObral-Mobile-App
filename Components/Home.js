@@ -39,7 +39,7 @@ const Home = () => {
   if (error) return <Text>Error: {error}</Text>;
 
   const handlePress = (productId) => {
-    navigation.navigate('ProductDetail', { productId });
+    navigation.navigate('ProductDetails', { productId });
   };
 
   const renderProductRow = (rowProducts, index) => (
@@ -64,13 +64,16 @@ const Home = () => {
                 {item.name.length > 22 ? `${item.name.substring(0, 15)}...` : item.name}
               </Text>
               <View className="flex-row justify-between">
-                {item.sale && (
-                  <Text className="text-red-500 line-through text-[12px] my-2">
-                    Rs.{parseInt(item.price)}
-                  </Text>
-                )}
+                <Text>
+                  {item.sale && (
+                    <Text className="text-red-500 line-through text-[12px] my-2">
+                      Rs. {parseInt(item.price)}
+                    </Text>
+                  )}
+                </Text>
+
                 <Text className="text-xl font-medium">
-                  <Text className="text-lg font-normal">Rs.</Text>{parseInt(discountedPrice)}
+                  Rs. {parseInt(discountedPrice)}
                 </Text>
               </View>
             </View>
@@ -79,6 +82,7 @@ const Home = () => {
       })}
     </View>
   );
+
 
   const rows = [];
   for (let i = 0; i < products.length; i += 2) {
@@ -91,12 +95,10 @@ const Home = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
 
         <View className="flex-row justify-between items-center  shadow-md">
-          {/* Settings Icon */}
           <TouchableOpacity className="bg-red-900 rounded-full h-[40px] w-[40px] flex justify-center items-center">
             <FontAwesome name="cog" size={23} color="white" />
           </TouchableOpacity>
 
-          {/* Address Text */}
           <View className="flex justify-center">
             <Text className="text-center text-[13px] text-gray-500 font-bold">Main Office</Text>
             <Text className="text-center text-[16px] font-medium">12th Street, Reiman Road</Text>
@@ -112,27 +114,27 @@ const Home = () => {
           <Text className="font-medium text-search-color ml-[8px] text-[16px]">Search the Entire Catalog</Text>
         </View>
 
-        <View className="bg-gray-500 mt-[15px] flex-row  items-center py-3 rounded-lg ">
+        <View className="bg-gray-500 mt-[15px] py-[25px] flex-row  items-center rounded-lg ">
           <Text className="font-medium text-gray-100 ml-[15px] text-[15px]">Delivery is</Text>
           <Text className="text-gray-700 bg-white rounded-[5px] px-1 font-bold ml-[8px] text-[14px]">50%</Text>
           <Text className="font-medium text-gray-100 ml-[8px] text-[15px]">Cheaper</Text>
         </View>
 
 
-        <View className="bg-white mt-[15px] py-3">
+        <View className="bg-white rounded-lg mt-[15px] py-3">
           <View className=" flex-row  px-4 justify-between items-center rounded-lg ">
             <Text className="font-bold text-gray-700  text-[20px]">Trending Categories</Text>
             <Text className="font-medium text-search-color  text-[16px]">See All</Text>
           </View>
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View className="flex flex-row mt-[15px]  px-2 flex-wrap gap-x-4">
+            <View className="flex flex-row mt-[15px]  px-2 flex-wrap gap-x-[4px]">
               {categories.map((category) => (
                 <TouchableOpacity
                   key={category.name}
                   onPress={() => handleCategoryClick(category.name)}
                 >
-                  <View className="mt-[10px] items-center">
+                  <View className="mt-[10px] scale-[0.8] items-center">
                     <View className="w-[65px] h-[65px] rounded-full bg-gray-300 flex justify-center items-center">
                       <FontAwesome
                         name={category.icon}
@@ -149,19 +151,21 @@ const Home = () => {
         </View>
 
         <View className="bg-white mt-[15px] py-3">
-          <View className=" flex-row  px-4 justify-between items-center rounded-lg ">
-            <Text className="font-extrabold first-line:text-gray-700  text-[20px]">FLASH SALE</Text>
-            <Text className="font-medium text-search-color  text-[16px]">See All</Text>
+          <View className="flex-row px-4 justify-between items-center rounded-lg">
+            <Text className="font-extrabold text-gray-700 text-[20px]">FLASH SALE</Text>
+            <Text className="font-medium text-search-color text-[16px]">See All</Text>
           </View>
           <ScrollView
             contentContainerStyle={{ paddingHorizontal: 8, paddingVertical: 20 }}
             showsVerticalScrollIndicator={false}
           >
-            {rows}
+            {rows.map((row, index) => (
+              <View key={index}>
+                {row}
+              </View>
+            ))}
           </ScrollView>
         </View>
-
-
 
 
       </ScrollView>

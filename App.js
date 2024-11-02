@@ -5,9 +5,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Provider } from 'react-redux';
 import store from './redux/store';
-import AppNavigator from './AppNavigator';   
+import AppNavigator from './AppNavigator';
 
-const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
+const REACT_APP_API_BASE_URL = "https://ecommerce-backend-jbt7.onrender.com";
 
 const parseJwt = (token) => {
   try {
@@ -32,7 +32,6 @@ const App = () => {
           const decodedToken = parseJwt(token);
 
           if (decodedToken && decodedToken.userId) {
-            // Validate if the user exists in the profile collection
             try {
               const response = await axios.get(`${REACT_APP_API_BASE_URL}/auth/profile`, {
                 headers: { 'Authorization': `Bearer ${token}` }
@@ -64,7 +63,6 @@ const App = () => {
   }, []);
 
   if (isAuthenticated === null) {
-    // Show a loading indicator while checking authentication
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" color="#0000ff" />
@@ -75,7 +73,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
-      <AppNavigator /> 
+        <AppNavigator />
       </NavigationContainer>
     </Provider>
   );

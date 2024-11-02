@@ -183,18 +183,16 @@ const ProductDetails = () => {
             <Text className="text-red-800 text-[17px] font-medium mr-[8px]">{parseFloat(averageRating)}</Text>
             {Array.from({ length: 5 }, (_, index) => {
               const fullStarThreshold = index + 1;
-              const starFillPercentage = Math.min(1, Math.max(0, averageRating - index));
+              const starFillPercentage = Math.min(1, Math.max(0, averageRating - index)); 
 
               return (
-                <View key={index} style={{ position: 'relative', width: 22, height: 22 }}>
-                  {/* Background star (gray) */}
+                <View key={index} style={{ position: 'relative', width: 22, height: 22 }}> 
                   <FontAwesome
                     name="star"
                     size={22}
                     color="#D3D3D3"
                     style={{ position: 'absolute', top: 0, left: 0 }}
-                  />
-                  {/* Foreground star (gold) with clipping for partial filling */}
+                  /> 
                   <FontAwesome
                     name="star"
                     size={22}

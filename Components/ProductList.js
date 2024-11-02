@@ -13,7 +13,7 @@ const ProductList = () => {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [selectedSubcategory, setSelectedSubcategory] = useState('All');
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null); 
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -102,11 +102,9 @@ const ProductList = () => {
                         {item.name.length > 22 ? `${item.name.substring(0, 32)}...` : item.name}
                     </Text>
                     <View className="flex-row justify-between">
-                        {item.sale && (
-                            <Text className="text-red-500 line-through text-[12px] my-2">
-                                Rs.{parseInt(item.price)}
-                            </Text>
-                        )}
+                        <Text>
+                            { item.sale ? <Text className="text-red-500 line-through text-[12px] my-2">Rs.{parseInt(item.price)}</Text> :  <></> }
+                        </Text>
                         <Text className="text-xl font-medium">
                             <Text className="text-lg font-normal">Rs.</Text>{parseInt(discountedPrice)}
                         </Text>
@@ -119,8 +117,8 @@ const ProductList = () => {
     return (
         <SafeAreaView className="flex-1 bg-gray-200">
             <View className="flex pt-[48px]">
-            <Text className="text-2xl ml-2 text-red-700 font-bold ">Catalog</Text>
-            <View className="bg-gray-400 mx-auto w-[95%] mt-2 h-[3px]"></View>
+                <Text className="text-2xl ml-2 text-red-700 font-bold ">Catalog</Text>
+                <View className="bg-gray-400 mx-auto w-[95%] mt-2 h-[3px]"></View>
                 {/* Category filter */}
                 <View className="px-1 mx-2 py-[15px] mt-[15px] bg-white">
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -164,20 +162,19 @@ const ProductList = () => {
                             </View>
                         </ScrollView>
                     )}
-                </View> 
+                </View>
                 {selectedCategory !== 'All' &&
                     <View className="mt-[12px] py-[3px] ml-auto mr-2 pl-auto w-[130px] rounded-xl border border-red-400 bg-red-50">
                         <Text className="text-[13px] font-medium text-center text-red-800">Filterd Results: <Text className="font-extrabold">{filteredProducts.length}</Text></Text>
                     </View>
                 }
 
-                {/* Product list */}
                 <FlatList
                     data={filteredProducts}
                     renderItem={renderProductItem}
                     keyExtractor={(item) => item._id}
                     numColumns={2}
-                    contentContainerStyle={{ paddingHorizontal: 8, paddingVertical: 10 }} // px-2 py-5
+                    contentContainerStyle={{ paddingHorizontal: 8, paddingVertical: 10 }}
                 />
             </View>
         </SafeAreaView>
