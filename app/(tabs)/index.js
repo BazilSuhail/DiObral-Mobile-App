@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, SafeAreaView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+//import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
-import REACT_APP_API_BASE_URL from '../Config/Config';
+import config from '../Config/Config';
+import { useRouter } from 'expo-router';
 
 const Home = () => {
+  const router = useRouter();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,12 +20,12 @@ const Home = () => {
     { name: "Gym Wear", icon: "futbol-o" },
   ];
 
-  const navigation = useNavigation();
+  //const navigation = useNavigation();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${REACT_APP_API_BASE_URL}/homeproducts`);
+        const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/homeproducts`);
         setProducts(response.data);
       } catch (err) {
         setError(err.message);
@@ -38,8 +40,9 @@ const Home = () => {
   if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
   if (error) return <Text>Error: {error}</Text>;
 
-  const handlePress = (productId) => {
-    navigation.navigate('ProductDetails', { productId });
+  const handlePress = (id) => {
+    //console.log(id)
+    router.push(`/ProductDetails/${id}`);
   };
 
   const renderProductRow = (rowProducts, index) => (
@@ -56,17 +59,17 @@ const Home = () => {
             className="p-2 w-[48%] bg-gray-100 rounded-lg m-1 shadow-md"
           >
             <Image
-              source={{ uri: `${REACT_APP_API_BASE_URL}/uploads/${item.image}` }}
+              source={{ uri: `${config.REACT_APP_API_BASE_URL}/uploads/${item.image}` }}
               className="w-full h-[210px] object-cover rounded-lg mb-2"
             />
             <View className="px-2">
               <Text className="text-md font-medium text-red-900">
                 {item.name.length > 22 ? `${item.name.substring(0, 15)}...` : item.name}
               </Text>
-              <View className="flex-row justify-between">
+              <View className="flex-row items-center justify-between">
                 <Text>
-                  {item.sale && (
-                    <Text className="text-red-500 line-through text-[12px] my-2">
+                  {item.sale !== 0 && (
+                    <Text className="text-red-500 line-through text-[12px]">
                       Rs. {parseInt(item.price)}
                     </Text>
                   )}

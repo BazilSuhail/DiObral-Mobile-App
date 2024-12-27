@@ -2,26 +2,28 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+//import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { setCart } from '../../redux/cartSlice';
+import { setCart } from '../redux/cartSlice';
 import Icon from 'react-native-vector-icons/Ionicons'; // For general icons
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; // For Facebook, Twitter, LinkedIn, Google icons
 
 import { TouchableOpacity } from 'react-native';
-import REACT_APP_API_BASE_URL from '../../Config/Config';
+import config from '../Config/Config';
+import { useRouter } from 'expo-router';
 
-const SignIn = () => {
+const Login = () => {
+  const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const navigation = useNavigation();
+    //const navigation = useNavigation();
     const dispatch = useDispatch(); 
 
     const fetchUserCart = async (userId) => {
         try {
-            const response = await axios.get(`${REACT_APP_API_BASE_URL}/cartState/cart/${userId}`);
+            const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/cartState/cart/${userId}`);
             //console.log('Fetch cart response:', response);
             if (response.status === 200) {
                 dispatch(setCart(response.data.items));
@@ -52,7 +54,7 @@ const SignIn = () => {
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post(`${REACT_APP_API_BASE_URL}/auth/login`, { email, password });
+            const response = await axios.post(`${config.REACT_APP_API_BASE_URL}/auth/login`, { email, password });
             if (response.data.token) {
                 await AsyncStorage.setItem('token', response.data.token);
                 //console.log(response.data.token);
@@ -66,8 +68,10 @@ const SignIn = () => {
                 if (userId) {
                     // Fetch and set the cart state
                     await fetchUserCart(userId);
-                    navigation.navigate('AppNavigator');
-                } else {
+                    //navigation.navigate('AppNavigator');
+                    router.push('/cart');
+                } 
+                else {
                     setError('Error: Unable to get user ID from token');
                 }
             } else {
@@ -142,7 +146,7 @@ const SignIn = () => {
                 <View className="mt-[15px]">
                     <Text className="text-center text-[15px] font-medium">
                         Don't have an account?{' '}
-                        <Text className="text-red-700 font-bold underline" onPress={() => navigation.navigate('Register')}>
+                        <Text className="text-red-700 font-bold underline" onPress={() => router.push(`/signup`)}>
                             Sign Up
                         </Text>
                     </Text>
@@ -152,4 +156,4 @@ const SignIn = () => {
     );
 };
 
-export default SignIn;
+export default Login;

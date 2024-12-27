@@ -1,54 +1,50 @@
-# Texleath
-#### `Texleath`, your premier destination for high-quality clothing sales, manufacturing, and export. This e-commerce platform offers a sleek and elegant design, reflecting the premium nature of our products. With a focus on user experience, our site provides a seamless and engaging shopping experience, complemented by advanced features and interactive elements.
+# Welcome to your Expo app 👋
 
-# Run Locally
+This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
- Clone the project using following command
+## Get started
+
+1. Install dependencies
+
+   ```bash
+   npm install
+   ```
+
+2. Start the app
+
+   ```bash
+    npx expo start
+   ```
+
+In the output, you'll find options to open the app in a
+
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+
+You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+
+## Get a fresh project
+
+When you're ready, run:
+
 ```bash
-  git clone https://github.com/BazilSuhail/Ecommerce-Client.git
+npm run reset-project
 ```
-Go to the project directory
-```bash
-  cd my-project
-```
-Then **Run** this command in your terminal to install all required dependancies:
-```bash
-  npm install
-```
-In the project directory, you can run:
-```bash
-  npm expo start
-``` 
-Run the app in your mobile using **Expo Client App** or using Android Studio after reading instructions from the commands listed after running the above command.
 
-## Features
+This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-### Responsive Homepage
-- **Design**: Clean and elegant layout optimized for both large and small screens.
-- **Interactive Canvas**: 2D canvas element with scroll-triggered animations for enhanced visual appeal.
-- **Framer Motion Animations**: Sophisticated animations to bring the site's content to life.
+## Learn more
 
-### Product Details Component
-- **Display Information**: Comprehensive details of products including images, descriptions, and pricing.
-- **Add to Cart**: Functionality to add items to the cart with adjustable quantities.
+To learn more about developing your project with Expo, look at the following resources:
 
-### Cart Management
-- **Add to Cart**: Add products with adjustable quantities.
-- **Cart Summary**: View cart items including product name, price, quantity, and total price.
-- **Clear Cart**: Automatically clears the cart when the user logs out.
+- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-### Order Management
-- **Order Display**: View order details such as the number of items, order date, total amount, and order ID.
-- **Order Details**: Detailed view of individual orders and their items.
+## Join the community
 
-### User Profile Management
-- **View and Edit Profile**: Allows users to view and update their profile information, including full name, email, and phone number.
+Join our community of developers creating universal apps.
 
-### Review System
-- **Submit Reviews**: Users can submit reviews for products, including rating and comments.
-- **Review Pagination**: Reviews are displayed in groups of four with a 'Load More' button to view additional reviews.
-
-
-# Live Demo
-## Check out the latest demo of Project [Texleath](https://texleath.netlify.app). 
- 
+- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
+- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.

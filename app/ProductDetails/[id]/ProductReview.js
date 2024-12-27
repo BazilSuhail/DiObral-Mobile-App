@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import REACT_APP_API_BASE_URL from '../Config/Config';
+import config from '../../Config/Config';
 
 const ProductReview = ({ productId }) => {
     const [user, setUser] = useState(null);
@@ -17,12 +17,12 @@ const ProductReview = ({ productId }) => {
             try {
                 const token = await AsyncStorage.getItem('token');
                 if (token) {
-                    const response = await axios.get(`${REACT_APP_API_BASE_URL}/auth/profile`, {
+                    const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/auth/profile`, {
                         headers: { Authorization: `Bearer ${token}` },
                     });
                     setUser(response.data);
                 }
-            } catch (error) {
+            } catch (error) { 
                 setError('Failed to fetch user details');
             }
         };
@@ -54,7 +54,8 @@ const ProductReview = ({ productId }) => {
             };
 
             const token = await AsyncStorage.getItem('token');
-            await axios.post(`${REACT_APP_API_BASE_URL}/product-reviews/reviews`, reviewData, {
+            
+            await axios.post(`${config.REACT_APP_API_BASE_URL}/product-reviews/reviews`, reviewData, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -62,14 +63,15 @@ const ProductReview = ({ productId }) => {
             setRating(1);
             setReview('');
             Alert.alert('Success', 'Review submitted successfully');
-        } catch (error) {
+        } 
+        catch (error) {
             setError('Failed to submit review');
             Alert.alert('Error', 'Failed to submit review');
         }
     };
 
     return (
-        <View className="bg-white rounded-lg mt-[15px] p-4">
+        <View className="bg-white rounded-lg my-[15px] p-4">
             <Text className="text-[20px] text-red-800 font-bold mb-2">Submit Your Review</Text>
          
             <View className="flex-row items-center mb-4">

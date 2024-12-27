@@ -1,5 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import config from '../Config/Config';
 // Function to save cart state to AsyncStorage
 const saveCartToAsyncStorage = async (cart) => {
     try {
@@ -17,6 +18,32 @@ const loadCartFromAsyncStorage = async () => {
     } catch (error) {
         console.error('Failed to load cart from AsyncStorage', error);
         return [];
+    }
+};
+
+const parseJwt = (token) => {
+    try {
+      const [header, payload, signature] = token.split('.');
+      const base64Url = payload.replace(/-/g, '+').replace(/_/g, '/');
+      const base64 = base64Url + (base64Url.length % 4 === 0 ? '' : '='.repeat(4 - (base64Url.length % 4)));
+      const decodedPayload = atob(base64);
+      return JSON.parse(decodedPayload);
+    }
+    catch (error) {
+      return null;
+    }
+  };
+
+// Function to check token validity and fetch cart 
+const fetchCart = async (token) => {
+    try {  
+        const userId = parseJwt(token);
+        console.log(userId);
+        const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/cart/${userId}`); 
+        return response.data || [];
+    }
+    catch (error) {
+        console.error('Failed to fetch cart', error); return [];
     }
 };
 
@@ -61,8 +88,13 @@ const cartSlice = createSlice({
 
 // Async thunk to initialize the cart state
 export const initializeCart = () => async (dispatch) => {
-    const cart = await loadCartFromAsyncStorage();
+    //const cart = await loadCartFromAsyncStorage();
+    const token = await AsyncStorage.getItem('token'); // Load token from AsyncStorage 
+    console.log(token);
+    const cart = await fetchCart(token);
     dispatch(setCart(cart));
+
+    //dispatch(setCart(cart));
 };
 
 export const { addToCart, removeFromCart, clearCart, updateQuantity, setCart } = cartSlice.actions;

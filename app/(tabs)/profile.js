@@ -4,12 +4,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { clearCart } from '../../redux/cartSlice';
+import { clearCart } from '../redux/cartSlice';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import REACT_APP_API_BASE_URL from '../../Config/Config';
+import config from '../Config/Config';
+import { useRouter } from 'expo-router';
 
 const Profile = () => {
+    const router = useRouter();
     const [user, setUser] = useState(null);
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
@@ -24,17 +26,18 @@ const Profile = () => {
         contact: ''
     });
     const [isEditing, setIsEditing] = useState(false);
- 
-    const navigation = useNavigation();
+
+    //const navigation = useNavigation();
     const dispatch = useDispatch(); // Use useDispatch to dispatch actions
 
     // Use useCallback to memoize the fetchProfile function
     const fetchProfile = useCallback(async () => {
         try {
             const token = await AsyncStorage.getItem('token');
+            //console.log(token);
 
             if (token) {
-                const response = await axios.get(`${REACT_APP_API_BASE_URL}/auth/profile`, {
+                const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/auth/profile`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 setUser(response.data);
@@ -47,11 +50,12 @@ const Profile = () => {
                 });
             } else {
                 //navigation.navigate('Signin');
+                setError('Failed to fetch profile');
             }
         } catch (error) {
             setError('Failed to fetch profile');
         }
-    }, [navigation]);
+    }, []);
 
     const handleChange = (name, value) => {
         setFormData(prevData => ({
@@ -73,7 +77,7 @@ const Profile = () => {
     const handleSubmit = async () => {
         try {
             const token = await AsyncStorage.getItem('token');
-            await axios.put(`${REACT_APP_API_BASE_URL}/auth/profile`, formData, {
+            await axios.put(`${config.REACT_APP_API_BASE_URL}/auth/profile`, formData, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             // Optionally refetch the profile data to reflect updates
@@ -87,16 +91,19 @@ const Profile = () => {
     const handleLogout = async () => {
         await AsyncStorage.removeItem('token');
         dispatch(clearCart()); // Clear cart on logout
-        navigation.navigate('SignInUser');
+        //navigation.navigate('SignInUser');
+        router.push(`/login`);
     };
 
     const handleNavigatetoSignIn = async () => {
-        navigation.navigate('SignInUser');
+        //navigation.navigate('SignInUser');
+        router.push('/login');
     };
 
 
     const handleSeeOrders = () => {
-        navigation.navigate('ShowOrders');
+        //navigation.navigate('ShowOrders');
+        router.push(`/signup`);
     };
 
     useEffect(() => {
@@ -115,35 +122,34 @@ const Profile = () => {
             </Text>
         </View>
     </View>;
+
     if (!user) return <Text>Loading...</Text>;
 
     return (
-        <View className="flex-1 bg-gray-200 pt-[50px] px-4">
+        <View className="flex-1 bg-gray-100 pt-[50px] px-4">
             <View className="mb-4">
-                {user.fullName !== "" &&
-                    <View className="flex-row items-center justify-between mb-3">
-                        <Text className="text-lg text-red-700 font-bold ">
-                            Welcome, <Text className="text-black text-2xl">{user.fullName}</Text>
-                        </Text>
-                        <TouchableOpacity onPress={handleLogout} className="bg-red-800 rounded-md p-[6px]">
-                            <MaterialIcons name="logout" size={22} color="white" />
-                        </TouchableOpacity>
-                    </View>
-                }
+                <View className="flex-row items-center justify-between mb-3">
+                    <Text className="text-lg text-red-700 font-bold ">
+                        Welcome, <Text className="text-black text-2xl">{user.fullName || 'Anonymous User'}</Text>
+                    </Text>
+                    <TouchableOpacity onPress={handleLogout} className="bg-red-800 rounded-md p-[6px]">
+                        <MaterialIcons name="logout" size={22} color="white" />
+                    </TouchableOpacity>
+                </View>
                 <View className="bg-gray-300 w-full mb-4 h-[3px]"></View>
                 {isEditing ? (
                     <ScrollView className="space-y-4">
                         {user.fullName === "" &&
-                            <Text className="text-lg text-red-500 mb-4">
+                            <Text className="text-[12px] text-red-500 mb-4">
                                 * Kindly Before Placing Any Orders. Remember to Fill out Details for Faster Checkout. Only Entered info will be used for Shipping.
                             </Text>
                         }
-                        <View className="bg-white px-3 py-2 rounded-l border border-gray-300">
+                        <View className="bg-white px-3 py-2 rounded-xl border border-gray-300">
                             <Text className="text-sm font-medium text-gray-700">Email</Text>
                             <TextInput
                                 value={formData.email}
                                 onChangeText={(value) => handleChange('email', value)}
-                                className="p-2 border text-[17px] border-gray-400 rounded-[18px] bg-gray-100 my-1"
+                                className="px-[12px] py-[7px] border text-[14px] border-gray-400 rounded-[25px] bg-gray-50 mt-1"
                                 keyboardType="email-address"
                                 placeholder="Enter your Email"
                             />
@@ -154,7 +160,7 @@ const Profile = () => {
                                 value={formData.fullName}
                                 onChangeText={(value) => handleChange('fullName', value)}
 
-                                className="p-2 border text-[17px] border-gray-400 rounded-[18px] bg-gray-100 my-1"
+                                className="px-[12px] py-[7px] border text-[14px] border-gray-400 rounded-[25px] bg-gray-50 mt-1"
                                 placeholder="Enter your Full Name"
                             />
                         </View>
@@ -164,7 +170,7 @@ const Profile = () => {
                                 value={formData.bio}
                                 onChangeText={(value) => handleChange('bio', value)}
 
-                                className="p-2 border text-[17px] border-gray-400 rounded-[18px] bg-gray-100 my-1"
+                                className="px-[12px] py-[7px] border text-[14px] border-gray-400 rounded-[25px] bg-gray-50 mt-1"
                                 placeholder="Enter your Bio"
                                 multiline
                             />
@@ -175,7 +181,7 @@ const Profile = () => {
                                 value={formData.address.city}
                                 onChangeText={(value) => handleAddressChange('city', value)}
 
-                                className="p-2 border text-[17px] border-gray-400 rounded-[18px] bg-gray-100 my-1"
+                                className="px-[12px] py-[7px] border text-[14px] border-gray-400 rounded-[25px] bg-gray-50 mt-1"
                                 placeholder="Enter your City"
                             />
                         </View>
@@ -185,7 +191,7 @@ const Profile = () => {
                                 value={formData.address.street}
                                 onChangeText={(value) => handleAddressChange('street', value)}
 
-                                className="p-2 border text-[17px] border-gray-400 rounded-[18px] bg-gray-100 my-1"
+                                className="px-[12px] py-[7px] border text-[14px] border-gray-400 rounded-[25px] bg-gray-50 mt-1"
                                 placeholder="Enter your Street"
                             />
                         </View>
@@ -195,7 +201,7 @@ const Profile = () => {
                                 value={formData.address.country}
                                 onChangeText={(value) => handleAddressChange('country', value)}
 
-                                className="p-2 border text-[17px] border-gray-400 rounded-[18px] bg-gray-100 my-1"
+                                className="px-[12px] py-[7px] border text-[14px] border-gray-400 rounded-[25px] bg-gray-50 mt-1"
                                 placeholder="Enter your Country"
                             />
                         </View>
@@ -232,22 +238,22 @@ const Profile = () => {
                             <View className="w-[100%] mb-[15px] flex flex-row justify-center space-x-2">
                                 <View className="w-[50%]">
                                     <Text className="text-sm text-gray-400  font-bold">Name:</Text>
-                                    <Text className="text-gray-600 font-semibold text-xl">{user.fullName}</Text>
+                                    <Text className="text-gray-600 font-semibold text-[15px]">{user.fullName}</Text>
                                 </View>
                                 <View className="w-[50%]">
                                     <Text className="text-sm text-gray-400 font-bold">Email:</Text>
-                                    <Text className="text-gray-600 font-semibold text-lg">{user.email}</Text>
+                                    <Text className="text-gray-600 font-semibold text-[14px]">{user.email}</Text>
                                 </View>
                             </View>
 
                             <View className="w-[100%] mb-[15px] flex flex-row justify-center space-x-2">
                                 <View className="w-[50%]">
                                     <Text className="text-sm text-gray-400 font-bold">Contact:</Text>
-                                    <Text className="text-gray-600 font-semibold text-xl">{user.contact}</Text>
+                                    <Text className="text-gray-600 font-semibold text-[14px]">{user.contact}</Text>
                                 </View>
                                 <View className="w-[50%]">
                                     <Text className="text-sm text-gray-400 font-bold">Country / City:</Text>
-                                    <Text className="text-gray-600 font-semibold text-lg">{user.address?.country} / {user.address?.city}</Text>
+                                    <Text className="text-gray-600 font-semibold text-[14px]">{user.address?.country} / {user.address?.city}</Text>
                                 </View>
                             </View>
                         </View>
@@ -259,8 +265,8 @@ const Profile = () => {
 
                         <View>
                             <Text className="font-medium mb-2 mt-[-25px]">Address:</Text>
-                            <View className="bg-red-200 p-2 rounded-lg">
-                                <Text className="text-lg font-semibold">{user.address?.street}</Text>
+                            <View className="bg-red-100 bprder p-2 rounded-lg">
+                                <Text className="text-[14px] font-semibold">{user.address?.street}</Text>
                             </View>
                             <Text className="text-sm mt-[8px] text-red-500">* Kindly fill the details carefully as this info will be used automatically by the system for shipping</Text>
                         </View>

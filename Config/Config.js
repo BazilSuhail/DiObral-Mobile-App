@@ -1,2 +1,0 @@
-const REACT_APP_API_BASE_URL = "https://ecommerce-backend-jbt7.onrender.com"
-export default REACT_APP_API_BASE_URL;

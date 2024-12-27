@@ -4,11 +4,11 @@ import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import Entypo from '@expo/vector-icons/Entypo';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import REACT_APP_API_BASE_URL from '../Config/Config';
+import config from '../../Config/Config';
 
 const ReviewsList = ({ productId, onClose }) => {
   const [reviews, setReviews] = useState([]);
-  const [reviewCount, setReviewCount] = useState(0); // Add state for review count
+  const [reviewCount, setReviewCount] = useState(0); // State for review count
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [visibleCount, setVisibleCount] = useState(4);
@@ -17,14 +17,16 @@ const ReviewsList = ({ productId, onClose }) => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        // Fetch reviews
-        const response = await axios.get(`${REACT_APP_API_BASE_URL}/product-reviews/reviews/${productId}`);
+        const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/product-reviews/reviews/${productId}`);
         setReviews(response.data.reviews);
-        // Fetch review count
-        const countResponse = await axios.get(`${REACT_APP_API_BASE_URL}/product-reviews/reviews/count/${productId}`);
-        setReviewCount(countResponse.data.reviewCount);
+        setReviewCount(response.data.reviews.length);
       } catch (err) {
-        setError(err.message);
+        if (err.response && err.response.status === 404) {
+          setReviews([]);
+          setReviewCount(0);
+        } else {
+          setError('An error occurred while fetching reviews.');
+        }
       } finally {
         setLoading(false);
       }
@@ -38,20 +40,22 @@ const ReviewsList = ({ productId, onClose }) => {
   };
 
   const handleCloseSheet = () => {
-    bottomSheetRef.current?.close();
-    onClose(); // Trigger the onClose callback from the parent
+    bottomSheetRef.current?.close(); // Close the sheet
+    setTimeout(() => onClose(), 200); // Delay calling onClose to avoid multiple calls
   };
 
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      snapPoints={['25%', '40%', '70%']}
+      snapPoints={['25%', '50%', '100%']} // Adjust snap points as requested
       onClose={handleCloseSheet}
       index={0} 
     >
       <BottomSheetScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}> 
         <View className="flex-row px-3 justify-between items-center">
-          <Text className="text-[22px] text-red-600 font-bold">{reviewCount} <Text className="text-[15px] text-red-400">{reviewCount === 1 ? 'Review' : 'Reviews'}</Text></Text>
+          <Text className="text-[22px] text-red-600 font-bold">
+            {reviewCount} <Text className="text-[15px] text-red-400">{reviewCount === 1 ? 'Review' : 'Reviews'}</Text>
+          </Text>
           <TouchableOpacity onPress={handleCloseSheet}>
             <Entypo name="cross" size={24} color="red" />
           </TouchableOpacity>
@@ -61,9 +65,9 @@ const ReviewsList = ({ productId, onClose }) => {
         {loading ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : error ? (
-          <Text>Error: {error}</Text>
+          <Text className="text-center">{error}</Text>
         ) : reviews.length === 0 ? (
-          <Text className="text-center">No reviews made till now. Make a review NOW!!!</Text>
+          <Text className="text-center mt-4">No reviews available.</Text>
         ) : (
           reviews.slice(0, visibleCount).map((review) => (
             <View key={review._id} className="mb-2 p-4 bg-white shadow-lg rounded-lg">

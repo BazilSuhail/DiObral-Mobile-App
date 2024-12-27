@@ -1,20 +1,21 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 import { removeFromCart, clearCart, updateQuantity } from '../redux/cartSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Entypo from '@expo/vector-icons/Entypo';
 import { View, Text, Image, FlatList, Alert, TouchableOpacity } from 'react-native';
-import REACT_APP_API_BASE_URL from '../Config/Config';
+import config from '../Config/Config';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const CartItem = ({ id, size, quantity, onIncrease, onDecrease, onRemove }) => {
-  const [product, setProduct] = useState(null); 
+  const [product, setProduct] = useState(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`${REACT_APP_API_BASE_URL}/fetchproducts/products/${id}`);
+        const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/fetchproducts/products/${id}`);
         setProduct(response.data);
       } catch (error) {
         console.error('Error fetching product:', error);
@@ -31,43 +32,36 @@ const CartItem = ({ id, size, quantity, onIncrease, onDecrease, onRemove }) => {
     : product.price.toFixed(2);
 
   return (
-    <View className="flex-row  items-center h-[160px] justify-between rounded-xl px-2">
+    <View className="flex-row items-center h-[150px] justify-between rounded-xl px-2">
       <Image
-        source={{ uri: `${REACT_APP_API_BASE_URL}/uploads/${product.image}` }}
-        style={{ width: 85, height: 110, borderRadius: 8 }}
+        source={{ uri: `${config.REACT_APP_API_BASE_URL}/uploads/${product.image}` }} 
+        className='w-[85px] h-[110px] border-2 border-gray-300 rounded-[22px]'
       />
       <View className="flex-1 mt-[10px] ml-4">
-        <View className="flex-row h-[55px] justify-between">
+        <View className="flex-row h-[35px] justify-between">
           <View className="w-[200px] h-full">
-            <Text className="text-[16px] font-bold underline">{product.name}</Text>
+            <Text className="text-[16px] font-bold underline">{product.name.slice(0,22)}{product.name.length > 25 && ' ...'}</Text>
           </View>
-          <TouchableOpacity onPress={onRemove} className="w-[22px] bg-red-800 flex justify-center items-center h-[22px] rounded-md">
-            <Entypo name="cross" size={22} color="white" />
+          <TouchableOpacity onPress={onRemove} className="w-[22px] text-red-950 flex justify-center items-center h-[22px] rounded-md">
+            <Entypo name="cross" size={22} />
           </TouchableOpacity>
         </View>
-        {/*
+
         <View className="flex-row items-center mb-2">
-          <Button title="Remove" onPress={onRemove} color="#F87171" />
-          <Text className="font-medium text-red-950 mr-2">Price:</Text> 
-          <Text className="font-bold">${discountedPrice}</Text>
-        </View>
-      */}
-        <View className="flex-row items-center mb-2">
-          <Text className="font-semibold underline text-red-950 mr-2">Selected Size:</Text>
-          <Text className="font-bold px-2 bg-gray-500 text-white rounded-md">{size}</Text>
+          <Text className="font-semibold text-red-950 mr-2">Selected Size:</Text>
+          <Text className="font-bold px-2 bg-gray-500 text-[11px] text-white rounded-md">{size}</Text>
         </View>
         <View className="flex-row items-center justify-between">
           <Text className="py-1 rounded font-bold">$ {(discountedPrice * quantity).toFixed(2)}</Text>
+          
           <View className="flex-row items-center">
-            <TouchableOpacity onPress={onDecrease} className="bg-red-700 w-[25px] flex justify-center items-center h-[25px] rounded-full">
-              <Text className="text-[28px] mt-[-8px] text-white">-</Text>
+            <TouchableOpacity onPress={onDecrease} className="bg-gray-400 w-[20px] flex justify-center items-center h-[20px] rounded-[4px]">
+              <Text className="text-[30px] mt-[-12px] text-white">-</Text>
             </TouchableOpacity>
-            <Text className="mx-2 text-lg font-bold">{quantity}</Text>
-            <TouchableOpacity onPress={onIncrease} className="bg-red-700 w-[25px] flex justify-center items-center h-[25px] rounded-full">
-              <Text className="text-[20px] mt-[-2px] text-white">+</Text>
-            </TouchableOpacity>
-            {/*<Button title="-" onPress={onDecrease} color="#F87171" />
-            <Button title="+" onPress={onIncrease} color="#F87171" /> */}
+            <Text className="mx-2 text-[16px] font-bold">{quantity}</Text>
+            <TouchableOpacity onPress={onIncrease} className="bg-gray-400 w-[20px] flex justify-center items-center h-[20px] rounded-[4px]">
+              <Text className="text-[18px] mt-[-3px] text-white">+</Text>
+            </TouchableOpacity> 
           </View>
         </View>
 
@@ -78,12 +72,11 @@ const CartItem = ({ id, size, quantity, onIncrease, onDecrease, onRemove }) => {
 };
 
 const Cart = () => {
+  const router = useRouter();
   const cart = useSelector(state => state.cart);
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
   const [userId, setUserId] = useState(null);
-  const navigation = useNavigation();
-  const REACT_APP_API_BASE_URL = "http://10.0.2.2:3001";
 
   const parseJwt = (token) => {
     try {
@@ -92,8 +85,8 @@ const Cart = () => {
       const base64 = base64Url + (base64Url.length % 4 === 0 ? '' : '='.repeat(4 - (base64Url.length % 4)));
       const decodedPayload = atob(base64);
       return JSON.parse(decodedPayload);
-    } catch (error) {
-      console.error('Error parsing JWT:', error);
+    }
+    catch (error) {
       return null;
     }
   };
@@ -116,7 +109,7 @@ const Cart = () => {
     const fetchProducts = async () => {
       try {
         const productResponses = await Promise.all(
-          cart.map(item => axios.get(`${REACT_APP_API_BASE_URL}/fetchproducts/products/${item.id}`))
+          cart.map(item => axios.get(`${config.REACT_APP_API_BASE_URL}/fetchproducts/products/${item.id}`))
         );
         setProducts(productResponses.map(response => response.data));
       } catch (error) {
@@ -147,11 +140,7 @@ const Cart = () => {
     const item = cart.find(product => product.id === id && product.size === size);
     return item ? item.quantity : 1;
   };
-
-  const navigateToOrderList = () => {
-    navigation.navigate('OrderList');
-  };
-
+ 
   const calculateTotalBill = () => {
     return cart.reduce((total, item) => {
       const product = products.find(p => p._id === item.id);
@@ -177,14 +166,13 @@ const Cart = () => {
 
   const handleSaveCart = async () => {
     try {
-      await axios.post(`${REACT_APP_API_BASE_URL}/cartState/cart/save`, { userId, items: cart });
+      await axios.post(`${config.REACT_APP_API_BASE_URL}/cartState/cart/save`, { userId, items: cart });
       Alert.alert('Cart saved successfully!');
     } catch (error) {
       console.error('Error saving cart:', error);
       Alert.alert('Failed to save cart.');
     }
   };
-
 
   return (
     <View className="flex-1 pt-[45px] bg-white">
@@ -202,14 +190,19 @@ const Cart = () => {
         ) : (
           <View className="flex">
             <View className="flex-row justify-between">
-              <TouchableOpacity onPress={handleClearCart} className="bg-red-700 flex justify-center items-center rounded-lg  py-1 px-3">
-                <Text className="text-[16px] font-medium text-white">Clear Cart</Text>
+              <TouchableOpacity onPress={handleClearCart} className="bg-red-700 flex flex-row justify-center items-center rounded-lg py-1 px-3">
+                <FontAwesome name="trash" size={14} color="white" />
+                <Text className="text-[13px] font-medium text-white ml-2">Clear Cart</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={handleSaveCart} className="bg-blue-700  flex justify-center items-center rounded-lg py-1 px-3">
-                <Text className="text-[16px] font-medium text-white">Buy Later</Text>
+
+              <TouchableOpacity onPress={handleSaveCart} className="bg-blue-700 flex flex-row justify-center items-center rounded-lg py-1 px-3">
+                <MaterialIcons name="save" size={14} color="white" />
+                <Text className="text-[13px] font-medium text-white ml-2">Buy Later</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={navigateToOrderList} className="bg-green-700  flex justify-center items-center rounded-lg py-1 px-3">
-                <Text className="text-[16px] font-medium text-white">Checkout Cart</Text>
+
+              <TouchableOpacity onPress={() => router.push('/orderlist')} className="bg-green-700 flex flex-row justify-center items-center rounded-lg py-1 px-3">
+                <Entypo name="shopping-cart" size={14} color="white" />
+                <Text className="text-[13px] py-[2px] font-medium text-white ml-2">Checkout Cart</Text>
               </TouchableOpacity>
             </View>
 
@@ -220,6 +213,7 @@ const Cart = () => {
             <View className="h-[15px]"></View>
             <FlatList
               data={cart}
+              showsVerticalScrollIndicator={false}
               renderItem={({ item }) => (
                 <CartItem
                   id={item.id}

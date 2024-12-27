@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+//import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 
 import Icon from 'react-native-vector-icons/Ionicons'; // For general icons
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; // For Facebook, Twitter, LinkedIn, Google icons
-import REACT_APP_API_BASE_URL from '../../Config/Config'; 
+import config from '../Config/Config'; 
+import { useRouter } from 'expo-router';
 
-const Register = () => {
+const SignUp = () => {
+  const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
-    const navigation = useNavigation();
+    //const navigation = useNavigation();
     const dispatch = useDispatch(); 
 
     const handleSubmit = async () => {
@@ -25,10 +27,10 @@ const Register = () => {
         }
 
         try {
-            await axios.post(`${REACT_APP_API_BASE_URL}/auth/register`, { email, password });
+            await axios.post(`${config.REACT_APP_API_BASE_URL}/auth/register`, { email, password });
             setSuccess('Registration successful! Please log in.');
             setError('');
-            setTimeout(() => navigation.goBack(), 1000); // Navigate to Login screen
+            setTimeout(() => router.push(`/login`), 1000); // Navigate to Login screen
         } catch (error) {
             setError(error.response?.data?.message || 'Registration failed');
             setSuccess('');
@@ -114,7 +116,7 @@ const Register = () => {
                 <View className="mt-[15px]">
                     <Text className="text-center text-[15px] font-medium">
                         Already have an account?{' '}
-                        <Text className="text-red-700 font-bold underline" onPress={() => navigation.goBack()}>
+                        <Text className="text-red-700 font-bold underline" onPress={() => router.push(`/login`)}>
                             Sign In
                         </Text>
                     </Text>
@@ -123,7 +125,7 @@ const Register = () => {
         </View>
 
     );
-};
+}; 
 
-export default Register;
+export default SignUp;
  
