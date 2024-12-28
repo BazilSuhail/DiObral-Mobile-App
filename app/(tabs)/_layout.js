@@ -1,8 +1,16 @@
 import { Tabs } from 'expo-router';
-import React from 'react'; 
+import { useEffect } from 'react'; 
 import { FontAwesome } from '@expo/vector-icons'; // Import vector icons
+import { useDispatch } from 'react-redux';
+import { initializeCart } from '@/hooks/cartSlice';
 
 export default function TabLayout() {
+  const dispatch = useDispatch();
+
+  // Use effect to dispatch initializeCart when the app starts
+  useEffect(() => {
+    dispatch(initializeCart());  // Initialize the cart when the app starts
+  }, [dispatch]);
   return (
     <Tabs
       screenOptions={{

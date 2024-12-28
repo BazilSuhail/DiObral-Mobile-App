@@ -77,6 +77,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
   const [userId, setUserId] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const parseJwt = (token) => {
     try {

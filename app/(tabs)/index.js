@@ -12,6 +12,11 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [timeLeft, setTimeLeft] = useState({
+    hours: 23,
+    minutes: 15,
+    seconds: 10,
+  });
 
   const categories = [
     { name: "Sports Wear", icon: "soccer-ball-o" },
@@ -19,8 +24,33 @@ const Home = () => {
     { name: "Street Wear", icon: "street-view" },
     { name: "Fitness Wear", icon: "bicycle" },
     { name: "Gym Wear", icon: "futbol-o" },
-  ];
+  ];  
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        let { hours, minutes, seconds } = prevTime;
+
+        // Decrease seconds
+        if (seconds > 0) {
+          seconds -= 1;
+        } else if (minutes > 0) {
+          minutes -= 1;
+          seconds = 59;
+        } else if (hours > 0) {
+          hours -= 1;
+          minutes = 59;
+          seconds = 59;
+        } else {
+          clearInterval(interval);
+        }
+
+        return { hours, minutes, seconds };
+      });
+    }, 1000);
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
   //const navigation = useNavigation();
 
   useEffect(() => {
@@ -99,7 +129,7 @@ const Home = () => {
 
 
   return (
-    <SafeAreaView className="flex-1 pt-[48px] px-3" >
+    <SafeAreaView className="flex-1 pt-[45px] px-3" >
       <ScrollView showsVerticalScrollIndicator={false}>
 
         <View className="flex-row justify-between items-center  shadow-md">
@@ -117,7 +147,7 @@ const Home = () => {
           </TouchableOpacity>
         </View>
 
-        <View className="bg-gray-300 mt-[15px] flex-row justify-center items-center py-3 rounded-lg ">
+        <View className="bg-gray-200 border border-gray-300 mt-[15px] flex-row justify-center items-center py-3 rounded-lg ">
           <FontAwesome name="search" size={19} color="#474747" />
           <Text className="font-medium text-search-color ml-[8px] text-[16px]">Search the Entire Catalog</Text>
         </View>
@@ -160,8 +190,8 @@ const Home = () => {
 
         <View className="bg-white mt-[15px] py-3">
           <View className="flex-row px-4 justify-between items-center rounded-lg">
-            <Text className="font-extrabold text-gray-700 text-[20px]">FLASH SALE</Text>
-            <Text className="font-medium text-search-color text-[16px]">See All</Text>
+            <Text className="font-bold text-red-900 text-[18px]">Flash Sale !!</Text>
+            <Text className="text-red-600 font-[600] text-[14px]"><Text className='text-[11px] font-extrabold text-red-400'>Ends In: </Text><Text className='underline'>{`${timeLeft.hours}:${timeLeft.minutes}:${timeLeft.seconds}`}</Text></Text>
           </View>
           <ScrollView
             contentContainerStyle={{ paddingHorizontal: 8, paddingVertical: 20 }}

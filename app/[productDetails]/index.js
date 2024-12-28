@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import ProductReviews from '@/components/ProductReviews';
-import AddReview from '@/components/ProductReview';
+import AddReview from '@/components/AddReview';
 import config from '@/Config/Config';
 import { FontAwesome } from '@expo/vector-icons';
 import { usePathname, useRouter } from 'expo-router/build/hooks'; 
@@ -49,13 +49,9 @@ const MediaCarousel = ({ mainImage, otherImages, onImageChange }) => {
 };
 
 const ProductDetails = () => {
-    //const route = useRoute();
-    //const { id } = route.params;
-    //const { id } = useSearchParams();
-
     const pathname = usePathname();
     const id = pathname.split("/").pop();
-    console.log("id is " + id)
+    //console.log("Product Id: "+ id)
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState(null);
@@ -69,13 +65,11 @@ const ProductDetails = () => {
             try {
                 const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/product-reviews/reviews/average/${id}`);
                 setAverageRating(response.data.averageRating);
-                console.log(averageRating)
+                //console.log(averageRating)
             }
             catch (error) {
                 //console.error('Error fetching Product Reviews:', error);
-                setAverageRating(0);
-                console.log("sd  == > " + averageRating)
-
+                setAverageRating(0); 
             }
         };
 
@@ -92,7 +86,8 @@ const ProductDetails = () => {
                     setSelectedSize(response.data.size[0]);
                 }
                 setActiveImage(`${config.REACT_APP_API_BASE_URL}/uploads/${response.data.image}`);
-            } catch (error) {
+            } 
+            catch (error) {
                 console.error('Error fetching product:', error);
             }
         };

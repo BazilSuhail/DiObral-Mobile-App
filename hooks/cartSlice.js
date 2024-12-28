@@ -1,6 +1,8 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios'; // Don't forget to import axios
 import config from '@/Config/Config';
+
 // Function to save cart state to AsyncStorage
 const saveCartToAsyncStorage = async (cart) => {
     try {
@@ -21,29 +23,32 @@ const loadCartFromAsyncStorage = async () => {
     }
 };
 
-const parseJwt = (token) => {
+function decodeJWT(token) {
     try {
-      const [header, payload, signature] = token.split('.');
-      const base64Url = payload.replace(/-/g, '+').replace(/_/g, '/');
-      const base64 = base64Url + (base64Url.length % 4 === 0 ? '' : '='.repeat(4 - (base64Url.length % 4)));
-      const decodedPayload = atob(base64);
-      return JSON.parse(decodedPayload);
+        const parts = token.split('.');
+        if (parts.length !== 3) {
+            throw new Error('Invalid token format');
+        }
+        const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+        return payload.id;
+    } catch (err) {
+        console.error('Failed to decode JWT:', err);
+        throw err;
     }
-    catch (error) {
-      return null;
-    }
-  };
+}
 
 // Function to check token validity and fetch cart 
 const fetchCart = async (token) => {
+    const userId = decodeJWT(token);
+    console.log(userId);
     try {  
-        const userId = parseJwt(token);
-        console.log(userId);
-        const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/cart/${userId}`); 
-        return response.data || [];
-    }
+        const userId = decodeJWT(token);
+        const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/cartState/cart/${userId}`); 
+        return response.data.items || [];
+    } 
     catch (error) {
-        console.error('Failed to fetch cart', error); return [];
+        console.error('Failed to fetch cart', error);
+        return [];
     }
 };
 
@@ -88,13 +93,31 @@ const cartSlice = createSlice({
 
 // Async thunk to initialize the cart state
 export const initializeCart = () => async (dispatch) => {
-    //const cart = await loadCartFromAsyncStorage();
-    const token = await AsyncStorage.getItem('token'); // Load token from AsyncStorage 
-    console.log(token);
-    const cart = await fetchCart(token);
-    dispatch(setCart(cart));
+    const token = await AsyncStorage.getItem('token'); // Load token from AsyncStorage
+    if (token) {
+        const cart = await fetchCart(token); // Fetch cart if token exists
+        dispatch(setCart(cart));
+    } else {
+        const cart = await loadCartFromAsyncStorage(); // Load cart from AsyncStorage if no token
+        dispatch(setCart(cart));
+    }
+};
 
-    //dispatch(setCart(cart));
+// Function to check if a token is valid
+const isTokenValid = (token) => {
+    if (!token) return false;
+    try {
+        const payload = decodeJWT(token);
+        const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+        return payload.exp > currentTime; // Token is valid if expiration time is in the future
+    } catch (error) {
+        return false;
+    }
+};
+// Exported variable to check if the user is logged out
+export const isUserLoggedOut = async () => {
+    const token = await AsyncStorage.getItem('token');
+    return !isTokenValid(token);
 };
 
 export const { addToCart, removeFromCart, clearCart, updateQuantity, setCart } = cartSlice.actions;

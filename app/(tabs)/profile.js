@@ -90,19 +90,17 @@ const Profile = () => {
 
     const handleLogout = async () => {
         await AsyncStorage.removeItem('token');
-        dispatch(clearCart()); // Clear cart on logout
-        //navigation.navigate('SignInUser');
+        dispatch(clearCart()); 
+        setError('Failed to fetch profile'); 
         router.push(`/login`);
     };
 
-    const handleNavigatetoSignIn = async () => {
-        //navigation.navigate('SignInUser');
+    const handleNavigatetoSignIn = async () => { 
         router.push('/login');
     };
 
 
-    const handleSeeOrders = () => {
-        //navigation.navigate('ShowOrders');
+    const handleSeeOrders = () => { 
         router.push(`/signup`);
     };
 
@@ -262,9 +260,9 @@ const Profile = () => {
                             </View>
                         </View>
 
-                        <TouchableOpacity className="flex-row items-center ml-auto w-[130px] bg-blue-500 rounded-lg px-3 py-1" onPress={() => setIsEditing(!isEditing)}>
-                            <FontAwesome5 name="edit" size={15} color="white" />
-                            <Text className="text-[16px]  ml-[5px] text-center text-white font-semibold">{isEditing ? "Cancel" : "Edit Profile"} </Text>
+                        <TouchableOpacity className="flex-row items-center ml-auto w-[114px] bg-blue-500 rounded-lg px-3 py-1" onPress={() => setIsEditing(!isEditing)}>
+                            <FontAwesome5 name="edit" size={13} color="white" />
+                            <Text className="text-[14px] ml-[5px] text-center text-white font-semibold">{isEditing ? "Cancel" : "Edit Profile"} </Text>
                         </TouchableOpacity>
 
                         <View>
