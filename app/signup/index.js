@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 
 import Icon from 'react-native-vector-icons/Ionicons'; // For general icons
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; // For Facebook, Twitter, LinkedIn, Google icons
-import config from '../Config/Config'; 
+import config from '@/Config/Config'; 
 import { useRouter } from 'expo-router';
 
 const SignUp = () => {

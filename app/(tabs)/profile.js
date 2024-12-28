@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TextInput, Button, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+import axios from 'axios'; 
 import { useDispatch } from 'react-redux';
-import { clearCart } from '../redux/cartSlice';
+import { clearCart } from '@/hooks/cartSlice';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import config from '../Config/Config';
+import config from '@/Config/Config';
 import { useRouter } from 'expo-router';
 
 const Profile = () => {

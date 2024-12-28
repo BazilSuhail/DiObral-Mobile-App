@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import config from '../../Config/Config';
+import config from '../Config/Config';
 
 const ProductReview = ({ productId }) => {
     const [user, setUser] = useState(null);

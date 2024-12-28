@@ -1,6 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import config from '../Config/Config';
+import config from '@/Config/Config';
 // Function to save cart state to AsyncStorage
 const saveCartToAsyncStorage = async (cart) => {
     try {

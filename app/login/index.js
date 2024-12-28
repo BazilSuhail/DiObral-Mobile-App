@@ -4,12 +4,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 //import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { setCart } from '../redux/cartSlice';
+import { setCart } from '@/hooks/cartSlice';
 import Icon from 'react-native-vector-icons/Ionicons'; // For general icons
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; // For Facebook, Twitter, LinkedIn, Google icons
 
 import { TouchableOpacity } from 'react-native';
-import config from '../Config/Config';
+import config from '@/Config/Config';
 import { useRouter } from 'expo-router';
 
 const Login = () => {

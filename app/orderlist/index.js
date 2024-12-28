@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { clearCart } from '../redux/cartSlice';
+import { clearCart } from '@/hooks/cartSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, ScrollView, TouchableOpacity, Alert, Modal } from 'react-native';
 import { FontAwesome, Feather } from '@expo/vector-icons'; // Importing the necessary vector icons from Expo
-import config from '../Config/Config';
+import config from '@/Config/Config';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 

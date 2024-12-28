@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeFromCart, clearCart, updateQuantity } from '../redux/cartSlice';
+import { removeFromCart, clearCart, updateQuantity } from '@/hooks/cartSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Entypo from '@expo/vector-icons/Entypo';
 import { View, Text, Image, FlatList, Alert, TouchableOpacity } from 'react-native';
-import config from '../Config/Config';
+import config from '../../Config/Config';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 

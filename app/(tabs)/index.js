@@ -3,7 +3,7 @@ import axios from 'axios';
 import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, SafeAreaView } from 'react-native';
 //import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
-import config from '../Config/Config';
+import config from '@//Config/Config';
 import { useRouter } from 'expo-router';
 
 const Home = () => {
@@ -42,7 +42,7 @@ const Home = () => {
 
   const handlePress = (id) => {
     //console.log(id)
-    router.push(`/ProductDetails/${id}`);
+    router.push(`/${id}`);
   };
 
   const renderProductRow = (rowProducts, index) => (

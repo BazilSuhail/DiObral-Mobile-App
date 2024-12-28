@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native';
-//import { useNavigation } from '@react-navigation/native';
-import config from '../Config/Config';
+import config from '@//Config/Config';
 import { useRouter } from 'expo-router';
 
 const ProductList = () => {
   const router = useRouter();
-  //const navigation = useNavigation();
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -82,8 +80,7 @@ const ProductList = () => {
   };
 
   const handleProductClick = (id) => {
-    //navigation.navigate('ProductDetails', { id: productId });
-    router.push(`/ProductDetails/${id}`);
+    router.push(`/${id}`);
   };
 
   const renderProductItem = ({ item }) => {

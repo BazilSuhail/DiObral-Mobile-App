@@ -4,7 +4,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import Entypo from '@expo/vector-icons/Entypo';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import config from '../../Config/Config';
+import config from '../Config/Config';
 
 const ReviewsList = ({ productId, onClose }) => {
   const [reviews, setReviews] = useState([]);
