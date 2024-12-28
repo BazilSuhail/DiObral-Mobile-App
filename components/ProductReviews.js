@@ -41,15 +41,19 @@ const ProductReviews = ({ productId, onClose }) => {
 
   const handleCloseSheet = () => {
     bottomSheetRef.current?.close(); // Close the sheet
-    setTimeout(() => onClose(), 200); // Delay calling onClose to avoid multiple calls
+    onClose();
+  };
+
+  const handleOpenSheet = () => {
+    bottomSheetRef.current?.expand(); // Open and expand the sheet
   };
 
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      snapPoints={['25%', '50%', '100%']} // Adjust snap points as requested
+      snapPoints={['30%', '50%', '100%']} // Adjust snap points as requested
       onClose={handleCloseSheet}
-      index={0} 
+      index={1} // Set initial snap point index
     >
       <BottomSheetScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}> 
         <View className="flex-row px-3 justify-between items-center">
@@ -72,7 +76,7 @@ const ProductReviews = ({ productId, onClose }) => {
           reviews.slice(0, visibleCount).map((review) => (
             <View key={review._id} className="mb-2 p-4 bg-white shadow-lg rounded-lg">
               <View className="flex-row justify-between">
-                <Text className="text-2xl font-bold">{review.name}</Text>
+                <Text className="text-[17px] font-bold">{review.name}</Text>
                 <View className="flex-row items-center">
                   {Array.from({ length: 5 }, (_, index) => (
                     <FontAwesome
@@ -86,10 +90,10 @@ const ProductReviews = ({ productId, onClose }) => {
               </View>
 
               <View className="flex-row items-center mt-[2px]">
-                <FontAwesome name="envelope" size={15} color="gray" />
-                <Text className="ml-2 text-gray-500">{review.email}</Text>
+                <FontAwesome name="envelope" size={14} color="gray" />
+                <Text className="ml-2 text-[12px] text-gray-500">{review.email}</Text>
               </View>
-              <Text className="mt-2 bg-gray-200 px-3 py-2 rounded-md text-gray-900">{review.description}</Text>
+              <Text className="mt-2 bg-gray-100 border-[1.5px] border-gray-200 px-3 py-2 rounded-md text-gray-900">{review.description}</Text>
             </View>
           ))
         )}

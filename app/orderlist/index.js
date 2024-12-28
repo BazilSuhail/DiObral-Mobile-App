@@ -72,7 +72,7 @@ const OrderList = () => {
             const decodedPayload = atob(base64);
             return JSON.parse(decodedPayload);
         } catch (error) {
-            console.error('Error parsing JWT:', error);
+            //console.error('Error parsing JWT:', error);
             return null;
         }
     };
@@ -88,7 +88,7 @@ const OrderList = () => {
                     console.log('No token found');
                 }
             } catch (error) {
-                console.error('Error fetching token:', error);
+                //console.error('Error fetching token:', error);
             }
         };
 
@@ -103,7 +103,7 @@ const OrderList = () => {
                 );
                 setProducts(productResponses.map(response => response.data));
             } catch (error) {
-                console.error('Error fetching products:', error);
+                //console.error('Error fetching products:', error);
             }
         };
 

@@ -11,7 +11,7 @@ import ProductReviews from '@/components/ProductReviews';
 import AddReview from '@/components/AddReview';
 import config from '@/Config/Config';
 import { FontAwesome } from '@expo/vector-icons';
-import { usePathname, useRouter } from 'expo-router/build/hooks'; 
+import { usePathname, useRouter } from 'expo-router/build/hooks';
 import Loader from '@/components/Loader';
 
 const MediaCarousel = ({ mainImage, otherImages, onImageChange }) => {
@@ -69,7 +69,7 @@ const ProductDetails = () => {
             }
             catch (error) {
                 //console.error('Error fetching Product Reviews:', error);
-                setAverageRating(0); 
+                setAverageRating(0);
             }
         };
 
@@ -86,7 +86,7 @@ const ProductDetails = () => {
                     setSelectedSize(response.data.size[0]);
                 }
                 setActiveImage(`${config.REACT_APP_API_BASE_URL}/uploads/${response.data.image}`);
-            } 
+            }
             catch (error) {
                 console.error('Error fetching product:', error);
             }
@@ -114,10 +114,10 @@ const ProductDetails = () => {
     };
 
     if (!product) return (
-       <View className='h-screen flex items-center justify-center'>
-         <Loader />
-       </View>
-     );
+        <View className='h-screen flex items-center justify-center'>
+            <Loader />
+        </View>
+    );
 
     const discountedPrice = product.sale
         ? (product.price - (product.price * product.sale) / 100).toFixed(2)
@@ -229,12 +229,9 @@ const ProductDetails = () => {
                 </View>
 
                 <AddReview productId={id} />
-
-                <View>
-                    {isReviewsOpen && (
-                        <ProductReviews productId={id} onClose={() => setIsReviewsOpen(false)} />
-                    )}
-                </View>
+                {isReviewsOpen && (
+                    <ProductReviews productId={id} onClose={() => setIsReviewsOpen(false)} />
+                )}
 
                 <View className="h-[28px]"></View>
             </ScrollView>
@@ -258,6 +255,7 @@ const ProductDetails = () => {
                     </View>
                 </View>
             )}
+
         </SafeAreaView>
     );
 };

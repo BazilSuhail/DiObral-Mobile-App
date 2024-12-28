@@ -11,13 +11,13 @@ const Loader = () => {
         Animated.sequence([
           Animated.timing(circle, {
             toValue: 1,
-            duration: index === circles.length - 1 ? 500 : 700, // Fast shrink for the last circle
-            delay: index * 100, // Reduced delay for better consistency
+            duration: index === circles.length - 1 ? 500 : 700, 
+            delay: index * 100, 
             useNativeDriver: true,
           }),
           Animated.timing(circle, {
             toValue: 0,
-            duration: index === circles.length - 1 ? 300 : 700, // Faster shrink for the last circle
+            duration: index === circles.length - 1 ? 300 : 700,
             useNativeDriver: true,
           }),
         ])

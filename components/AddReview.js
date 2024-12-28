@@ -54,7 +54,7 @@ const AddReview = ({ productId }) => {
             };
 
             const token = await AsyncStorage.getItem('token');
-            
+             
             await axios.post(`${config.REACT_APP_API_BASE_URL}/product-reviews/reviews`, reviewData, {
                 headers: { Authorization: `Bearer ${token}` },
             });
