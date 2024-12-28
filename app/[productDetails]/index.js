@@ -7,11 +7,12 @@ import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import ReviewsList from '@/components/ReviewsList';
-import ProductReview from '@/components/ProductReview';
+import ProductReviews from '@/components/ProductReviews';
+import AddReview from '@/components/ProductReview';
 import config from '@/Config/Config';
 import { FontAwesome } from '@expo/vector-icons';
 import { usePathname, useRouter } from 'expo-router/build/hooks'; 
+import Loader from '@/components/Loader';
 
 const MediaCarousel = ({ mainImage, otherImages, onImageChange }) => {
     const router = useRouter();
@@ -118,8 +119,10 @@ const ProductDetails = () => {
     };
 
     if (!product) return (
-        <Text>Loading...</Text>
-    );
+       <View className='h-screen flex items-center justify-center'>
+         <Loader />
+       </View>
+     );
 
     const discountedPrice = product.sale
         ? (product.price - (product.price * product.sale) / 100).toFixed(2)
@@ -230,11 +233,11 @@ const ProductDetails = () => {
                     </View>
                 </View>
 
-                <ProductReview productId={id} />
+                <AddReview productId={id} />
 
                 <View>
                     {isReviewsOpen && (
-                        <ReviewsList productId={id} onClose={() => setIsReviewsOpen(false)} />
+                        <ProductReviews productId={id} onClose={() => setIsReviewsOpen(false)} />
                     )}
                 </View>
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native';
 import config from '@//Config/Config';
 import { useRouter } from 'expo-router';
+import Loader from '@/components/Loader';
 
 const ProductList = () => {
   const router = useRouter();
@@ -62,7 +63,11 @@ const ProductList = () => {
     fetchSubcategories();
   }, [selectedCategory]);
 
-  if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
+  if (loading) return (
+    <View className='h-screen flex items-center justify-center'>
+         <Loader />
+       </View>
+  );
   if (error) return <Text>Error: {error}</Text>;
 
   const filteredProducts = products.filter(product => {

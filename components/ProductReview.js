@@ -3,9 +3,9 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import config from '../Config/Config';
+import config from '@/Config/Config';
 
-const ProductReview = ({ productId }) => {
+const AddReview = ({ productId }) => {
     const [user, setUser] = useState(null);
     const [rating, setRating] = useState(1);
     const [review, setReview] = useState('');
@@ -104,4 +104,4 @@ const ProductReview = ({ productId }) => {
     );
 };
 
-export default ProductReview;
+export default AddReview;

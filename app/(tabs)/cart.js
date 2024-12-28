@@ -154,16 +154,7 @@ const Cart = () => {
     }, 0).toFixed(2);
   };
 
-  const calculateActualTotalBill = () => {
-    return cart.reduce((total, item) => {
-      const product = products.find(p => p._id === item.id);
-      if (product) {
-        return total + (product.price * item.quantity);
-      }
-      return total;
-    }, 0).toFixed(2);
-  };
-
+  
   const handleSaveCart = async () => {
     try {
       await axios.post(`${config.REACT_APP_API_BASE_URL}/cartState/cart/save`, { userId, items: cart });

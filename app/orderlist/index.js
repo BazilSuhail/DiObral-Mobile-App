@@ -19,8 +19,8 @@ const CustomModal = ({ isOpen, onClose, onConfirm }) => {
             animationType="fade"
             visible={isOpen}
             onRequestClose={onClose}
-        >
-            <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
+        > 
+            <View className="flex-1 justify-center items-center bg-black/50 bg-opacity-50">
                 <View className="w-4/5 p-5 bg-white rounded-lg items-center">
                     <Text className="text-lg font-bold mb-4">Confirm Order</Text>
                     <Text className="text-base mb-6 text-center">
@@ -45,7 +45,7 @@ const CustomModal = ({ isOpen, onClose, onConfirm }) => {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </View>
+            </View> 
         </Modal>
     );
 };
@@ -143,7 +143,8 @@ const OrderList = () => {
             await axios.post(`${config.REACT_APP_API_BASE_URL}/cartState/cart/save`, { userId, items: [] });
             //navigation.navigate('Cart');
             navigation.goBack();
-        } catch (error) {
+        } 
+        catch (error) {
             console.error('Error confirming order:', error);
             Alert.alert('Failed to confirm order.');
         }
@@ -176,9 +177,9 @@ const OrderList = () => {
     const closeModal = () => setIsModalOpen(false);
 
     if (!cart.length) return <Text>Your cart is empty</Text>;
-
+/* className={`${isModalOpen ? 'bg-black/50' : 'bg-gray-50' }  pt-[15px] px-3`}  */
     return (
-        <SafeAreaView className="flex-1 pt-[15px] px-3" >
+        <SafeAreaView className=" pt-[15px] px-3" >
             <ScrollView scrollEnabled={true} showsVerticalScrollIndicator={false}>
 
                 <View className="flex-row mb-1 items-center ">
@@ -187,7 +188,7 @@ const OrderList = () => {
                 </View>
                 <View className="bg-gray-300 mb-3 w-full h-[3px]"></View>
 
-                <View className='flex p-[15px] bg-gray-50 border border-gray-400 mb-[15px] rounded-xl flex-col'>
+                <View className='flex p-[15px]  border border-gray-400 mb-[15px] rounded-xl flex-col'>
 
                     <Text className='text-[19px] font-bold'>Checkout</Text>
                     <View className='border-b border-t border-gray-400 text-[17px] font-semibold'>

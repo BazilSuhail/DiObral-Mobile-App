@@ -6,7 +6,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import config from '../Config/Config';
 
-const ReviewsList = ({ productId, onClose }) => {
+const ProductReviews = ({ productId, onClose }) => {
   const [reviews, setReviews] = useState([]);
   const [reviewCount, setReviewCount] = useState(0); // State for review count
   const [loading, setLoading] = useState(true);
@@ -106,4 +106,4 @@ const ReviewsList = ({ productId, onClose }) => {
   );
 };
 
-export default ReviewsList;
+export default ProductReviews;

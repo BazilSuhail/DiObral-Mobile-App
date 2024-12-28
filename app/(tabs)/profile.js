@@ -8,6 +8,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import config from '@/Config/Config';
 import { useRouter } from 'expo-router';
+import Loader from '@/components/Loader';
 
 const Profile = () => {
     const router = useRouter();
@@ -122,7 +123,11 @@ const Profile = () => {
         </View>
     </View>;
 
-    if (!user) return <Text>Loading...</Text>;
+    if (!user) return (
+        <View className='h-screen flex items-center justify-center'>
+         <Loader />
+       </View>
+    );
 
     return (
         <View className="flex-1 bg-gray-100 pt-[50px] px-4">

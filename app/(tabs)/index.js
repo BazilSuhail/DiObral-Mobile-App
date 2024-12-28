@@ -5,6 +5,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, Saf
 import { FontAwesome } from '@expo/vector-icons';
 import config from '@//Config/Config';
 import { useRouter } from 'expo-router';
+import Loader from '@/components/Loader';
 
 const Home = () => {
   const router = useRouter();
@@ -37,7 +38,11 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
+  if (loading) return (
+    <View className='h-screen flex items-center justify-center'>
+         <Loader />
+       </View>
+  );
   if (error) return <Text>Error: {error}</Text>;
 
   const handlePress = (id) => {
