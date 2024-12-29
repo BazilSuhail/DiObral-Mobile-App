@@ -30,10 +30,6 @@ jobs:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: echo "EXPO_TOKEN is set."
 
-
-      - name: Configure EAS
-        run: eas init --id ${{ secrets.EAS_PROJECT_ID }}
-
       - name: Build Android APK
         run: eas build -p android --profile preview --non-interactive
 
