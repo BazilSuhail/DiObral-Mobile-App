@@ -110,8 +110,8 @@ const ProductList = () => {
             <Text>
               {item.sale ? <Text className="text-red-500 line-through text-[12px] my-2">Rs.{parseInt(item.price)}</Text> : <></>}
             </Text>
-            <Text className="text-xl font-medium">
-              <Text className="text-lg font-normal">Rs.</Text>{parseInt(discountedPrice)}
+            <Text className="text-[17px] font-medium">
+              <Text className="text-[12px] mr-[6px] font-normal">Rs.</Text>{parseInt(discountedPrice)}
             </Text>
           </View>
         </View>

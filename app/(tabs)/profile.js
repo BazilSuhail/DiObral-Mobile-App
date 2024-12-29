@@ -225,13 +225,13 @@ const Profile = () => {
                 ) : (
                     <ScrollView className="space-y-4">
                         <View className="flex-row justify-around">
-                            <TouchableOpacity onPress={handleSeeOrders} className="w-[48%] flex py-4 bg-white rounded-md justify-center items-center">
-                                <FontAwesome5 name="truck" size={45} color="#807b3b" />
-                                <Text className="text-[14px] text-center font-bold bg-yellow-50 text-yellow-700 px-2 rounded-xl py-[3px] border border-yellow-400 mt-[15px]">Orders Pending</Text>
-                            </TouchableOpacity>
+                            <View className="w-[48%] flex py-4 bg-yellow-100 rounded-md justify-center items-center">
+                                <FontAwesome5 name="truck" size={45} color="#dad37d" />
+                                <Text className="text-[12px] text-center font-bold text-[#fff589] bg-[#d5ce82] px-2 rounded-xl py-[3px]  mt-[15px]">Orders Pending</Text>
+                            </View>
                             <TouchableOpacity onPress={handleSeeOrders} className="w-[48%] flex py-4 bg-white rounded-md justify-center items-center">
                                 <FontAwesome5 name="truck-loading" size={45} color="#00b316" />
-                                <Text className="text-[14px] text-center font-bold bg-green-50 text-green-700 px-2 rounded-xl py-[3px] border border-green-400 mt-[15px]">Order History</Text>
+                                <Text className="text-[12px] text-center font-bold bg-green-100 text-green-700 px-2 rounded-xl py-[3px] mt-[15px]">Order History</Text>
                             </TouchableOpacity>
                         </View>
 

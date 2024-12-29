@@ -110,7 +110,7 @@ const Home = () => {
                   )}
                 </Text>
 
-                <Text className="text-xl font-medium">
+                <Text className="text-[17px] font-medium">
                   Rs. {parseInt(discountedPrice)}
                 </Text>
               </View>

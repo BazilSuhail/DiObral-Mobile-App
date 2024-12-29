@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { View, Text, ScrollView, ActivityIndicator ,TouchableOpacity} from 'react-native'; 
-import Ionicons from '@expo/vector-icons/Ionicons';  
+import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity, Button } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import config from '@/Config/Config';
 import { useRouter } from 'expo-router';
+import OrderDetailsModal from '@/components/OrderDetailsModal';
 
 const ShowOrders = () => {
     const router = useRouter();
     const [orders, setOrders] = useState([]);
     const [userId, setUserId] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [fetchingOrders, setFetchingOrders] = useState(false); 
+    const [fetchingOrders, setFetchingOrders] = useState(false);
+
+    const [isModalVisible, setModalVisible] = useState(false);
+
 
     // Function to decode JWT token
     const parseJwt = (token) => {
@@ -82,11 +86,11 @@ const ShowOrders = () => {
             <View className="flex-row mb-1 items-center ">
                 <TouchableOpacity
                     onPress={() => router.push('/profile')}
-                    className="w-[32px] flex justify-center items-center rounded-lg"
+                    className="flex justify-center items-center"
                 >
-                    <Ionicons name="arrow-back" size={24} color="black" />
-                </TouchableOpacity> 
-                <Text className="text-2xl ml-[2px] font-bold"> Placed Orders</Text>
+                    <Ionicons name="arrow-back" size={22} color="black" />
+                </TouchableOpacity>
+                <Text className="text-[18px] ml-[2px] font-bold"> Placed Orders</Text>
             </View>
 
             <View className="bg-gray-300 mb-3 w-full h-[3px]"></View>
@@ -95,24 +99,42 @@ const ShowOrders = () => {
                 order.orders.map(singleOrder => (
                     <View key={singleOrder._id} className="border border-gray-300 rounded-lg p-4 mb-4 bg-white shadow-md">
                         <View className="flex-row items-center justify-between mb-2">
-                            <Text className="text-md font-bold text-yellow-800 bg-yellow-100 border border-yellow-400 px-3 py-1 rounded-lg">
-                                Placed: {Math.floor((new Date() - new Date(singleOrder.orderDate)) / (1000 * 60 * 60 * 24))} days ago
+                            <Text className="text-[13px] font-bold text-yellow-800 bg-yellow-100 border border-yellow-400 px-3 py-[2px] rounded-lg">
+                                Placed:
+                                {Math.floor((new Date() - new Date(singleOrder.orderDate)) / (1000 * 60 * 60 * 24)) === 0
+                                    ? " Today"
+                                    : ` ${Math.floor((new Date() - new Date(singleOrder.orderDate)) / (1000 * 60 * 60 * 24))} days ago`}
                             </Text>
-                            <Text className="text-[16px] font-bold text-red-600 underline">
+
+                            <Text className="text-[13px] font-bold text-red-600 underline">
                                 {new Date(singleOrder.orderDate).toLocaleDateString()}
                             </Text>
                         </View>
 
-                        <View className="flex-row items-center justify-between mb-[15px]">
-                            <Text className="text-[14px] font-bold text-blue-500">Bill Checkout:</Text>
-                            <Text className="text-[15px] px-2 rounded-md py-[1px] font-bold text-blue-100 bg-blue-800">
-                                Rs. {singleOrder.total ? singleOrder.total.toFixed(2) : 'N/A'}
+                        <View className="flex-row items-center justify-between mb-[8px]">
+                            <Text className="text-[11px] font-bold text-blue-600">Bill Checkout:</Text>
+                            <Text className="text-[13px] px-2 rounded-md py-[2px] font-bold text-blue-100 bg-blue-800">
+                                <Text className='text-[10px]'>Rs.</Text> {singleOrder.total ? singleOrder.total.toFixed(2) : 'N/A'}
                             </Text>
                         </View>
 
+                        <View className="flex-row items-center justify-between">
+                            <Text className="text-[11px] font-bold text-blue-500">Items Ordered:</Text>
+                            <Text className="text-[14px] font-bold text-blue-500">{singleOrder.items.length}</Text>
+                        </View>
+                        
+                        <Button title="Show Order Details" onPress={() => setModalVisible(true)} />
+
+                        <OrderDetailsModal
+                            singleOrder={singleOrder}
+                            modalVisible={isModalVisible}
+                            setModalVisible={setModalVisible}
+                        />
+
+                        {/*
                         <View className="border-t border-gray-500 pt-2">
                             {singleOrder.items.map(item => (
-                                <View key={item._id} className="flex justify-between mb-2">
+                                <View key={`${item._id}-${item.size}`} className="flex justify-between mb-2">
                                     <View>
                                         <View className="flex-row items-center mb-2">
                                             <View className="w-3 h-3 rounded-full bg-red-800 mr-2" />
@@ -142,6 +164,7 @@ const ShowOrders = () => {
                                 </View>
                             ))}
                         </View>
+                        */}
                     </View>
                 ))
             ))}

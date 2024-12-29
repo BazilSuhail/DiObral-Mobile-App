@@ -60,13 +60,12 @@ const OrderList = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const parseJwt = (token) => {
-        console.log(token);
+        //console.log(token);
         try {
 
             if (!token || typeof token !== 'string') return null;
             const [header, payload, signature] = token.split('.');
             if (!payload) return null;
-            // Decode the base64 URL encoded payload
             const base64Url = payload.replace(/-/g, '+').replace(/_/g, '/');
             const base64 = base64Url + (base64Url.length % 4 === 0 ? '' : '='.repeat(4 - (base64Url.length % 4)));
             const decodedPayload = atob(base64);
@@ -216,12 +215,12 @@ const OrderList = () => {
 
                     <View className='flex-row items-center mt-[15px] justify-between'>
                         <View className="flex-row items-end">
-                            <Text className='text-[17px] text-gray-500 font-semibold '>Rs.</Text><Text className='text-[24px] font-bold '>{calculateTotalBill()}</Text>
+                            <Text className='text-[15px] text-gray-500 font-semibold '>Rs.</Text><Text className='text-[21px] font-bold '>{calculateTotalBill()}</Text>
                         </View>
                         <TouchableOpacity onPress={openModal}
                             className="text-[20px] font-bold py-[3px] rounded-2xl px-[15px] bg-green-700"
                         >
-                            <Text className="text-white text-[15px] font-bold">Place Order</Text>
+                            <Text className="text-white text-[13px] font-bold">Place Order</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -236,32 +235,32 @@ const OrderList = () => {
                             : product.price;
 
                         return (
-                            <View key={item.id} className="bg-white border border-gray-300 py-3 px-5 mb-[15px] rounded-lg ">
+                            <View key={`${item.id}-${item.size}`} className="bg-white border border-gray-200 py-3 px-5 mb-[15px] rounded-lg ">
                                 <View className='flex-row items-center my-[8px]'>
-                                    <Text className="text-[18px] font-bold">{product.name || 'Unknown Product'}</Text>
+                                    <Text className="text-[16px] font-bold">{product.name || 'Unknown Product'}</Text>
                                 </View>
 
-                                <Text className="text-md font-bold text-black">
+                                <Text className="text-[12px] font-bold text-black">
                                     <Text className='font-semibold text-red-900 mr-[5px]'>Quantity:</Text>  {item.quantity}
                                 </Text>
 
-                                <Text className="text-md font-bold text-black">
+                                <Text className="text-[12px] font-bold text-black">
                                     <Text className='font-semibold text-red-900 mr-[5px]'>Selected Size:</Text>  {item.size}
                                 </Text>
 
-                                <Text className="text-md font-bold text-black">
+                                <Text className="text-[12px] font-bold text-black">
                                     <Text className='font-semibold text-red-900 mr-[5px]'>Actual Price:</Text> ${product.price.toFixed(2)}
                                 </Text>
 
-                                <Text className="text-md font-bold text-black">
-                                    <Text className='font-semibold text-red-950 mr-[5px]'>Discounted Price through Sales:</Text> ${discountedPrice.toFixed(2)}
+                                <Text className="text-[12px] font-bold text-black">
+                                    <Text className='font-semibold text-red-900 mr-[5px]'>Discounted Price through Sales:</Text> ${discountedPrice.toFixed(2)}
                                 </Text>
 
-                                <View className="w-full h-[2px] mt-[10px] bg-gray-300"></View>
+                                <View className="w-full h-[2px] mt-[6px] bg-gray-300"></View>
 
-                                <View className='flex-row mt-[10px] justify-between'>
-                                    <Text className="text-[15px] text-center text-red-700 font-bold rounded-md">Total Price:</Text>
-                                    <Text className="text-[15px] text-red-800 bg-red-50 font-bold rounded-md border border-red-300 px-[15px]"><Text className='mr-[4px]'>Rs.</Text>{(discountedPrice * item.quantity).toFixed(2)}</Text>
+                                <View className='flex-row mt-[6px] items-center justify-between'>
+                                    <Text className="text-[12px] text-center text-red-700 font-[800] rounded-md">Total Price:</Text>
+                                    <Text className="text-[16px] text-red-800 font-bold"><Text className='mr-[4px]'>Rs.</Text>{(discountedPrice * item.quantity).toFixed(2)}</Text>
                                 </View>
                             </View>
                         );

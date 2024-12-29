@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '@/hooks/cartSlice';
 
 import { usePathname, useRouter } from 'expo-router/build/hooks';
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
@@ -125,10 +125,9 @@ const ProductDetails = () => {
         : product.price.toFixed(2);
 
     return (
-        <SafeAreaView className="bg-gray-200" >
-            <ScrollView contentContainerStyle={{ paddingBottom: 80 }} style={{ paddingVertical: 48, paddingHorizontal: 10 }}>
-
-                <View className="flex-1">
+        <SafeAreaView className="bg-gray-200 pt-[36px]" >
+            <ScrollView contentContainerStyle={{ paddingBottom: 80 }} style={{ paddingHorizontal: 10 }}>
+                <View className="flex-1 mt-[4px]">
                     <MediaCarousel
                         mainImage={`${config.REACT_APP_API_BASE_URL}/uploads/${product.image}`}
                         otherImages={product.otherImages.map(image => `${config.REACT_APP_API_BASE_URL}/uploads/${image}`)}
@@ -141,8 +140,8 @@ const ProductDetails = () => {
                     <Text className="text-2xl font-bold mb-3">{product.name}</Text>
                     <View className="flex-row items-end justify-between">
                         <View className="flex-row items-end">
-                            <Text className="line-through text-[13px] font-medium text-red-600">{product.sale && (`${product.price.toFixed(2)}`)}</Text>
-                            <Text className="text-[22px] font-extrabold text-red-800 ml-[10px] ">${discountedPrice}</Text>
+                            <Text className={`line-through text-[13px] ${product.sale === 0 ? '' : 'mr-[10px]'} font-medium text-red-600`}>{product.sale === 0 ? '' : product.sale && (`${product.price.toFixed(2)}`)}</Text>
+                            <Text className="text-[22px] font-extrabold text-red-800 ">${discountedPrice}</Text>
                         </View>
                         <View className="bg-red-600 px-[8px] rounded-xl h-[23px]">
                             <Text className="text-center text-red-100 mt-[3px] text-[12px] font-bold"><Text className="font-extrabold text-white">{product.sale}%</Text> OFF</Text>
@@ -220,12 +219,12 @@ const ProductDetails = () => {
                     </View>
 
                     <View>
-                        <TouchableOpacity
+                        <Pressable
                             onPress={() => setIsReviewsOpen(true)}
                             className="px-3 py-1 flex-row items-center bg-red-800 rounded-lg"
                         >
                             <FontAwesome name="comments" size={18} color="white" /><Text className="text-white ml-[6px] text-[16px]">Reviews</Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 </View>
 

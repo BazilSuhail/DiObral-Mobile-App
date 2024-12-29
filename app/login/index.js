@@ -38,8 +38,6 @@ const Login = () => {
         try {
             // Split the token into header, payload, and signature
             const [header, payload, signature] = token.split('.');
-
-            // Decode the base64 URL encoded payload
             const base64Url = payload.replace(/-/g, '+').replace(/_/g, '/');
             const base64 = base64Url + (base64Url.length % 4 === 0 ? '' : '='.repeat(4 - (base64Url.length % 4)));
             const decodedPayload = atob(base64);
@@ -58,9 +56,8 @@ const Login = () => {
             const response = await axios.post(`${config.REACT_APP_API_BASE_URL}/auth/login`, { email, password });
             if (response.data.token) {
                 await AsyncStorage.setItem('token', response.data.token); 
-                dispatch(setToken(response.data.token)); // Update Redux state
+                dispatch(setToken(response.data.token)); 
 
-                // Decode token to get user ID
                 const decodedToken = parseJwt(response.data.token);
                 const userId = decodedToken?.id;  
                 console.log('User ID:', userId);
