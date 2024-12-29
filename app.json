@@ -1,22 +1,10 @@
 {
-  "cli": {
-    "version": ">= 10.2.4"
-  },
-  "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal"
-    },
-    "preview": {
-      "distribution": "internal"
-    },
-    "production": {
-      "android": {
-        "buildType": "apk"
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "ed0981cb-1e6c-4cd0-8cfa-8568eadb0a1e"
       }
-    }
-  },
-  "submit": {
-    "production": {}
+    },
+    "owner": "bazil_suhail"
   }
 }
