@@ -3,14 +3,17 @@ import { useEffect } from 'react';
 import { FontAwesome } from '@expo/vector-icons'; // Import vector icons
 import { useDispatch } from 'react-redux';
 import { initializeCart } from '@/hooks/cartSlice';
+import { initializeAuth } from '@/hooks/authSlice';
 
 export default function TabLayout() {
   const dispatch = useDispatch();
 
   // Use effect to dispatch initializeCart when the app starts
   useEffect(() => {
+    dispatch(initializeAuth()); // Initialize auth state on app load
     dispatch(initializeCart());  // Initialize the cart when the app starts
   }, [dispatch]);
+
   return (
     <Tabs
       screenOptions={{

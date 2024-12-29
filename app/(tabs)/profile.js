@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TextInput, Button, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios'; 
+import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { clearCart } from '@/hooks/cartSlice';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -9,9 +9,11 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import config from '@/Config/Config';
 import { useRouter } from 'expo-router';
 import Loader from '@/components/Loader';
+import { clearToken } from '@/hooks/authSlice';
 
 const Profile = () => {
     const router = useRouter();
+    const dispatch = useDispatch(); 
     const [user, setUser] = useState(null);
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
@@ -26,16 +28,11 @@ const Profile = () => {
         contact: ''
     });
     const [isEditing, setIsEditing] = useState(false);
-
-    //const navigation = useNavigation();
-    const dispatch = useDispatch(); // Use useDispatch to dispatch actions
-
-    // Use useCallback to memoize the fetchProfile function
+  
+ 
     const fetchProfile = useCallback(async () => {
         try {
             const token = await AsyncStorage.getItem('token');
-            //console.log(token);
-
             if (token) {
                 const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/auth/profile`, {
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -48,7 +45,8 @@ const Profile = () => {
                     address: response.data.address || { city: '', street: '', country: '' },
                     contact: response.data.contact || ''
                 });
-            } else {
+            } 
+            else {
                 //navigation.navigate('Signin');
                 setError('Failed to fetch profile');
             }
@@ -90,18 +88,19 @@ const Profile = () => {
 
     const handleLogout = async () => {
         await AsyncStorage.removeItem('token');
-        dispatch(clearCart()); 
-        setError('Failed to fetch profile'); 
+        dispatch(clearToken());
+        dispatch(clearCart());
+        setError('Failed to fetch profile');
         router.push(`/login`);
     };
 
-    const handleNavigatetoSignIn = async () => { 
+    const handleNavigatetoSignIn = async () => {
         router.push('/login');
     };
 
 
-    const handleSeeOrders = () => { 
-        router.push(`/signup`);
+    const handleSeeOrders = () => {
+        router.push(`/showOrders`);
     };
 
     useEffect(() => {
@@ -116,15 +115,15 @@ const Profile = () => {
         </TouchableOpacity>
         <View className="flex mt-[30px] justify-center items-center">
             <Text className="px-4 py-1 bg-red-100 border-2 border-red-700 rounded-lg text-lg font-medium text-red-700">
-                {error}
+                Login To view begin shopping
             </Text>
         </View>
     </View>;
 
     if (!user) return (
         <View className='h-screen flex items-center justify-center'>
-         <Loader />
-       </View>
+            <Loader />
+        </View>
     );
 
     return (

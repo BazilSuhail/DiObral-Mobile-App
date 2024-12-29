@@ -25,6 +25,34 @@ const loadCartFromAsyncStorage = async () => {
 
 function decodeJWT(token) {
     try {
+        if (!token) {
+            //throw new Error('No token provided');
+            return false;
+        }
+
+        const parts = token.split('.');
+        if (parts.length !== 3) {
+            return false;
+            //throw new Error('Invalid token format');
+        }
+
+        const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+
+        if (payload.exp && Date.now() >= payload.exp * 1000) {
+            return false;
+            //throw new Error('Token has expired');
+        }
+
+        return payload.id;
+    } catch (err) {
+        //console.error('Failed to decode JWT:', err);
+        //throw err;
+        return false;
+    }
+}
+
+/*function decodeJWT(token) {
+    try {
         const parts = token.split('.');
         if (parts.length !== 3) {
             throw new Error('Invalid token format');
@@ -35,17 +63,20 @@ function decodeJWT(token) {
         console.error('Failed to decode JWT:', err);
         throw err;
     }
-}
+}*/
 
 // Function to check token validity and fetch cart 
 const fetchCart = async (token) => {
     const userId = decodeJWT(token);
     console.log(userId);
-    try {  
+    if (userId === false) {
+        return [];
+    }
+    try {
         const userId = decodeJWT(token);
-        const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/cartState/cart/${userId}`); 
+        const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/cartState/cart/${userId}`);
         return response.data.items || [];
-    } 
+    }
     catch (error) {
         console.error('Failed to fetch cart', error);
         return [];
@@ -101,23 +132,6 @@ export const initializeCart = () => async (dispatch) => {
         const cart = await loadCartFromAsyncStorage(); // Load cart from AsyncStorage if no token
         dispatch(setCart(cart));
     }
-};
-
-// Function to check if a token is valid
-const isTokenValid = (token) => {
-    if (!token) return false;
-    try {
-        const payload = decodeJWT(token);
-        const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-        return payload.exp > currentTime; // Token is valid if expiration time is in the future
-    } catch (error) {
-        return false;
-    }
-};
-// Exported variable to check if the user is logged out
-export const isUserLoggedOut = async () => {
-    const token = await AsyncStorage.getItem('token');
-    return !isTokenValid(token);
 };
 
 export const { addToCart, removeFromCart, clearCart, updateQuantity, setCart } = cartSlice.actions;

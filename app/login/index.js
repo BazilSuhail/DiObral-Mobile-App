@@ -11,6 +11,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'; // For Facebook
 import { TouchableOpacity } from 'react-native';
 import config from '@/Config/Config';
 import { useRouter } from 'expo-router';
+import { setToken } from '@/hooks/authSlice';
 
 const Login = () => {
   const router = useRouter();
@@ -56,19 +57,16 @@ const Login = () => {
         try {
             const response = await axios.post(`${config.REACT_APP_API_BASE_URL}/auth/login`, { email, password });
             if (response.data.token) {
-                await AsyncStorage.setItem('token', response.data.token);
-                //console.log(response.data.token);
+                await AsyncStorage.setItem('token', response.data.token); 
+                dispatch(setToken(response.data.token)); // Update Redux state
 
                 // Decode token to get user ID
                 const decodedToken = parseJwt(response.data.token);
-                const userId = decodedToken?.id; // Adjust this based on your token structure
-
+                const userId = decodedToken?.id;  
                 console.log('User ID:', userId);
 
-                if (userId) {
-                    // Fetch and set the cart state
-                    await fetchUserCart(userId);
-                    //navigation.navigate('AppNavigator');
+                if (userId) { 
+                    await fetchUserCart(userId);  
                     router.push('/cart');
                 } 
                 else {

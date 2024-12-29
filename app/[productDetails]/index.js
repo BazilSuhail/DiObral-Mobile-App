@@ -1,18 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-//import { addToCart } from '@hooks/';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '@/hooks/cartSlice';
+
+import { usePathname, useRouter } from 'expo-router/build/hooks';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
+import Loader from '@/components/Loader';
 import ProductReviews from '@/components/ProductReviews';
 import AddReview from '@/components/AddReview';
 import config from '@/Config/Config';
-import { FontAwesome } from '@expo/vector-icons';
-import { usePathname, useRouter } from 'expo-router/build/hooks';
-import Loader from '@/components/Loader';
 
 const MediaCarousel = ({ mainImage, otherImages, onImageChange }) => {
     const router = useRouter();
@@ -52,6 +51,8 @@ const ProductDetails = () => {
     const pathname = usePathname();
     const id = pathname.split("/").pop();
     //console.log("Product Id: "+ id)
+    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+    console.log("Is Logged In: " + isLoggedIn)
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState(null);
@@ -228,12 +229,12 @@ const ProductDetails = () => {
                     </View>
                 </View>
 
-                <AddReview productId={id} />
+                {isLoggedIn ? <AddReview productId={id} /> : <></>}
                 {isReviewsOpen && (
                     <ProductReviews productId={id} onClose={() => setIsReviewsOpen(false)} />
                 )}
+                <View className="h-[34px]"></View>
 
-                <View className="h-[28px]"></View>
             </ScrollView>
 
             {!isReviewsOpen && (
@@ -248,9 +249,16 @@ const ProductDetails = () => {
                                 <Text className="text-[20px] mt-[-2px] text-white">+</Text>
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity onPress={handleAddToCart} className="bg-red-500 px-[20px] py-[6px] rounded-lg">
-                            <Text className="text-center text-white text-lg font-bold">Add to Cart</Text>
-                        </TouchableOpacity>
+                        {isLoggedIn ?
+                            <TouchableOpacity onPress={handleAddToCart} className="bg-red-500 px-[20px] py-[6px] rounded-lg">
+                                <Text className="text-center text-white text-lg font-bold">Add to Cart</Text>
+                            </TouchableOpacity>
+                            :
+                            <View className="bg-red-300 px-[22px] py-[6px] rounded-lg">
+                                <Text className="text-center text-white text-[12px] font-bold">Login to</Text>
+                                <Text className="text-center text-white text-[11px] font-bold">Begin Shopping</Text>
+                            </View>
+                        }
 
                     </View>
                 </View>
