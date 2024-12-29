@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity, Button } from 'react-native';
+import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity, Button, Image, Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import config from '@/Config/Config';
 import { useRouter } from 'expo-router';
 import OrderDetailsModal from '@/components/OrderDetailsModal';
+import noOrder from '@/assets/noOrder.jpg';
 
 const ShowOrders = () => {
     const router = useRouter();
@@ -14,8 +15,7 @@ const ShowOrders = () => {
     const [loading, setLoading] = useState(true);
     const [fetchingOrders, setFetchingOrders] = useState(false);
 
-    const [isModalVisible, setModalVisible] = useState(false);
-
+    const [visibleModalOrderId, setVisibleModalOrderId] = useState(null); // Track which modal to show
 
     // Function to decode JWT token
     const parseJwt = (token) => {
@@ -78,7 +78,23 @@ const ShowOrders = () => {
     }
 
     if (!Array.isArray(orders) || !orders.length) {
-        return <Text className="text-center text-lg font-bold mt-4">No orders found</Text>;
+        return (
+            <View className='bg-white pt-[28px]'>
+                <Text className="mx-auto mt-4 w-[92%] text-[18px] mb-1 text-red-800 font-bold">Order History</Text>
+                <View className="bg-gray-300 mb-3 w-[92%] h-[3px] mx-auto"></View>
+
+                <View className=" flex h-screen w-screen justify-center items-center">
+                    <Image
+                        source={noOrder}
+                        className="h-[200px] w-[200px] mt-[-95px]"
+                    />
+                    <Text className='text-[12px] text-red-900 mt-[6px] font-[600]'>You haven't ordered anything</Text>
+                    <Pressable onPress={() => router.push(`/productlist`)}>
+                        <Text className='text-[14px] mt-[2px] font-[800] underline text-red-600'>Order Now !!</Text>
+                    </Pressable>
+                </View>
+            </View>
+        );
     }
 
     return (
@@ -122,13 +138,13 @@ const ShowOrders = () => {
                             <Text className="text-[11px] font-bold text-blue-500">Items Ordered:</Text>
                             <Text className="text-[14px] font-bold text-blue-500">{singleOrder.items.length}</Text>
                         </View>
-                        
-                        <Button title="Show Order Details" onPress={() => setModalVisible(true)} />
+
+                        <Button title="Show Order Details" onPress={() => setVisibleModalOrderId(singleOrder._id)} />
 
                         <OrderDetailsModal
                             singleOrder={singleOrder}
-                            modalVisible={isModalVisible}
-                            setModalVisible={setModalVisible}
+                            modalVisible={visibleModalOrderId === singleOrder._id} // Check if this order's modal should be visible
+                            setModalVisible={(isVisible) => setVisibleModalOrderId(isVisible ? singleOrder._id : null)} // Close modal
                         />
 
                         {/*

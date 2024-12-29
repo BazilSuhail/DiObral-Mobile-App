@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, TextInput, Button, ScrollView, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, ScrollView, Alert, TouchableOpacity, Pressable, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -11,9 +11,11 @@ import { useRouter } from 'expo-router';
 import Loader from '@/components/Loader';
 import { clearToken } from '@/hooks/authSlice';
 
+import noLogin from '@/assets/noLogin.jpg';
+
 const Profile = () => {
     const router = useRouter();
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
     const [user, setUser] = useState(null);
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
@@ -28,8 +30,8 @@ const Profile = () => {
         contact: ''
     });
     const [isEditing, setIsEditing] = useState(false);
-  
- 
+
+
     const fetchProfile = useCallback(async () => {
         try {
             const token = await AsyncStorage.getItem('token');
@@ -45,7 +47,7 @@ const Profile = () => {
                     address: response.data.address || { city: '', street: '', country: '' },
                     contact: response.data.contact || ''
                 });
-            } 
+            }
             else {
                 //navigation.navigate('Signin');
                 setError('Failed to fetch profile');
@@ -107,18 +109,23 @@ const Profile = () => {
         fetchProfile();
     }, [fetchProfile]);
 
-    //    if (error) return <Text className="text-red-500 pt-[50px]">{error}</Text>;
+    if (error) return (
+        <View className='bg-white pt-[28px]'>
+            <Text className="mx-auto mt-4 w-[92%] text-[20px] mb-1 text-red-800 font-bold">My Profile</Text>
+            <View className="bg-gray-300 mb-3 w-[92%] h-[3px] mx-auto"></View>
 
-    if (error) return <View className="pt-[48px] px-4">
-        <TouchableOpacity className="mt-[45px] bg-green-800 rounded-lg py-2" onPress={handleNavigatetoSignIn}>
-            <Text className="text-lg text-center text-white font-semibold">Sign In</Text>
-        </TouchableOpacity>
-        <View className="flex mt-[30px] justify-center items-center">
-            <Text className="px-4 py-1 bg-red-100 border-2 border-red-700 rounded-lg text-lg font-medium text-red-700">
-                Login To view begin shopping
-            </Text>
+            <View className=" flex h-screen w-screen justify-center items-center">
+                <Image
+                    source={noLogin}
+                    className="h-[220px] w-[220px] mt-[-95px]"
+                />
+                <Text className='text-[15px] text-red-900  font-[600]'>You Are not Logged In</Text>
+                <Pressable onPress={() => router.push(`/login`)}>
+                    <Text className='text-[13px] mt-[2px] font-[800] underline text-red-600'>Register Now !!</Text>
+                </Pressable>
+            </View>
         </View>
-    </View>;
+    );
 
     if (!user) return (
         <View className='h-screen flex items-center justify-center'>
@@ -269,7 +276,7 @@ const Profile = () => {
                             <View className="bg-red-100 bprder p-2 rounded-lg">
                                 <Text className="text-[14px] font-semibold">{user.address?.street}</Text>
                             </View>
-                            <Text className="text-sm mt-[8px] text-red-500">* Kindly fill the details carefully as this info will be used automatically by the system for shipping</Text>
+                            <Text className="text-[11px] font-[600] mt-[8px] text-red-500">* Kindly fill the details carefully as this info will be used automatically by the system for shipping</Text>
                         </View>
                         <View className="h-[55px]"></View>
                     </ScrollView>

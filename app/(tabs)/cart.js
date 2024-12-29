@@ -4,10 +4,14 @@ import { removeFromCart, clearCart, updateQuantity, isUserLoggedOut } from '@/ho
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Entypo from '@expo/vector-icons/Entypo';
-import { View, Text, Image, FlatList, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, Image, FlatList, Alert, TouchableOpacity, Pressable } from 'react-native';
 import config from '../../Config/Config';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+
+// cart illusatrations
+import cartNoLogin from '@/assets/cartNoLogin.jpg';
+import emptyCart from '@/assets/cart.jpg';
 
 const CartItem = ({ id, size, quantity, onIncrease, onDecrease, onRemove }) => {
   const [product, setProduct] = useState(null);
@@ -76,10 +80,9 @@ const Cart = () => {
   const cart = useSelector(state => state.cart);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  console.log("Is cart Logged In: " + isLoggedIn)
+  //console.log("Is cart Logged In: " + isLoggedIn)
   const [products, setProducts] = useState([]);
-  const [userId, setUserId] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [userId, setUserId] = useState(null); 
 
   const parseJwt = (token) => {
     try {
@@ -175,21 +178,25 @@ const Cart = () => {
   }*/
 
   return (
-    <View className="flex-1 pt-[45px] bg-white">
-
-      <View className="p-4">
-        <Text className="text-2xl mb-1 font-bold">Shopping Cart</Text>
-        <View className="bg-gray-300 mb-3 w-full h-[3px]"></View>
+    <View className="flex-1 pt-[28px] bg-white">
+      <View className="py-4">
+        <Text className="mx-auto w-[92%] text-[20px] mb-1 text-red-800 font-bold">My Cart</Text>
+        <View className="bg-gray-300 mb-3 w-[92%] h-[3px] mx-auto"></View>
         {isLoggedIn ?
           <>
             {cart.length === 0 ? (
-              <View className="flex mt-[30px] justify-center items-center">
-                <Text className="px-4 py-2 bg-red-100 border-2 border-red-700 rounded-lg text-lg font-medium text-red-700">
-                  Your cart is empty
-                </Text>
+              <View className="mx-4 bg-white flex h-screen w-screen justify-center items-center">
+                <Image
+                  source={emptyCart}
+                  className="h-[160px] w-[160px] mt-[-165px]"
+                />
+                <Text className='text-[15px] text-red-900 mt-[22px] font-[600]'>Your Cart is Empty</Text>
+                <Pressable onPress={() => router.push(`/productlist`)}>
+                  <Text className='text-[12px] font-[800] underline text-red-600'>Begin Shopping !!</Text>
+                </Pressable>
               </View>
             ) : (
-              <View className="flex">
+              <View className="mx-4 flex">
                 <View className="flex-row justify-between">
                   <TouchableOpacity onPress={handleClearCart} className="bg-red-700 flex flex-row justify-center items-center rounded-lg py-1 px-3">
                     <FontAwesome name="trash" size={14} color="white" />
@@ -226,16 +233,25 @@ const Cart = () => {
                     />
                   )}
                   keyExtractor={(item) => `${item.id}-${item.size}`}
-                  style={{ maxHeight: 550 }} // Custom max height in pixels
-                  className="w-full" // Optional: ensure full width
+                  style={{ maxHeight: 550 }}
+                  className="w-full"
                 />
 
               </View>
             )}
-          </> :
-          <View className="bg-white">
-            <Text>PLease logiN TO COMTINEU in</Text>
-          </View>}
+          </>
+          :
+          <View className="bg-white flex h-screen w-screen justify-center items-center">
+            <Image
+              source={cartNoLogin}
+              className="h-[220px] w-[220px] mt-[-165px]"
+            />
+            <Text className='text-[15px] text-red-900  font-[600]'>You are not logged in</Text>
+            <Pressable onPress={() => router.push(`/login`)}>
+              <Text className='text-[12px] font-[800] underline text-red-600'>Login Now !!</Text>
+            </Pressable>
+          </View>
+        }
       </View>
     </View>
   );

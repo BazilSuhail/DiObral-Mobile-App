@@ -1,50 +1,79 @@
-# Welcome to your Expo app 👋
+### Textleath (E-commerce Mobile Application)
+Texleath, an e-commerce platform developed for high-quality clothing sales, manufacturing, and export. This platform offers a sleek and elegant design, reflecting the premium nature of our products. With a focus on user experience, our site provides a seamless and engaging shopping experience, complemented by advanced features and interactive elements.
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-## Get started
+## Project Description:
+This student portal app streamlines academic management with features like secure authentication, profile management, viewing marks, attendance, and enrolled courses. It also allows course enrollment and withdrawal requests, offering a user-friendly solution for efficient academic organization.
 
-1. Install dependencies
+### 🤖 Tech Stack 
+<a href="#"> 
+<img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-%23F7DF1E.svg?&style=for-the-badge&logo=javascript&logoColor=black"/>
+<img alt="React Native" src="https://img.shields.io/badge/React%20Native-%2320232a.svg?&style=for-the-badge&logo=react&logoColor=%2361DAFB"/>
+<img alt="JWT" src="https://img.shields.io/badge/JWT-%2300A4CC.svg?&style=for-the-badge&logo=jsonwebtokens&logoColor=white"/>
+<img alt="Redux Toolkit" src="https://img.shields.io/badge/Redux%20Toolkit-%23764ABC.svg?&style=for-the-badge&logo=redux&logoColor=white"/>
+<img alt="React Native Reanimated" src="https://img.shields.io/badge/React%20Native%20Reanimated-%23845EC2.svg?&style=for-the-badge&logo=react&logoColor=%23FFFFFF"/>
+ </a>
+Check out the latest demo of Project [Texleath-Ecommerce-App](https://entitysafe.netlify.app/pages/AppList/-O4swNr4Vi3X0OLPoTQy). 
+</br>
 
-   ```bash
-   npm install
-   ```
+<a href="#"> 
+<img alt="Node.js" src="https://img.shields.io/badge/Node.js-%23339933.svg?&style=for-the-badge&logo=nodedotjs&logoColor=white"/>
+<img alt="MongoDB" src="https://img.shields.io/badge/MongoDB-%2347A248.svg?&style=for-the-badge&logo=mongodb&logoColor=white"/>
+<img alt="Express" src="https://img.shields.io/badge/Express-%23000000.svg?&style=for-the-badge&logo=express&logoColor=white"/>
+<img alt="JWT" src="https://img.shields.io/badge/JWT-%2300A4CC.svg?&style=for-the-badge&logo=jsonwebtokens&logoColor=white"/>
+ </a>
 
-2. Start the app
+#### Tech Stack For Backend
 
-   ```bash
-    npx expo start
-   ```
+![App Screenshot](https://github.com/Kharbooza978/EntitySafe/blob/main/Student-App/student_app1.png)
 
-In the output, you'll find options to open the app in a
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
+# Run Locally
+ Clone the project using following command
 ```bash
-npm run reset-project
+  git clone https://github.com/BazilSuhail/Ecommerce-Texleath-App.git
 ```
+Go to the project directory
+```bash
+  cd my-project
+```
+Then **Run** this command in your terminal to install all required dependancies:
+```bash
+  npm install
+```
+In the project directory, you can run:
+```bash
+  npm expo start -c
+``` 
+Run the app in your mobile using **Expo Go** App or using Android Studio after reading instructions from the commands listed after running the above command.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Features
 
-## Learn more
+### Responsive Homepage
+- **Design**: Clean and elegant layout optimized for both large and small screens.
+- **Interactive Canvas**: 2D canvas element with scroll-triggered animations for enhanced visual appeal.
+- **Framer Motion Animations**: Sophisticated animations to bring the site's content to life.
 
-To learn more about developing your project with Expo, look at the following resources:
+### Product Details Component
+- **Display Information**: Comprehensive details of products including images, descriptions, and pricing.
+- **Add to Cart**: Functionality to add items to the cart with adjustable quantities.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Cart Management
+- **Add to Cart**: Add products with adjustable quantities.
+- **Cart Summary**: View cart items including product name, price, quantity, and total price.
+- **Clear Cart**: Automatically clears the cart when the user logs out.
 
-## Join the community
+### Order Management
+- **Order Display**: View order details such as the number of items, order date, total amount, and order ID.
+- **Order Details**: Detailed view of individual orders and their items.
 
-Join our community of developers creating universal apps.
+### User Profile Management
+- **View and Edit Profile**: Allows users to view and update their profile information, including full name, email, and phone number.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Review System
+- **Submit Reviews**: Users can submit reviews for products, including rating and comments.
+- **Review Pagination**: Reviews are displayed in groups of four with a 'Load More' button to view additional reviews.
+
+
+# Live Demo
+## Check out the Web Application demo of Project [Texleath](https://texleath.netlify.app). 
