@@ -13,8 +13,11 @@ This student portal app streamlines academic management with features like secur
 <img alt="Redux Toolkit" src="https://img.shields.io/badge/Redux%20Toolkit-%23764ABC.svg?&style=for-the-badge&logo=redux&logoColor=white"/>
 <img alt="React Native Reanimated" src="https://img.shields.io/badge/React%20Native%20Reanimated-%23845EC2.svg?&style=for-the-badge&logo=react&logoColor=%23FFFFFF"/>
  </a>
+
 Check out the latest demo of Project [Texleath-Ecommerce-App](https://entitysafe.netlify.app/pages/AppList/-O4swNr4Vi3X0OLPoTQy). 
 </br>
+
+#### Tech Stack For Backend
 
 <a href="#"> 
 <img alt="Node.js" src="https://img.shields.io/badge/Node.js-%23339933.svg?&style=for-the-badge&logo=nodedotjs&logoColor=white"/>
@@ -23,7 +26,6 @@ Check out the latest demo of Project [Texleath-Ecommerce-App](https://entitysafe
 <img alt="JWT" src="https://img.shields.io/badge/JWT-%2300A4CC.svg?&style=for-the-badge&logo=jsonwebtokens&logoColor=white"/>
  </a>
 
-#### Tech Stack For Backend
 
 ![App Screenshot](https://github.com/Kharbooza978/EntitySafe/blob/main/Student-App/student_app1.png)
 
@@ -49,10 +51,9 @@ Run the app in your mobile using **Expo Go** App or using Android Studio after r
 
 ## Features
 
-### Responsive Homepage
-- **Design**: Clean and elegant layout optimized for both large and small screens.
-- **Interactive Canvas**: 2D canvas element with scroll-triggered animations for enhanced visual appeal.
-- **Framer Motion Animations**: Sophisticated animations to bring the site's content to life.
+### Homepage
+- **Design**: Clean and elegant layout optimized for android. 
+- **React-Native reanimated Animations**: Sophisticated animations to bring the applications's content to life.
 
 ### Product Details Component
 - **Display Information**: Comprehensive details of products including images, descriptions, and pricing.
@@ -74,6 +75,5 @@ Run the app in your mobile using **Expo Go** App or using Android Studio after r
 - **Submit Reviews**: Users can submit reviews for products, including rating and comments.
 - **Review Pagination**: Reviews are displayed in groups of four with a 'Load More' button to view additional reviews.
 
-
-# Live Demo
+### Live Web Application Demo
 ## Check out the Web Application demo of Project [Texleath](https://texleath.netlify.app). 
