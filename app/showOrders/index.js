@@ -15,9 +15,8 @@ const ShowOrders = () => {
     const [loading, setLoading] = useState(true);
     const [fetchingOrders, setFetchingOrders] = useState(false);
 
-    const [visibleModalOrderId, setVisibleModalOrderId] = useState(null); // Track which modal to show
+    const [visibleModalOrderId, setVisibleModalOrderId] = useState(null);
 
-    // Function to decode JWT token
     const parseJwt = (token) => {
         try {
             if (!token || typeof token !== 'string') return null;
@@ -33,16 +32,16 @@ const ShowOrders = () => {
         }
     };
 
-    // Get user ID from token when component mounts
     useEffect(() => {
         const fetchTokenAndUserId = async () => {
             try {
                 const token = await AsyncStorage.getItem('token');
                 const decodedToken = parseJwt(token);
                 if (decodedToken) {
-                    setUserId(decodedToken.id); // Adjust according to your JWT structure
+                    setUserId(decodedToken.id);
                 }
-            } catch (error) {
+            }
+            catch (error) {
                 console.error('Error fetching token:', error);
             }
         };
@@ -59,9 +58,11 @@ const ShowOrders = () => {
             try {
                 const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/place-order/orders/${userId}`);
                 setOrders(response.data);
-            } catch (error) {
+            }
+            catch (error) {
                 console.error('Error fetching orders:', error);
-            } finally {
+            }
+            finally {
                 setLoading(false);
             }
         };
@@ -113,75 +114,46 @@ const ShowOrders = () => {
 
             {orders.map(order => (
                 order.orders.map(singleOrder => (
-                    <View key={singleOrder._id} className="border border-gray-300 rounded-lg p-4 mb-4 bg-white shadow-md">
+                    <TouchableOpacity onPress={() => setVisibleModalOrderId(singleOrder._id)} key={singleOrder._id} className="border border-gray-300 rounded-lg p-4 mb-4 bg-white shadow-md">
                         <View className="flex-row items-center justify-between mb-2">
-                            <Text className="text-[13px] font-bold text-yellow-800 bg-yellow-100 border border-yellow-400 px-3 py-[2px] rounded-lg">
-                                Placed:
-                                {Math.floor((new Date() - new Date(singleOrder.orderDate)) / (1000 * 60 * 60 * 24)) === 0
-                                    ? " Today"
-                                    : ` ${Math.floor((new Date() - new Date(singleOrder.orderDate)) / (1000 * 60 * 60 * 24))} days ago`}
-                            </Text>
-
+                            <View className='flex-row items-center'>
+                                <Text className='font-[600] text-[12px] mr-[3px] text-yellow-700'>
+                                    Placed:
+                                </Text>
+                                <Text className="text-[12px] font-bold text-yellow-800 bg-yellow-100 border border-yellow-400 px-[8px] rounded-lg">
+                                    {Math.floor((new Date() - new Date(singleOrder.orderDate)) / (1000 * 60 * 60 * 24)) === 0
+                                        ? " Today"
+                                        : ` ${Math.floor((new Date() - new Date(singleOrder.orderDate)) / (1000 * 60 * 60 * 24))} days ago`}
+                                </Text>
+                            </View>
                             <Text className="text-[13px] font-bold text-red-600 underline">
                                 {new Date(singleOrder.orderDate).toLocaleDateString()}
                             </Text>
                         </View>
 
-                        <View className="flex-row items-center justify-between mb-[8px]">
-                            <Text className="text-[11px] font-bold text-blue-600">Bill Checkout:</Text>
-                            <Text className="text-[13px] px-2 rounded-md py-[2px] font-bold text-blue-100 bg-blue-800">
-                                <Text className='text-[10px]'>Rs.</Text> {singleOrder.total ? singleOrder.total.toFixed(2) : 'N/A'}
-                            </Text>
-                        </View>
+<View className='h-[2.5px] mb-[8px] w-full mx-auto bg-gray-200 rounded-xl'></View>
+                        <View className='flex-row items-center justify-between'>
+                            <View>
+                                <Text className="text-[12px] font-bold text-gray-400">Items Ordered:</Text>
+                                <Text className="text-[14px] font-bold text-red-700">{singleOrder.items.length}</Text>
+                            </View>
 
-                        <View className="flex-row items-center justify-between">
-                            <Text className="text-[11px] font-bold text-blue-500">Items Ordered:</Text>
-                            <Text className="text-[14px] font-bold text-blue-500">{singleOrder.items.length}</Text>
+                            <View>
+                                <Text className="text-[12px] font-bold text-gray-400">Checkout:</Text>
+                                <Text className="text-[14px] font-bold text-blue-700"><Text className='text-[11px]'>Rs. </Text>{singleOrder.total ? singleOrder.total.toFixed(2) : 'N/A'}</Text>
+                            </View>
                         </View>
+{/* 
 
                         <Button title="Show Order Details" onPress={() => setVisibleModalOrderId(singleOrder._id)} />
 
+*/}
                         <OrderDetailsModal
                             singleOrder={singleOrder}
-                            modalVisible={visibleModalOrderId === singleOrder._id} // Check if this order's modal should be visible
-                            setModalVisible={(isVisible) => setVisibleModalOrderId(isVisible ? singleOrder._id : null)} // Close modal
+                            modalVisible={visibleModalOrderId === singleOrder._id}
+                            setModalVisible={(isVisible) => setVisibleModalOrderId(isVisible ? singleOrder._id : null)}
                         />
-
-                        {/*
-                        <View className="border-t border-gray-500 pt-2">
-                            {singleOrder.items.map(item => (
-                                <View key={`${item._id}-${item.size}`} className="flex justify-between mb-2">
-                                    <View>
-                                        <View className="flex-row items-center mb-2">
-                                            <View className="w-3 h-3 rounded-full bg-red-800 mr-2" />
-                                            <Text className="text-xl font-bold underline">{item.name}</Text>
-                                        </View>
-                                        <Text className="text-md font-bold text-black">
-                                            <Text className="font-semibold text-red-900">Quantity:</Text> {item.quantity}
-                                        </Text>
-                                        <Text className="text-md font-bold text-black">
-                                            <Text className="font-semibold text-red-900">Selected Size:</Text> {item.size}
-                                        </Text>
-                                        <Text className="text-md font-bold text-black">
-                                            <Text className="font-semibold text-red-900">Price:</Text> ${item.price ? item.price.toFixed(2) : 'N/A'}
-                                        </Text>
-                                        <Text className="text-md font-bold text-black">
-                                            <Text className="font-semibold text-red-900">Discounted Price through Sale/Coupons:</Text> ${item.discountedPrice ? item.discountedPrice.toFixed(2) : 'N/A'}
-                                        </Text>
-                                    </View>
-                                    <View className="flex-row items-center justify-between mt-[8px] bg-gray-200 border-t border-b border-gray-400 px-2 py-[8px]">
-                                        <Text className="text-[17px] font-bold text-red-800">Total:</Text>
-                                        <Text className="text-[17px] font-bold text-red-800">
-                                            Rs. {item.discountedPrice && item.quantity
-                                                ? (item.discountedPrice * item.quantity).toFixed(2)
-                                                : 'N/A'}
-                                        </Text>
-                                    </View>
-                                </View>
-                            ))}
-                        </View>
-                        */}
-                    </View>
+                    </TouchableOpacity>
                 ))
             ))}
         </ScrollView>

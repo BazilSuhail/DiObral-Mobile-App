@@ -10,7 +10,7 @@ const OrderDetailsModal = ({ singleOrder, modalVisible, setModalVisible }) => {
             transparent={true}
             onRequestClose={() => setModalVisible(false)}
         >
-            <View className="flex-1 justify-center items-center bg-black/80 py-[65px]">
+            <View className="flex-1 justify-center items-center bg-black/50 py-[65px]">
                 <View className="w-[90%] bg-white rounded-lg p-4">
                     {/* Header */}
                     <View className="flex-row justify-between items-center mb-4">

@@ -49,10 +49,10 @@ const MediaCarousel = ({ mainImage, otherImages, onImageChange }) => {
 
 const ProductDetails = () => {
     const pathname = usePathname();
-    const id = pathname.split("/").pop();
-    //console.log("Product Id: "+ id)
+    const id = pathname.split("/").pop(); 
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-    console.log("Is Logged In: " + isLoggedIn)
+    //console.log("Is Logged In: " + isLoggedIn)
+
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState(null);
@@ -65,8 +65,7 @@ const ProductDetails = () => {
         const fetchAverageRating = async () => {
             try {
                 const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/product-reviews/reviews/average/${id}`);
-                setAverageRating(response.data.averageRating);
-                //console.log(averageRating)
+                setAverageRating(response.data.averageRating); 
             }
             catch (error) {
                 //console.error('Error fetching Product Reviews:', error);
@@ -258,11 +257,9 @@ const ProductDetails = () => {
                                 <Text className="text-center text-white text-[11px] font-bold">Begin Shopping</Text>
                             </View>
                         }
-
                     </View>
                 </View>
             )}
-
         </SafeAreaView>
     );
 };

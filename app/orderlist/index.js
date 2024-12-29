@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { clearCart } from '@/hooks/cartSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, ScrollView, TouchableOpacity, Alert, Modal } from 'react-native';
-import { FontAwesome, Feather } from '@expo/vector-icons'; // Importing the necessary vector icons from Expo
+import { FontAwesome, Feather } from '@expo/vector-icons'; 
 import config from '@/Config/Config';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -59,10 +59,8 @@ const OrderList = () => {
     const [userId, setUserId] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const parseJwt = (token) => {
-        //console.log(token);
+    const parseJwt = (token) => { 
         try {
-
             if (!token || typeof token !== 'string') return null;
             const [header, payload, signature] = token.split('.');
             if (!payload) return null;
@@ -70,7 +68,8 @@ const OrderList = () => {
             const base64 = base64Url + (base64Url.length % 4 === 0 ? '' : '='.repeat(4 - (base64Url.length % 4)));
             const decodedPayload = atob(base64);
             return JSON.parse(decodedPayload);
-        } catch (error) {
+        } 
+        catch (error) {
             //console.error('Error parsing JWT:', error);
             return null;
         }
@@ -132,15 +131,14 @@ const OrderList = () => {
             orderDate: new Date().toISOString(),
             total: calculateTotalBill()
         };
-        console.log(userId);
+        //console.log(userId);
 
         try {
             await axios.post(`${config.REACT_APP_API_BASE_URL}/place-order/orders/${userId}`, order);
             Alert.alert('Order confirmed!');
             dispatch(clearCart());
 
-            await axios.post(`${config.REACT_APP_API_BASE_URL}/cartState/cart/save`, { userId, items: [] });
-            //navigation.navigate('Cart');
+            await axios.post(`${config.REACT_APP_API_BASE_URL}/cartState/cart/save`, { userId, items: [] }); 
             navigation.goBack();
         } 
         catch (error) {
@@ -176,7 +174,7 @@ const OrderList = () => {
     const closeModal = () => setIsModalOpen(false);
 
     if (!cart.length) return <Text>Your cart is empty</Text>;
-/* className={`${isModalOpen ? 'bg-black/50' : 'bg-gray-50' }  pt-[15px] px-3`}  */
+    
     return (
         <SafeAreaView className=" pt-[15px] px-3" >
             <ScrollView scrollEnabled={true} showsVerticalScrollIndicator={false}>

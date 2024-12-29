@@ -1,0 +1,39 @@
+name: Build Expo App using EAS
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+
+      - name: Authenticate with Expo
+        run: eas login --token ${{ secrets.EXPO_TOKEN }}
+
+      - name: Configure EAS
+        run: eas init --id ${{ secrets.EAS_PROJECT_ID }}
+
+      - name: Build Android APK
+        run: eas build -p android --profile preview --non-interactive
+
+      - name: Display Build URL
+        run: |
+          echo "Check build status here: https://expo.dev/accounts/{username}/projects/{project-name}/builds"

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert, Image } from 'react-native';
+import { View, Text, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-//import { useNavigation } from '@react-navigation/native';
+
 import { useDispatch } from 'react-redux';
 import { setCart } from '@/hooks/cartSlice';
-import Icon from 'react-native-vector-icons/Ionicons'; // For general icons
-import FontAwesome from 'react-native-vector-icons/FontAwesome'; // For Facebook, Twitter, LinkedIn, Google icons
+import Icon from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { TouchableOpacity } from 'react-native';
 import config from '@/Config/Config';
@@ -14,22 +14,21 @@ import { useRouter } from 'expo-router';
 import { setToken } from '@/hooks/authSlice';
 
 const Login = () => {
-  const router = useRouter();
+    const router = useRouter();
+    const dispatch = useDispatch();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    //const navigation = useNavigation();
-    const dispatch = useDispatch(); 
-
     const fetchUserCart = async (userId) => {
         try {
             const response = await axios.get(`${config.REACT_APP_API_BASE_URL}/cartState/cart/${userId}`);
-            //console.log('Fetch cart response:', response);
             if (response.status === 200) {
                 dispatch(setCart(response.data.items));
             }
-        } catch (error) {
+        } 
+        catch (error) {
             console.error('Error fetching cart state:', error);
         }
     };
@@ -41,11 +40,9 @@ const Login = () => {
             const base64Url = payload.replace(/-/g, '+').replace(/_/g, '/');
             const base64 = base64Url + (base64Url.length % 4 === 0 ? '' : '='.repeat(4 - (base64Url.length % 4)));
             const decodedPayload = atob(base64);
-
-            // Convert to a JSON 
-            //console.log(JSON.parse(decodedPayload));
             return JSON.parse(decodedPayload);
-        } catch (error) {
+        }
+        catch (error) {
             console.error('Error parsing JWT:', error);
             return null;
         }
@@ -55,31 +52,32 @@ const Login = () => {
         try {
             const response = await axios.post(`${config.REACT_APP_API_BASE_URL}/auth/login`, { email, password });
             if (response.data.token) {
-                await AsyncStorage.setItem('token', response.data.token); 
-                dispatch(setToken(response.data.token)); 
+                await AsyncStorage.setItem('token', response.data.token);
+                dispatch(setToken(response.data.token));
 
                 const decodedToken = parseJwt(response.data.token);
-                const userId = decodedToken?.id;  
-                console.log('User ID:', userId);
+                const userId = decodedToken?.id;
 
-                if (userId) { 
-                    await fetchUserCart(userId);  
+                if (userId) {
+                    await fetchUserCart(userId);
                     router.push('/cart');
-                } 
+                }
                 else {
                     setError('Error: Unable to get user ID from token');
                 }
-            } else {
+            } 
+            else {
                 setError('Login failed: No token received');
             }
-        } catch (error) {
+        } 
+        catch (error) {
             setError(error.response?.data?.message || 'Login failed');
         }
     };
 
     return (
-        <View className="relative flex items-center bg-red-100 justify-center pt-[48px] flex-1"> 
-            <View className="absolute h-screen w-screen"> 
+        <View className="relative flex items-center bg-red-100 justify-center pt-[48px] flex-1">
+            <View className="absolute h-screen w-screen">
                 <View className="h-[850px] mt-[-580px] mr-[-65px] w-[850px] rounded-full bg-red-700  absolute top-0 right-0"></View>
                 <View className="h-[700px] mt-[-610px] mr-[-110px] w-[700px] rounded-full bg-red-900 absolute top-0 right-0"></View>
 
