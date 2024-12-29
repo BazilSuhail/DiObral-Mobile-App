@@ -1,5 +1,11 @@
 {
   "expo": {
+    "name": "Texleath Commerce",
+    "slug": "texleath-e-commerce",
+    "version": "1.0.0",
+    "android": {
+      "package": "com.netlify.bazilsuhail"
+    },
     "extra": {
       "eas": {
         "projectId": "ed0981cb-1e6c-4cd0-8cfa-8568eadb0a1e"
