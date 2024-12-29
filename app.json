@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Texleath Commerce",
-    "slug": "texleath-e-commerce",
+    "slug": "texleath-app",
     "version": "1.0.0",
     "android": {
       "package": "com.netlify.bazilsuhail"
