@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-//import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 
-import Icon from 'react-native-vector-icons/Ionicons'; // For general icons
-import FontAwesome from 'react-native-vector-icons/FontAwesome'; // For Facebook, Twitter, LinkedIn, Google icons
-import config from '@/Config/Config'; 
-import { useRouter } from 'expo-router';
+import Icon from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import config from '@/Config/Config';
+import { Link, useRouter } from 'expo-router';
 
 const SignUp = () => {
-  const router = useRouter();
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -18,7 +17,7 @@ const SignUp = () => {
     const [success, setSuccess] = useState('');
 
     //const navigation = useNavigation();
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
 
     const handleSubmit = async () => {
         if (password !== confirmPassword) {
@@ -30,7 +29,7 @@ const SignUp = () => {
             await axios.post(`${config.REACT_APP_API_BASE_URL}/auth/register`, { email, password });
             setSuccess('Registration successful! Please log in.');
             setError('');
-            setTimeout(() => router.push(`/login`), 1000); // Navigate to Login screen
+            setTimeout(() => router.push(`/login`), 1000);
         } catch (error) {
             setError(error.response?.data?.message || 'Registration failed');
             setSuccess('');
@@ -65,14 +64,9 @@ const SignUp = () => {
 
             {/* Content */}
             <View className="flex m-4 rounded-lg bg-white justify-center py-6 px-8 w-[85%]">
-                {error ? (
-                    <Text className="text-red-500 p-2 border-2 border-red-600 rounded-md mb-4 text-center">
-                        {`Error: ${error}`}
-                    </Text>
-                ) : null}
                 <Text className="text-red-800  font-semibold  rounded-md mb-4">
                     Please Enter Your with <Text className="text-red-500 font-bold underline">Credentials</Text>
-                </Text> 
+                </Text>
                 <View className="flex-row items-center bg-red-700 px-4 rounded-2xl py-1 mb-4">
                     <Icon name="mail-outline" size={24} color="white" />
                     <TextInput
@@ -111,21 +105,32 @@ const SignUp = () => {
                     />
                 </View>
                 <TouchableOpacity onPress={handleSubmit} className="bg-red-600 rounded-3xl py-2 px-4">
-                    <Text className="text-center text-lg text-white">Sign Up</Text>
+                    <Text className="text-center font-[600] text-[15px] text-white">Sign Up</Text>
                 </TouchableOpacity>
+
+{error ? (
+                    <Text className="text-red-500 mt-4 font-[600] text-center underline">
+                        {`${error}`}
+                    </Text>
+                ) : null}
                 <View className="mt-[15px]">
-                    <Text className="text-center text-[15px] font-medium">
+                    <Text className="text-center text-[14px] font-medium">
                         Already have an account?{' '}
+                        <Link className="text-red-700 font-bold underline" href="/login" replace={true}>
+                            Sign In
+                        </Link>
+                        {/*
                         <Text className="text-red-700 font-bold underline" onPress={() => router.push(`/login`)}>
                             Sign In
                         </Text>
+                        */}
+
                     </Text>
                 </View>
             </View>
         </View>
 
     );
-}; 
+};
 
 export default SignUp;
- 

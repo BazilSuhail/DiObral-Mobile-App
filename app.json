@@ -4,8 +4,13 @@
     "slug": "texleath-app",
     "version": "1.0.0",
     "android": {
-      "package": "com.netlify.bazilsuhail"
+      "package": "com.netlify.bazilsuhail",
+      "newArchEnabled": true
     },
+    "ios": {
+      "newArchEnabled": true
+    },
+    "scheme": "texleathcommerce",
     "extra": {
       "eas": {
         "projectId": "ed0981cb-1e6c-4cd0-8cfa-8568eadb0a1e"

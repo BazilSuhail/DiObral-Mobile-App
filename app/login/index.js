@@ -10,7 +10,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { TouchableOpacity } from 'react-native';
 import config from '@/Config/Config';
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { setToken } from '@/hooks/authSlice';
 
 const Login = () => {
@@ -100,11 +100,6 @@ const Login = () => {
 
             {/* Content */}
             <View className="flex m-4 rounded-lg bg-white justify-center py-6 px-8 w-[85%]">
-                {error ? (
-                    <Text className="text-red-500 p-2 border-2 border-red-600 rounded-md mb-4 text-center">
-                        {`Error: ${error}`}
-                    </Text>
-                ) : null}
                 <Text className="text-red-800  font-semibold  rounded-md mb-4">
                     Please Continue with <Text className="text-red-500 font-bold underline">Your Credentials</Text>
                 </Text>
@@ -134,14 +129,24 @@ const Login = () => {
                     />
                 </View>
                 <TouchableOpacity onPress={handleSubmit} className="bg-red-600 rounded-3xl py-2 px-4">
-                    <Text className="text-center text-lg text-white">Sign In</Text>
+                    <Text className="text-center font-[600] text-[15px] text-white">Sign In</Text>
                 </TouchableOpacity>
+                {error ? (
+                    <Text className="text-red-500 mt-4 font-[600] text-center underline">
+                        {`${error}`}
+                    </Text>
+                ) : null}
                 <View className="mt-[15px]">
-                    <Text className="text-center text-[15px] font-medium">
+                    <Text className="text-center text-[14px] font-medium">
                         Don't have an account?{' '}
+                        <Link className="text-red-700 font-bold underline" href="/signup" replace={true}>
+                            Sign Up
+                        </Link>
+                        {/*
                         <Text className="text-red-700 font-bold underline" onPress={() => router.push(`/signup`)}>
                             Sign Up
                         </Text>
+                        */}
                     </Text>
                 </View>
             </View>

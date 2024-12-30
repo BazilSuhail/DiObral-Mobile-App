@@ -29,7 +29,25 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <Stack screenOptions={{ headerShown: false }}>
+        <Stack  
+         screenOptions={{
+          headerShown: false, // Hide headers if not needed
+          gestureEnabled: true, // Enable gestures
+          gestureDirection: 'horizontal', // Horizontal swipe gestures
+          cardStyleInterpolator: ({ current, layouts }) => ({
+            cardStyle: {
+              transform: [
+                {
+                  translateX: current.progress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [layouts.screen.width, 0], // Slide in from right
+                  }),
+                },
+              ],
+            },
+          }),
+        }}
+        >
           <Stack.Screen name="(tabs)" /> 
           <Stack.Screen name="+not-found" />
         </Stack>
