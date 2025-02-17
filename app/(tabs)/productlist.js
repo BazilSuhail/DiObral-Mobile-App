@@ -120,12 +120,12 @@ const ProductList = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
-      <View className="flex w-full px-[8px] pt-[48px]">
-        <Text className="text-2xl text-red-700 font-bold ">Catalog</Text>
-        <View className="bg-gray-400 mx-auto w-[95%] mt-2 h-[3px]"></View>
+    <SafeAreaView className="flex-1 pt-[28px] bg-white"> 
+          <View className="py-4">
+            <Text className="mx-auto w-[92%] text-[20px] mb-1 text-red-800 font-bold">Catalog</Text>
+            <View className="bg-gray-300 mb-3 w-[92%] h-[3px] mx-auto"></View>
         {/* Category filter */}
-        <View className="px-[8px] mx-2 py-[8px] rounded-xl mt-[15px] bg-white">
+        <View className="px-[8px] mx-2 py-[8px] rounded-xl bg-white">
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View className="flex flex-row flex-wrap gap-2">
               <TouchableOpacity onPress={() => handleCategoryClick('All')}>
