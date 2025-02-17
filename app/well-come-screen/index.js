@@ -68,7 +68,7 @@ const WelcomeScreen = () => {
           <View className='w-screen flex items-center'>
             <View className='h-[200px] w-[280px]'>
               <Image
-                source={require('@/assets/Assets/wellcome-1.png')}
+                source={require('@/assets/Assets/wellcome1.png')}
                 alt="No Reservations"
                 className="w-full h-full"
               />
@@ -81,7 +81,7 @@ const WelcomeScreen = () => {
           <View className='w-screen flex items-center'>
             <View className='h-[200px] w-[210px]'>
               <Image
-                source={require('@/assets/Assets/wellcome-1.png')}
+                source={require('@/assets/Assets/wellcome1.png')}
                 alt="No Reservations"
                 className="w-full h-full"
               />
@@ -94,7 +94,7 @@ const WelcomeScreen = () => {
           <View className='w-screen flex items-center'>
             <View className='h-[220px] w-[180px]'>
               <Image
-                source={require('@/assets/Assets/wellcome-2.png')}
+                source={require('@/assets/Assets/wellcome2.png')}
                 alt="No Reservations"
                 className="w-full h-full"
               />
@@ -107,7 +107,7 @@ const WelcomeScreen = () => {
           <View className='w-screen flex mb-[25px] items-center'>
             <View className='h-[110px] w-[280px]'>
               <Image
-                source={require('@/assets/Assets/wellcome-3.png')}
+                source={require('@/assets/Assets/wellcome3.png')}
                 alt="No Reservations"
                 className="w-full h-full"
               />
