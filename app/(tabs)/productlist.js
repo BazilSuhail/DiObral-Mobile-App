@@ -96,7 +96,7 @@ const ProductList = () => {
     return (
       <TouchableOpacity
         onPress={() => handleProductClick(item._id)}
-        className="p-2 pt-3 w-[48%] h-[310px] bg-white rounded-lg mx-[5px] mb-[10px] shadow-md"
+        className="p-2 pt-3 w-[48%] h-[310px] bg-white border-[2px] border-gray-100 rounded-lg mx-[5px] mb-[10px] shadow-md"
       >
         <Image
           source={{ uri: `${config.REACT_APP_API_BASE_URL}/uploads/${item.image}` }}
@@ -120,7 +120,7 @@ const ProductList = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-200">
+    <SafeAreaView className="flex-1 bg-gray-50">
       <View className="flex w-full px-[8px] pt-[48px]">
         <Text className="text-2xl text-red-700 font-bold ">Catalog</Text>
         <View className="bg-gray-400 mx-auto w-[95%] mt-2 h-[3px]"></View>
@@ -173,12 +173,14 @@ const ProductList = () => {
             <Text className="text-[13px] font-medium text-center text-red-800">Filterd Results: <Text className="font-extrabold">{filteredProducts.length}</Text></Text>
           </View>
         }
-        <View className='h-[12px] bg-gray-200'></View>
+
+        <View className='h-[12px] bg-gray-50'></View>
 
         <FlatList
           data={filteredProducts}
           renderItem={renderProductItem}
           keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
           numColumns={2}
           contentContainerStyle={{ paddingHorizontal: 8, paddingVertical: 10 }}
         />
