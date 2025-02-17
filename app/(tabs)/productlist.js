@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, ScrollView } from 'react-native';
 import config from '@//Config/Config';
 import { useRouter } from 'expo-router';
-import Loader from '@/components/Loader';
+import CatalogSkeleton from '@/components/Loaders/CatalogSkeleton'; 
+import { StatusBar } from 'expo-status-bar';
 
 const ProductList = () => {
-  const router = useRouter();
+  const router = useRouter(); 
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -63,12 +64,7 @@ const ProductList = () => {
     fetchSubcategories();
   }, [selectedCategory]);
 
-  if (loading) return (
-    <View className='h-screen flex items-center justify-center'>
-         <Loader />
-       </View>
-  );
-  if (error) return <Text>Error: {error}</Text>;
+
 
   const filteredProducts = products.filter(product => {
     const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
@@ -119,71 +115,82 @@ const ProductList = () => {
     );
   };
 
-  return (
-    <SafeAreaView className="flex-1 pt-[28px] bg-white"> 
-          <View className="py-4">
-            <Text className="mx-auto w-[92%] text-[20px] mb-1 text-red-800 font-bold">Catalog</Text>
-            <View className="bg-gray-300 mb-3 w-[92%] h-[3px] mx-auto"></View>
-        {/* Category filter */}
-        <View className="px-[8px] mx-2 py-[8px] rounded-xl bg-white">
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View className="flex flex-row flex-wrap gap-2">
-              <TouchableOpacity onPress={() => handleCategoryClick('All')}>
-                <Text className={`px-3 py-1 rounded border border-gray-200 ${selectedCategory === 'All' ? 'bg-red-900 text-white' : 'bg-gray-200'}`}>
-                  All Categories
-                </Text>
-              </TouchableOpacity>
-              {categories.map(category => (
-                <TouchableOpacity
-                  key={category._id}
-                  onPress={() => handleCategoryClick(category.name)}
-                >
-                  <Text className={`px-3 py-1 rounded border border-gray-200 ${selectedCategory === category.name ? 'bg-red-900 text-white' : 'bg-gray-200'}`}>
-                    {category.name}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
+  if (error) return <Text className='text-red-600 mt-[15px] text-[13px] px-[15px] font-[600]'>Network Error</Text>;
 
-          {selectedCategory !== 'All' && (
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-[8px]">
-              <View className="flex flex-row flex-wrap gap-x-2">
-                <TouchableOpacity onPress={() => handleSubcategoryClick('All')}>
-                  <Text className={`px-3 py-1 rounded border border-gray-200 ${selectedSubcategory === 'All' ? 'bg-red-900 text-white' : 'bg-gray-200'}`}>
-                    All Sub-Categories
-                  </Text>
-                </TouchableOpacity>
-                {subcategories.map(subcategory => (
-                  <TouchableOpacity
-                    key={subcategory._id}
-                    onPress={() => handleSubcategoryClick(subcategory.name)}
-                  >
-                    <Text className={`px-3 py-1 rounded border border-gray-200 ${selectedSubcategory === subcategory.name ? 'bg-red-900 text-white' : 'bg-gray-200'}`}>
-                      {subcategory.name}
+  return (
+    <SafeAreaView className={`flex-1 pt-[28px] bg-gray-100`}>
+      <StatusBar backgroundColor='#f3f4f6' barStyle='light-content' />
+      <View className="py-4">
+        <Text className="mx-auto w-[92%] text-[20px] mb-1 text-red-800 font-bold">Catalog</Text>
+        <View className="bg-gray-300 mb-3 w-[92%] h-[3px] mx-auto"></View>
+
+        {loading ?
+          <ScrollView showsVerticalScrollIndicator={false} className='px-[15px]'>
+            {Array.from({ length: 6 }).map((_, index) => (<CatalogSkeleton key={index} />))}
+          </ScrollView>
+          :
+          <>
+            {/* Category filter */}
+            <View className="px-[8px] mx-2 py-[8px] rounded-xl bg-white">
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View className="flex flex-row flex-wrap gap-2">
+                  <TouchableOpacity onPress={() => handleCategoryClick('All')}>
+                    <Text className={`px-3 py-1 rounded border border-gray-200 ${selectedCategory === 'All' ? 'bg-red-900 text-white' : 'bg-gray-200'}`}>
+                      All Categories
                     </Text>
                   </TouchableOpacity>
-                ))}
+                  {categories.map(category => (
+                    <TouchableOpacity
+                      key={category._id}
+                      onPress={() => handleCategoryClick(category.name)}
+                    >
+                      <Text className={`px-3 py-1 rounded border border-gray-200 ${selectedCategory === category.name ? 'bg-red-900 text-white' : 'bg-gray-200'}`}>
+                        {category.name}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </ScrollView>
+
+              {selectedCategory !== 'All' && (
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-[8px]">
+                  <View className="flex flex-row flex-wrap gap-x-2">
+                    <TouchableOpacity onPress={() => handleSubcategoryClick('All')}>
+                      <Text className={`px-3 py-1 rounded border border-gray-200 ${selectedSubcategory === 'All' ? 'bg-red-900 text-white' : 'bg-gray-200'}`}>
+                        All Sub-Categories
+                      </Text>
+                    </TouchableOpacity>
+                    {subcategories.map(subcategory => (
+                      <TouchableOpacity
+                        key={subcategory._id}
+                        onPress={() => handleSubcategoryClick(subcategory.name)}
+                      >
+                        <Text className={`px-3 py-1 rounded border border-gray-200 ${selectedSubcategory === subcategory.name ? 'bg-red-900 text-white' : 'bg-gray-200'}`}>
+                          {subcategory.name}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </ScrollView>
+              )}
+            </View>
+            {selectedCategory !== 'All' &&
+              <View className="mt-[12px] py-[3px] ml-auto mr-2 pl-auto w-[130px] rounded-xl border border-red-400 bg-red-50">
+                <Text className="text-[13px] font-medium text-center text-red-800">Filterd Results: <Text className="font-extrabold">{filteredProducts.length}</Text></Text>
               </View>
-            </ScrollView>
-          )}
-        </View>
-        {selectedCategory !== 'All' &&
-          <View className="mt-[12px] py-[3px] ml-auto mr-2 pl-auto w-[130px] rounded-xl border border-red-400 bg-red-50">
-            <Text className="text-[13px] font-medium text-center text-red-800">Filterd Results: <Text className="font-extrabold">{filteredProducts.length}</Text></Text>
-          </View>
-        }
+            }
 
-        <View className='h-[12px] bg-gray-50'></View>
+            <View className='h-[12px] bg-gray-50'></View>
 
-        <FlatList
-          data={filteredProducts}
-          renderItem={renderProductItem}
-          keyExtractor={(item) => item._id}
-          showsVerticalScrollIndicator={false}
-          numColumns={2}
-          contentContainerStyle={{ paddingHorizontal: 8, paddingVertical: 10 }}
-        />
+            <FlatList
+              data={filteredProducts}
+              renderItem={renderProductItem}
+              keyExtractor={(item) => item._id}
+              showsVerticalScrollIndicator={false}
+              numColumns={2}
+              contentContainerStyle={{ paddingHorizontal: 8, paddingVertical: 10 }}
+            />
+          </>}
       </View>
     </SafeAreaView>
   );

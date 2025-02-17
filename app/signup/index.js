@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import config from '@/Config/Config';
 import { Link, useRouter } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 
 const SignUp = () => {
     const router = useRouter();
@@ -37,8 +38,8 @@ const SignUp = () => {
     };
 
     return (
-
         <View className="relative flex items-center justify-center pt-[48px] flex-1">
+            <StatusBar backgroundColor='#7f1d1d' barStyle='light-content' />
             <View className="absolute h-screen w-screen">
                 <View className="h-[850px] mt-[-580px] mr-[-65px] w-[950px] rounded-full bg-red-700  absolute top-0 right-0"></View>
                 <View className="h-[700px] mt-[-610px] mr-[-150px] w-[750px] rounded-full bg-red-900 absolute top-0 right-0"></View>
@@ -57,8 +58,8 @@ const SignUp = () => {
             </View>
 
             <View className="absolute h-screen w-screen">
-                <Text className="text-[40px] ml-[15px] mt-[108px] font-bold text-white">Create Account</Text>
-                <Text className="text-md ml-[20px] font-medium text-red-50">Shpop Now !! By Creating an Account</Text>
+                <Text className="text-[34px] ml-[15px] mt-[108px] font-bold text-white">Create Account</Text>
+                <Text className="text-[13px] ml-[20px] font-medium text-red-100">Shop Now !! By Creating an Account</Text>
             </View>
 
 
@@ -108,7 +109,7 @@ const SignUp = () => {
                     <Text className="text-center font-[600] text-[17px] text-white">Sign Up</Text>
                 </TouchableOpacity>
 
-{/* Divider */}
+                {/* Divider */}
                 <View className="flex-row items-center mt-4">
                     <View className="flex-1 h-px bg-gray-300" />
                     <Text className="mx-2 text-gray-500">OR</Text>

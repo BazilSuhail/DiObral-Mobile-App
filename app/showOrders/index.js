@@ -131,7 +131,7 @@ const ShowOrders = () => {
                             </Text>
                         </View>
 
-<View className='h-[2.5px] mb-[8px] w-full mx-auto bg-gray-200 rounded-xl'></View>
+                        <View className='h-[2.5px] mb-[8px] w-full mx-auto bg-gray-200 rounded-xl'></View>
                         <View className='flex-row items-center justify-between'>
                             <View>
                                 <Text className="text-[12px] font-bold text-gray-400">Items Ordered:</Text>
@@ -142,12 +142,8 @@ const ShowOrders = () => {
                                 <Text className="text-[12px] font-bold text-gray-400">Checkout:</Text>
                                 <Text className="text-[14px] font-bold text-blue-700"><Text className='text-[11px]'>Rs. </Text>{singleOrder.total ? singleOrder.total.toFixed(2) : 'N/A'}</Text>
                             </View>
-                        </View>
-{/* 
-
-                        <Button title="Show Order Details" onPress={() => setVisibleModalOrderId(singleOrder._id)} />
-
-*/}
+                        </View> 
+                        
                         <OrderDetailsModal
                             singleOrder={singleOrder}
                             modalVisible={visibleModalOrderId === singleOrder._id}

@@ -21,25 +21,28 @@ const CustomModal = ({ isOpen, onClose, onConfirm }) => {
             onRequestClose={onClose}
         > 
             <View className="flex-1 justify-center items-center bg-black/50 bg-opacity-50">
-                <View className="w-4/5 p-5 bg-white rounded-lg items-center">
-                    <Text className="text-lg font-bold mb-4">Confirm Order</Text>
-                    <Text className="text-base mb-6 text-center">
+                <View className="w-4/5 py-4 px-[12px] bg-white rounded-lg">
+                    <Text className="text-lg font-bold mb-1">Confirm Order</Text>
+                    <Text className="text-[13px]">
                         Are you sure you want to place this order?
                     </Text>
-                    <View className="flex-row justify-between w-full">
+                    <Text className="text-[13px] italic mt-[15px] font-[600] text-red-600 mb-[25px]">
+                        * Do check your address in Profile as we will be using it for shipping purposes.
+                    </Text>
+                    <View className="flex-row justify-end space-x-1 w-full">
                         <TouchableOpacity
                             onPress={onConfirm}
-                            className="px-5 py-2 bg-green-600 rounded-md"
+                            className="px-5 py-1 bg-green-600 rounded-md"
                         >
-                            <Text className="text-white font-bold text-center">
+                            <Text className="text-white text-[13px] font-bold text-center">
                                 Confirm
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={onClose}
-                            className="px-5 py-2 bg-red-600 rounded-md"
+                            className="px-5 py-1 bg-red-600 rounded-md"
                         >
-                            <Text className="text-white font-bold text-center">
+                            <Text className="text-white text-[13px] font-bold text-center">
                                 Cancel
                             </Text>
                         </TouchableOpacity>
@@ -180,40 +183,39 @@ const OrderList = () => {
             <ScrollView scrollEnabled={true} showsVerticalScrollIndicator={false}>
 
                 <View className="flex-row mb-1 items-center ">
-                    <Feather name="file-text" size={24} color="#706700" />
-                    <Text className="text-2xl ml-[2px] font-bold"> Final Invoice</Text>
+                    <Feather name="file-text" size={22} color="#706700" />
+                    <Text className="text-[20px] ml-[2px] font-bold"> Final Invoice</Text>
                 </View>
-                <View className="bg-gray-300 mb-3 w-full h-[3px]"></View>
+                <View className="bg-gray-300 mb-3 w-full h-[2px]"></View>
 
-                <View className='flex p-[15px]  border border-gray-400 mb-[15px] rounded-xl flex-col'>
-
-                    <Text className='text-[19px] font-bold'>Checkout</Text>
+                <View className='flex p-[15px] bg-gray-50 border-[2px] border-gray-200 mb-[15px] rounded-xl flex-col'>
+                    <Text className='text-[18px] text-gray-600 mb-[6px] font-bold'>Checkout</Text>
                     <View className='border-b border-t border-gray-400 text-[17px] font-semibold'>
                         <View className='flex-row items-center mt-[15px] justify-between'>
                             <View className='flex-row items-center'>
                                 <FontAwesome name="dollar" size={18} color="green" /><Text className="ml-[8px] text-[12px]">Your Cart Subtotal:</Text>
                             </View>
-                            <Text className='pr-[8px] text-[17px] font-bold'><Text className='text-gray-600 text-[15px]'>Rs.</Text>{calculateActualTotalBill()}</Text>
+                            <Text className='pr-[8px] text-[15px] font-bold'><Text className='text-gray-600 text-[13px]'>Rs.{" "}</Text>{calculateActualTotalBill()}</Text>
                         </View>
 
                         <View className='flex-row items-center mt-[8px] justify-between'>
                             <View className='flex-row items-center'>
                                 <FontAwesome name="gift" size={20} color="blue" /><Text className="ml-[8px] text-[12px]">Discount Through Applied Sales:</Text>
                             </View>
-                            <Text className='pr-[8px] text-[17px] font-bold'><Text className='text-gray-600 text-[15px]'>Rs.</Text>{calculateTotalBill()}</Text>
+                            <Text className='pr-[8px] text-[15px] font-bold'><Text className='text-gray-600 text-[13px]'>Rs.{" "}</Text>{calculateTotalBill()}</Text>
                         </View>
 
                         <View className='flex-row my-[8px] justify-between'>
                             <View className='flex-row items-center'>
                                 <FontAwesome name="truck" size={20} color="red" /><Text className="ml-[8px] text-[12px]">Delivery Charges (*On Delivery):</Text>
                             </View>
-                            <Text className='pr-[8px] text-[17px] font-bold'><Text className='text-gray-600 text-[15px]'>Rs.</Text>200</Text>
+                            <Text className='pr-[8px] text-[15px] font-bold'><Text className='text-gray-600 text-[13px]'>Rs{" "}.</Text>200</Text>
                         </View>
                     </View>
 
                     <View className='flex-row items-center mt-[15px] justify-between'>
                         <View className="flex-row items-end">
-                            <Text className='text-[15px] text-gray-500 font-semibold '>Rs.</Text><Text className='text-[21px] font-bold '>{calculateTotalBill()}</Text>
+                            <Text className='text-[15px] text-gray-500 font-semibold '>Rs.{" "}</Text><Text className='text-[20px] font-bold '>{calculateTotalBill()}</Text>
                         </View>
                         <TouchableOpacity onPress={openModal}
                             className="text-[20px] font-bold py-[3px] rounded-2xl px-[15px] bg-green-700"

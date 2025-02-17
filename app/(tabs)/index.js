@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator, SafeAreaView } from 'react-native';
-//import { useNavigation } from '@react-navigation/native';
+import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import config from '@//Config/Config';
 import { useRouter } from 'expo-router';
 import Loader from '@/components/Loader';
+import { useSafeAreaInsets, SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import HomeSkeleton from '@/components/Loaders/HomeSkeleton';
 
 const Home = () => {
+  const insets = useSafeAreaInsets();
   const router = useRouter();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,7 +27,7 @@ const Home = () => {
     { name: "Street Wear", icon: "street-view" },
     { name: "Fitness Wear", icon: "bicycle" },
     { name: "Gym Wear", icon: "futbol-o" },
-  ];  
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -68,12 +71,7 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  if (loading) return (
-    <View className='h-screen flex items-center justify-center'>
-         <Loader />
-       </View>
-  );
-  if (error) return <Text>Error: {error}</Text>;
+  if (error) return <Text className='text-white'>.</Text>;
 
   const handlePress = (id) => {
     //console.log(id)
@@ -129,17 +127,19 @@ const Home = () => {
 
 
   return (
-    <SafeAreaView className="flex-1 pt-[45px] px-3" >
+    <SafeAreaView className={`flex-1 pt-${insets.top} bg-gray-100 px-3`}>
+      <StatusBar backgroundColor='#f3f4f6' barStyle='light-content' />
+
       <ScrollView showsVerticalScrollIndicator={false}>
 
-        <View className="flex-row justify-between items-center  shadow-md">
+        <View className="flex-row justify-between items-center  mt-[5px] shadow-md">
           <TouchableOpacity className="bg-red-900 rounded-full h-[40px] w-[40px] flex justify-center items-center">
             <FontAwesome name="cog" size={23} color="white" />
           </TouchableOpacity>
 
           <View className="flex justify-center">
-            <Text className="text-center text-[13px] text-gray-500 font-bold">Main Office</Text>
-            <Text className="text-center text-[16px] font-medium">12th Street, Reiman Road</Text>
+            <Text className="text-center text-[11px] text-gray-500 font-bold">Main Office</Text>
+            <Text className="text-center text-[13px] font-medium">12th Street, Reiman Road</Text>
           </View>
 
           <TouchableOpacity className="bg-red-100 rounded-full h-[40px] w-[40px] flex justify-center items-center">
@@ -161,8 +161,8 @@ const Home = () => {
 
         <View className="bg-white rounded-lg mt-[15px] py-3">
           <View className=" flex-row  px-4 justify-between items-center rounded-lg ">
-            <Text className="font-bold text-gray-700  text-[20px]">Trending Categories</Text>
-            <Text className="font-medium text-search-color  text-[16px]">See All</Text>
+            <Text className="font-bold text-gray-700  text-[15px]">Trending Categories</Text>
+            <Text className="font-[700] text-gray-500 text-[12px]">See All</Text>
           </View>
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -187,22 +187,25 @@ const Home = () => {
             </View>
           </ScrollView>
         </View>
-
         <View className="bg-white mt-[15px] py-3">
           <View className="flex-row px-4 justify-between items-center rounded-lg">
             <Text className="font-bold text-red-900 text-[18px]">Flash Sale !!</Text>
             <Text className="text-red-600 font-[600] text-[14px]"><Text className='text-[11px] font-extrabold text-red-400'>Ends In: </Text><Text className='underline'>{`${timeLeft.hours}:${timeLeft.minutes}:${timeLeft.seconds}`}</Text></Text>
           </View>
-          <ScrollView
-            contentContainerStyle={{ paddingHorizontal: 8, paddingVertical: 20 }}
-            showsVerticalScrollIndicator={false}
-          >
-            {rows.map((row, index) => (
-              <View key={index}>
-                {row}
-              </View>
-            ))}
-          </ScrollView>
+
+          {loading ?
+            <View className='px-[8px] py-[20px]'> 
+              {Array.from({ length: 6 }).map((_, index) => (<HomeSkeleton key={index} />))}
+            </View>
+            :
+            <View className='px-[8px] py-[20px]'>
+              {rows.map((row, index) => (
+                <View key={index}>
+                  {row}
+                </View>
+              ))}
+            </View>
+          }
         </View>
 
 

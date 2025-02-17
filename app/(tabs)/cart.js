@@ -12,6 +12,7 @@ import { useRouter } from 'expo-router';
 // cart illusatrations
 import cartNoLogin from '@/assets/cartNoLogin.jpg';
 import emptyCart from '@/assets/cart.jpg';
+import { StatusBar } from 'expo-status-bar';
 
 const CartItem = ({ id, size, quantity, onIncrease, onDecrease, onRemove }) => {
   const [product, setProduct] = useState(null);
@@ -82,7 +83,7 @@ const Cart = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   //console.log("Is cart Logged In: " + isLoggedIn)
   const [products, setProducts] = useState([]);
-  const [userId, setUserId] = useState(null); 
+  const [userId, setUserId] = useState(null);
 
   const parseJwt = (token) => {
     try {
@@ -179,6 +180,7 @@ const Cart = () => {
 
   return (
     <View className="flex-1 pt-[28px] bg-white">
+      <StatusBar backgroundColor='#FFFFFF' barStyle='light-content' />
       <View className="py-4">
         <Text className="mx-auto w-[92%] text-[20px] mb-1 text-red-800 font-bold">My Cart</Text>
         <View className="bg-gray-300 mb-3 w-[92%] h-[3px] mx-auto"></View>
@@ -197,26 +199,26 @@ const Cart = () => {
               </View>
             ) : (
               <View className="mx-4 flex">
-                <View className="flex-row justify-between">
-                  <TouchableOpacity onPress={handleClearCart} className="bg-red-700 flex flex-row justify-center items-center rounded-lg py-1 px-3">
-                    <FontAwesome name="trash" size={14} color="white" />
-                    <Text className="text-[13px] font-medium text-white ml-2">Clear Cart</Text>
+                <View className="flex-row space-x-[4px]">
+                  <TouchableOpacity onPress={handleClearCart} className="bg-red-700 flex flex-row justify-center items-center rounded-[5px] py-1 px-3">
+                    <FontAwesome name="trash" size={12} color="white" />
+                    <Text className="text-[12px] font-medium text-white ml-2">Clear Cart</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={handleSaveCart} className="bg-blue-700 flex flex-row justify-center items-center rounded-lg py-1 px-3">
-                    <MaterialIcons name="save" size={14} color="white" />
-                    <Text className="text-[13px] font-medium text-white ml-2">Buy Later</Text>
+                  <TouchableOpacity onPress={handleSaveCart} className="bg-blue-700 flex flex-row justify-center items-center rounded-[5px] py-1 px-3">
+                    <MaterialIcons name="save" size={12} color="white" />
+                    <Text className="text-[12px] font-medium text-white ml-2">Buy Later</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => router.push('/orderlist')} className="bg-green-700 flex flex-row justify-center items-center rounded-lg py-1 px-3">
-                    <Entypo name="shopping-cart" size={14} color="white" />
-                    <Text className="text-[13px] py-[2px] font-medium text-white ml-2">Checkout Cart</Text>
+                  <TouchableOpacity onPress={() => router.push('/orderlist')} className="bg-green-700 flex flex-row justify-center items-center rounded-[5px] py-1 px-3">
+                    <Entypo name="shopping-cart" size={12} color="white" />
+                    <Text className="text-[12px] py-[2px] font-medium text-white ml-2">Checkout Cart</Text>
                   </TouchableOpacity>
                 </View>
 
-                <View className="border border-gray-400 rounded-lg flex-row justify-between items-center px-3 mt-[10px] py-2">
-                  <Text>Your Cart Subtotal:</Text>
-                  <Text className="text-xl font-bold">Rs.{calculateTotalBill()}</Text>
+                <View className="border border-gray-200 bg-gray-100 rounded-[7px] flex-row justify-between items-center px-3 mt-[10px] py-2">
+                  <Text className='text-[12px] font-[600] text-gray-400'>Your Cart Subtotal:</Text>
+                  <Text className="text-[16px] font-bold">Rs.{calculateTotalBill()}</Text>
                 </View>
                 <View className="h-[15px]"></View>
                 <FlatList
@@ -236,7 +238,6 @@ const Cart = () => {
                   style={{ maxHeight: 550 }}
                   className="w-full"
                 />
-
               </View>
             )}
           </>

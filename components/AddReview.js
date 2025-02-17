@@ -72,16 +72,16 @@ const AddReview = ({ productId }) => {
 
     return (
         <View className="bg-white rounded-lg my-[15px] p-4">
-            <Text className="text-[20px] text-red-800 font-bold mb-2">Submit Your Review</Text>
+            <Text className="text-[16px] text-red-800 font-bold mb-2">Submit Your Review</Text>
          
             <View className="flex-row items-center mb-4">
-                <Text className="text-[15px] mb-[2px] text-red-400 mr-[8px] font-medium underline">Rating:</Text>
+                <Text className="text-[14px] mb-[2px] text-red-400 mr-[8px] font-medium underline">Rating:</Text>
                 <View className="flex-row">
                     {[...Array(5)].map((_, index) => (
                         <TouchableOpacity key={index} onPress={() => handleStarClick(index)}>
                             <FontAwesome
                                 name="star"
-                                size={23}
+                                size={20}
                                 color={index < rating ? '#FFD700' : '#D3D3D3'}
                             />
                         </TouchableOpacity>
@@ -94,11 +94,11 @@ const AddReview = ({ productId }) => {
                 onChangeText={setReview}
                 placeholder="Write your review..."
                 multiline
-                className="px-3 border-2 border-gray-300 w-full py-[35px] pt-[8px] text-[16px] mb-[15px] font-medium rounded-md"
+                className="px-2 border-2 border-gray-300 w-full pt-[20px] pb-[35px] text-[13px] mb-[15px] font-medium rounded-md"
             />
 
-            <TouchableOpacity onPress={handleSubmit} className="w-[130px] py-1 bg-red-900 rounded-md">
-                <Text className="text-white text-center text-[16px]">Submit Review</Text>
+            <TouchableOpacity onPress={handleSubmit} className="w-[110px] py-1 bg-red-900 rounded-md">
+                <Text className="text-white font-[600] text-center text-[12px]">Submit Review</Text>
             </TouchableOpacity>
         </View>
     );

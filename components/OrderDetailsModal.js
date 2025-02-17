@@ -14,9 +14,9 @@ const OrderDetailsModal = ({ singleOrder, modalVisible, setModalVisible }) => {
                 <View className="w-[90%] bg-white rounded-lg p-4">
                     {/* Header */}
                     <View className="flex-row justify-between items-center mb-4">
-                        <Text className="text-2xl font-bold text-black">Order Details</Text>
+                        <Text className="text-[19px] font-bold text-black">Order Details</Text>
                         <TouchableOpacity onPress={() => setModalVisible(false)}>
-                            <AntDesign name="closecircle" size={25} color="red" />
+                            <AntDesign name="closecircle" size={19} color="red" />
                         </TouchableOpacity>
                     </View>
 
@@ -27,7 +27,7 @@ const OrderDetailsModal = ({ singleOrder, modalVisible, setModalVisible }) => {
                                 <View key={`${item._id}-${item.size}`} className="flex justify-between my-2">
 
                                     <View className="flex-row items-center mb-2">
-                                        <Text className="text-[18px] font-bold">{item.name}</Text>
+                                        <Text className="text-[16px] font-bold">{item.name}</Text>
                                     </View>
                                     <Text className="text-[12px] font-bold text-black">
                                         <Text className="font-semibold text-red-900">Quantity:</Text> {item.quantity}
@@ -42,7 +42,7 @@ const OrderDetailsModal = ({ singleOrder, modalVisible, setModalVisible }) => {
                                         <Text className="font-semibold text-red-900">Discounted Price:</Text> ${item.discountedPrice ? item.discountedPrice.toFixed(2) : 'N/A'}
                                     </Text>
 
-                                    <View className="w-full h-[2px] mt-[4px] bg-gray-300"></View>
+                                    <View className="w-full h-[2px] mt-[8px] bg-gray-300"></View>
 
                                     <View className='flex-row mt-[8px] justify-between'>
                                         <Text className="text-[13px] text-center text-red-700 font-bold rounded-md">Total:</Text>

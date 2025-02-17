@@ -1,11 +1,14 @@
 import { Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { StatusBar } from 'expo-status-bar'; 
 import { Provider } from 'react-redux';
 import store from '@/hooks/store';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import * as NavigationBar from 'expo-navigation-bar'; 
+
+NavigationBar.setBackgroundColorAsync('#FFFFFF');
+NavigationBar.setButtonStyleAsync('light');
 
 export default function RootLayout() {
   const [loaded] = useFonts({
